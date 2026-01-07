@@ -53,24 +53,26 @@ WORKDIR /workspace/stable-diffusion-webui-forge
 
 # ControlNet
 RUN git clone https://github.com/Mikubill/sd-webui-controlnet extensions/sd-webui-controlnet
-# ReActor через ZIP
-RUN mkdir -p extensions/sd-webui-reactor \
- && curl -L "https://codeberg.org/Gourieff/sd-webui-reactor/archive/refs/heads/main.zip" -o /tmp/reactor.zip \
- && unzip /tmp/reactor.zip -d extensions/sd-webui-reactor \
- && rm /tmp/reactor.zip
+
+# ReActor через ZIP (Python можно использовать для unzip)
+RUN mkdir -p extensions/sd-webui-reactor
+
 # ADetailer
 RUN git clone https://github.com/Bing-su/adetailer extensions/adetailer
+
 # sd-face-editor / Deforum
 RUN git clone https://github.com/ototadana/sd-face-editor.git extensions/sd-face-editor
 RUN git clone https://github.com/deforum-art/sd-webui-deforum extensions/sd-webui-deforum
 
-# Копируем скрипт, который скачивает ВСЕ модели на cold start
+# Копируем скрипты
+COPY config.py /workspace/config.py
 COPY download_models.py /workspace/download_models.py
+COPY launch.py /workspace/launch.py
 COPY entrypoint.sh /workspace/entrypoint.sh
 RUN chmod +x /workspace/entrypoint.sh
 
 # expose API port
 EXPOSE 8080
 
-# Запуск через entrypoint: сначала скачиваем модели, потом Forge с API
+# Запуск через entrypoint
 CMD ["/workspace/entrypoint.sh"]

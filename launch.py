@@ -1,62 +1,64 @@
 import os
-from huggingface_hub import hf_hub_download
+from pathlib import Path
+import torch
+from diffusers import StableDiffusionXLPipeline
+import subprocess
+from config import BASE, MODEL_DIR, SDXL_FILES, CONTROLNET_FILES, REACTOR_FILES, GFPGAN_FILES, CODEFORMER_FILES, ADETAILER_FILES
 
-BASE = "/workspace"
-MODEL_DIR = f"{BASE}/models"
+def get_sdxl_pipeline(checkpoint="cyberrealisticPony_v150.safetensors"):
+    path = Path(MODEL_DIR) / "Stable-diffusion" / checkpoint
+    print(f"🔥 Loading SDXL pipeline from {path}")
+    pipe = StableDiffusionXLPipeline.from_single_file(path, torch_dtype=torch.float16)
+    pipe.to("cuda")
+    pipe.enable_xformers_memory_efficient_attention()
+    pipe.enable_model_cpu_offload()
+    print("✅ SDXL pipeline loaded")
+    return pipe
 
-def download(repo, filename, target_dir):
-    os.makedirs(target_dir, exist_ok=True)
-    path = os.path.join(target_dir, filename)
-    if os.path.exists(path):
-        return path
-    print(f"⬇ Downloading {filename}")
-    return hf_hub_download(repo, filename, local_dir=target_dir, local_dir_use_symlinks=False)
+def check_models(folder, files):
+    path = Path(folder)
+    if not path.exists():
+        print(f"⚠️ {folder} does not exist")
+    for f in files:
+        if not (path / f).exists():
+            print(f"⚠️ Missing file {f} in {folder}")
+    print(f"✅ Checked {folder}")
 
-def download_all_models():
-    repo = "IgorGent/pony"
+def preload_all():
+    # SDXL
+    pipe = get_sdxl_pipeline(SDXL_FILES[0])
 
-    # Stable Diffusion
-    sd_dir = f"{MODEL_DIR}/Stable-diffusion"
-    for f in [
-        "cyberrealisticPony_v141.safetensors",
-        "cyberrealisticPony_v141_alt.safetensors",
-        "cyberrealisticPony_v150bf16.safetensors",
-        "cyberrealisticPony_v150.safetensors",
-    ]:
-        download(repo, f, sd_dir)
-
-    # ControlNet / IP-Adapter
-    cn_dir = f"{BASE}/extensions/sd-webui-controlnet/models"
-    for f in [
-        "ip-adapter-faceid-plusv2_sdxl.bin",
-        "ip-adapter-faceid-plusv2_sdxl_lora.safetensors",
-        "ip-adapter-plus-face_sdxl_vit-h.safetensors",
-        "ip-adapter-plus_sdxl_vit-h_alt.safetensors",
-        "ip-adapter_sdxl_vit-h_alt.safetensors",
-        "clip_h.pth",
-        "ip_adapter_instant_id_sdxl.bin",
-        "control_instant_id_sdxl.safetensors",
-    ]:
-        download(repo, f, cn_dir)
+    # ControlNet
+    check_models(os.path.join(BASE, "extensions", "sd-webui-controlnet", "models"), CONTROLNET_FILES)
 
     # ReActor
-    reactor_dir = f"{BASE}/extensions/sd-webui-reactor/models"
-    for f in [
-        "inswapper_128.onnx",
-        "1k3d68.onnx",
-        "2d106det.onnx",
-        "genderage.onnx",
-        "glintr100.onnx",
-        "scrfd_10g_bnkps.onnx",
-        "det_10g.onnx",
-        "w600k_r50.onnx",
-    ]:
-        download(repo, f, reactor_dir)
+    check_models(os.path.join(BASE, "extensions", "sd-webui-reactor", "models"), REACTOR_FILES)
 
     # GFPGAN / CodeFormer
-    download(repo, "GFPGANv1.4.pth", f"{MODEL_DIR}/GFPGAN")
-    download(repo, "codeformer.pth", f"{MODEL_DIR}/Codeformer")
-    download(repo, "codeformer-v0.1.0.pth", f"{MODEL_DIR}/Codeformer")
+    check_models(os.path.join(MODEL_DIR, "GFPGAN"), GFPGAN_FILES)
+    check_models(os.path.join(MODEL_DIR, "Codeformer"), CODEFORMER_FILES)
 
-download_all_models()
-print("✅ All models downloaded and ready for Forge API")
+    # ADetailer
+    check_models(os.path.join(BASE, "extensions", "adetailer", "models"), ADETAILER_FILES)
+
+    print("✅ All models preloaded. Forge API ready!")
+
+if __name__ == "__main__":
+    print("🚀 Cold start preload...")
+    preload_all()
+
+   # путь к оригинальному Forge launch.py
+   FORGE_LAUNCH = "/workspace/stable-diffusion-webui-forge/launch.py"
+
+   cmd = [
+       "python3", FORGE_LAUNCH,
+       "--listen",
+       "--port", "8080",
+       "--api",
+       "--skip-torch-cuda-test",
+       "--no-half-vae",
+       "--opt-sdp-no-mem-attention",
+       "--xformers"
+   ]
+
+   subprocess.run(cmd, check=True)
