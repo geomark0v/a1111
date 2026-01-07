@@ -10,7 +10,12 @@ def download(repo, filename, target_dir):
     if os.path.exists(path):
         return path
     print(f"⬇ Downloading {filename}")
-    return hf_hub_download(repo, filename, local_dir=target_dir, local_dir_use_symlinks=False)
+    return hf_hub_download(
+        repo_id=repo,
+        filename=filename,
+        local_dir=target_dir,
+        local_dir_use_symlinks=False
+    )
 
 def download_all_models():
     repo = "IgorGent/pony"
