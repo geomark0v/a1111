@@ -8,6 +8,7 @@ ENV HF_HUB_ENABLE_HF_TRANSFER=1
 RUN apt-get update && apt-get install -y \
     git \
     ca-certificates \
+    curl \
     unzip \
     python3.10 \
     python3-pip \
