@@ -1,7 +1,7 @@
 import os
 from huggingface_hub import hf_hub_download
 
-BASE = "/workspace"
+BASE = "/runpod-volume"
 MODEL_DIR = f"{BASE}/models"
 
 def download(repo, filename, target_dir):
