@@ -6,6 +6,7 @@ ENV HF_HUB_ENABLE_HF_TRANSFER=1
 
 # Системные зависимости
 RUN apt-get update && apt-get install -y \
+    ca-certificates \
     git \
     python3.10 \
     python3-pip \
@@ -17,7 +18,8 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     cmake \
     libopencv-dev \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && update-ca-certificates
 
 # Python пакеты
 RUN pip install --upgrade pip
