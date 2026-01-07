@@ -1,41 +1,63 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
-# Network Volume
-BASE=/runpod-volume
+VOLUME="/runpod-volume"
+BASE="$VOLUME/stable-diffusion-webui-forge"
 
-echo "[INFO] Ensuring folders..."
-mkdir -p $BASE/models
-mkdir -p $BASE/extensions
+echo "[INFO] RunPod Serverless worker started - $(date)"
 
-echo "[INFO] Cloning Forge and extensions (runtime)..."
-if [ ! -d $BASE/stable-diffusion-webui-forge ]; then
-    git clone https://github.com/lllyasviel/stable-diffusion-webui-forge.git $BASE/stable-diffusion-webui-forge
+# Проверка монтирования volume
+if [ ! -d "$VOLUME" ]; then
+    echo "[ERROR] Network Volume not mounted! Check endpoint settings."
+    sleep infinity
 fi
 
-if [ ! -d $BASE/extensions/sd-webui-controlnet ]; then
-    git clone https://github.com/Mikubill/sd-webui-controlnet $BASE/extensions/sd-webui-controlnet
+# Создание структуры
+mkdir -p "$VOLUME/models/Stable-diffusion" \
+         "$VOLUME/extensions" \
+         "$VOLUME/logs"
+
+# Forge
+if [ ! -d "$BASE" ]; then
+    echo "[INFO] Cloning Forge (first time)..."
+    git clone https://github.com/lllyasviel/stable-diffusion-webui-forge.git "$BASE"
+else
+    echo "[INFO] Forge found in volume"
 fi
 
-if [ ! -d $BASE/extensions/sd-webui-reactor ]; then
-    git clone https://codeberg.org/Gourieff/sd-webui-reactor.git $BASE/extensions/sd-webui-reactor
-fi
+# Расширения (если отсутствуют — клонируем)
+extensions=(
+    "sd-webui-controlnet:https://github.com/Mikubill/sd-webui-controlnet"
+    "sd-webui-reactor:https://codeberg.org/Gourieff/sd-webui-reactor.git"
+    "adetailer:https://github.com/Bing-su/adetailer"
+    "sd-webui-deforum:https://github.com/deforum-art/sd-webui-deforum"
+    "sd-face-editor:https://github.com/ototadana/sd-face-editor.git"
+)
 
-if [ ! -d $BASE/extensions/adetailer ]; then
-    git clone https://github.com/Bing-su/adetailer $BASE/extensions/adetailer
-fi
+for ext in "${extensions[@]}"; do
+    name="${ext%%:*}"
+    url="${ext#*:}"
+    path="$VOLUME/extensions/$name"
+    if [ ! -d "$path" ]; then
+        echo "[INFO] Cloning $name..."
+        git clone "$url" "$path"
+    fi
+done
 
-# Скачиваем модели в /runpod-volume (runtime)
-echo "[INFO] Downloading models..."
+# Скачивание моделей (один раз или при обновлении)
+echo "[INFO] Ensuring models are downloaded..."
 python3 /workspace/download_models.py
 
 # Запуск Forge
-echo "[INFO] Starting Forge..."
-exec python3 $BASE/stable-diffusion-webui-forge/launch.py \
-     --listen \
-     --port 8080 \
-     --api \
-     --skip-torch-cuda-test \
-     --no-half-vae \
-     --opt-sdp-no-mem-attention \
-     --xformers
+cd "$BASE"
+echo "[INFO] Launching Forge WebUI with API..."
+exec python3 /workspace/stable-diffusion-webui-forge/launch.py \
+    --listen \
+    --port 8080 \
+    --api \
+    --api-auth none \
+    --skip-torch-cuda-test \
+    --no-half-vae \
+    --opt-sdp-no-mem-attention \
+    --xformers \
+    --theme dark

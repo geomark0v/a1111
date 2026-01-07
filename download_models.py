@@ -1,38 +1,42 @@
-# download_models.py
-import os
-import subprocess
 from huggingface_hub import hf_hub_download
-from config import BASE, MODEL_DIR, SDXL_FILES, IP_ADAPTER_FILES, GFPGAN_FILES, CODEFORMER_FILES, CONTROLNET_REPO, REACTOR_FILES, REACTOR_REPO, ADETAILER_REPO
+import os
 
-# Создаём папки
-os.makedirs(MODEL_DIR, exist_ok=True)
+VOLUME = "/runpod-volume"
 
-def download_hf_files(file_list, subfolder=""):
-    target_dir = os.path.join(MODEL_DIR, subfolder)
-    os.makedirs(target_dir, exist_ok=True)
-    for filename in file_list:
-        print(f"Downloading {filename} → {target_dir}")
-        hf_hub_download(
-            repo_id="IgorGent/pony",
-            filename=filename,
-            cache_dir=target_dir,
-            force_download=False
-        )
+def download(repo, filename, subfolder=None, local_dir=None):
+    local_dir = local_dir or VOLUME
+    path = hf_hub_download(
+        repo_id=repo,
+        filename=filename,
+        subfolder=subfolder,
+        local_dir=local_dir,
+        local_dir_use_symlinks=False
+    )
+    print(f"✅ Downloaded: {path}")
 
-# SDXL модели
-download_hf_files(SDXL_FILES, "Stable-diffusion")
+# Pony модели
+for model in [
+    "cyberrealisticPony_v141.safetensors",
+    "cyberrealisticPony_v141 (1).safetensors",
+    "cyberrealisticPony_v150bf16.safetensors",
+    "cyberrealisticPony_v150.safetensors"
+]:
+    download("IgorGent/pony", model, local_dir=os.path.join(VOLUME, "models", "Stable-diffusion"))
 
-# IP-Adapter / ControlNet модели
-download_hf_files(IP_ADAPTER_FILES, "extensions/sd-webui-controlnet/models")
+# ControlNet модели (IP-Adapter, InstantID)
+controlnet_dir = os.path.join(VOLUME, "extensions", "sd-webui-controlnet", "models")
+for file in [
+    "ip-adapter-faceid-plusv2_sdxl.bin",
+    "ip-adapter-faceid-plusv2_sdxl_lora.safetensors",
+    "ip-adapter-plus-face_sdxl_vit-h.safetensors",
+    "clip_h.pth",
+    "control_instant_id_sdxl.safetensors"
+]:
+    download("IgorGent/pony", file, local_dir=controlnet_dir)
 
-# ReActor модели
-download_hf_files(REACTOR_FILES, "extensions/sd-webui-reactor/models")
+# ReActor ONNX
+reactor_dir = os.path.join(VOLUME, "extensions", "sd-webui-reactor", "models")
+for onnx in ["inswapper_128.onnx", "1k3d68.onnx", "2d106det.onnx"]:
+    download("IgorGent/pony", onnx, local_dir=reactor_dir)
 
-# GFPGAN / CodeFormer
-download_hf_files(GFPGAN_FILES, "models/GFPGAN")
-download_hf_files(CODEFORMER_FILES, "models/Codeformer")
-
-# Клонируем ControlNet и ReActor репозитории (runtime)
-controlnet_dir = os.path.join(MODEL_DIR, "extensions", "sd-webui-controlnet")
-if not os.path.exists(controlnet_dir):
-    subprocess.run(["git", "clone", CONTROLNET_REPO, controlnet_dir], che
+print("🎉 All models ready!")
