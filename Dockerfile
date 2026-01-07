@@ -4,53 +4,23 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
 ENV HF_HUB_ENABLE_HF_TRANSFER=1
 
+# Системные зависимости и Python
 RUN apt-get update && apt-get install -y \
-    git \
-    ca-certificates \
-    curl \
-    unzip \
-    python3.10 \
-    python3-pip \
-    libglib2.0-0 \
-    libgl1 \
-    libsm6 \
-    libxrender1 \
-    libxext6 \
-    build-essential \
-    cmake \
-    libopencv-dev \
-    && update-ca-certificates \
+    git curl unzip python3.10 python3-pip \
+    libglib2.0-0 libgl1 libsm6 libxrender1 libxext6 \
+    build-essential cmake libopencv-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# Python libs
 RUN pip install --upgrade pip
-RUN pip install --no-cache-dir \
-    torch==2.3.1 \
-    torchvision==0.18.1 \
-    torchaudio==2.3.1 \
+RUN pip install --no-cache-dir torch==2.3.1 torchvision==0.18.1 torchaudio==2.3.1 \
     --index-url https://download.pytorch.org/whl/cu121
-
-RUN pip install --no-cache-dir \
-    huggingface_hub[hf-transfer] \
-    diffusers \
-    accelerate \
-    safetensors \
-    xformers==0.0.26.post1 \
-    onnxruntime-gpu \
-    insightface==0.7.3 \
-    ultralytics \
-    opencv-python \
-    pillow
+RUN pip install --no-cache-dir huggingface_hub[hf-transfer] diffusers accelerate safetensors \
+    xformers==0.0.26.post1 onnxruntime-gpu insightface==0.7.3 ultralytics opencv-python pillow
 
 WORKDIR /workspace
 
-# Forge + small extensions
-RUN git clone https://github.com/lllyasviel/stable-diffusion-webui-forge.git stable-diffusion-webui-forge
-RUN mkdir -p extensions
-WORKDIR /workspace/stable-diffusion-webui-forge
-RUN git clone https://github.com/Bing-su/adetailer extensions/adetailer
-RUN git clone https://github.com/ototadana/sd-face-editor.git extensions/sd-face-editor
-RUN git clone https://github.com/deforum-art/sd-webui-deforum extensions/sd-webui-deforum
-
+# Копируем скрипты
 COPY config.py /workspace/config.py
 COPY download_models.py /workspace/download_models.py
 COPY launch.py /workspace/launch.py
@@ -59,5 +29,5 @@ RUN chmod +x /workspace/entrypoint.sh
 
 EXPOSE 8080
 
-# CMD вместо ENTRYPOINT — RunPod вызывает CMD автоматически
+# CMD — RunPod Serverless вызывает его как runtime
 CMD ["/workspace/entrypoint.sh"]
