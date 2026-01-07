@@ -1,11 +1,10 @@
-# Стабильная база с CUDA 12.1 — рекомендована для Forge
+# Стабильная база с CUDA 12.1 — рекомендована для Forge в 2026
 FROM nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Системные пакеты
+# Системные пакеты + huggingface_hub + hf-transfer для быстрого скачивания
 RUN apt-get update && apt-get install -y \
-    wget \
     git \
     python3.10 \
     python3-pip \
@@ -19,6 +18,12 @@ RUN apt-get update && apt-get install -y \
     libopencv-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# Установка huggingface_hub и hf-transfer (ускоряет скачивание в 5–10 раз)
+RUN pip install --no-cache-dir huggingface_hub[hf-transfer] hf-transfer
+
+# Включаем hf-transfer глобально
+ENV HF_HUB_ENABLE_HF_TRANSFER=1
+
 # Пользователь runpod
 RUN useradd -m -s /bin/bash runpod
 USER runpod
@@ -28,21 +33,21 @@ WORKDIR /workspace
 RUN git clone https://github.com/lllyasviel/stable-diffusion-webui-forge.git stable-diffusion-webui-forge
 WORKDIR /workspace/stable-diffusion-webui-forge
 
-# PyTorch 2.3.1 + CUDA 12.1
+# PyTorch 2.3.1 + CUDA 12.1 (стабильно)
 RUN pip install --no-cache-dir \
     torch==2.3.1 \
     torchvision==0.18.1 \
     torchaudio==2.3.1 \
     --index-url https://download.pytorch.org/whl/cu121
 
-# Пакеты для расширений
+# Зависимости для расширений
 RUN pip install --no-cache-dir \
     insightface==0.7.3 \
     onnxruntime-gpu \
     ultralytics \
     xformers==0.0.26.post1
 
-# Расширения
+# Установка расширений
 RUN mkdir -p extensions && \
     git clone https://github.com/Mikubill/sd-webui-controlnet extensions/sd-webui-controlnet && \
     git clone https://codeberg.org/Gourieff/sd-webui-reactor.git extensions/sd-webui-reactor && \
@@ -50,86 +55,106 @@ RUN mkdir -p extensions && \
     git clone https://github.com/deforum-art/sd-webui-deforum extensions/sd-webui-deforum && \
     git clone https://github.com/ototadana/sd-face-editor.git extensions/sd-face-editor
 
-# Создаём папки
-RUN mkdir -p models/Stable-diffusion
-RUN mkdir -p extensions/sd-webui-controlnet/models
-RUN mkdir -p extensions/sd-webui-reactor/models
-RUN mkdir -p models/GFPGAN models/Codeformer
+# Pony чекпоинты — чистые имена
+RUN huggingface-cli download IgorGent/pony cyberrealisticPony_v141.safetensors \
+    --local-dir models/Stable-diffusion \
+    --local-dir-use-symlinks False
 
-# Pony чекпоинты — чистые имена без (1), с ретраями и таймаутами
-RUN cd models/Stable-diffusion && \
-    wget --tries=20 --timeout=300 --continue -O cyberrealisticPony_v141.safetensors "https://huggingface.co/IgorGent/pony/resolve/main/cyberrealisticPony_v141.safetensors"
+RUN huggingface-cli download IgorGent/pony "cyberrealisticPony_v141 (1).safetensors" \
+    --local-dir models/Stable-diffusion \
+    --local-dir-use-symlinks False \
+    --filename cyberrealisticPony_v141_alt.safetensors
 
-RUN cd models/Stable-diffusion && \
-    wget --tries=20 --timeout=300 --continue -O cyberrealisticPony_v141_alt.safetensors "https://huggingface.co/IgorGent/pony/resolve/main/cyberrealisticPony_v141%20(1).safetensors"
+RUN huggingface-cli download IgorGent/pony cyberrealisticPony_v150bf16.safetensors \
+    --local-dir models/Stable-diffusion \
+    --local-dir-use-symlinks False
 
-RUN cd models/Stable-diffusion && \
-    wget --tries=20 --timeout=300 --continue -O cyberrealisticPony_v150bf16.safetensors "https://huggingface.co/IgorGent/pony/resolve/main/cyberrealisticPony_v150bf16.safetensors"
-
-RUN cd models/Stable-diffusion && \
-    wget --tries=20 --timeout=300 --continue -O cyberrealisticPony_v150.safetensors "https://huggingface.co/IgorGent/pony/resolve/main/cyberrealisticPony_v150.safetensors"
+RUN huggingface-cli download IgorGent/pony cyberrealisticPony_v150.safetensors \
+    --local-dir models/Stable-diffusion \
+    --local-dir-use-symlinks False
 
 # IP-Adapter / InstantID модели
-RUN cd extensions/sd-webui-controlnet/models && \
-    wget --tries=20 --timeout=300 --continue -O ip-adapter-faceid-plusv2_sdxl.bin "https://huggingface.co/IgorGent/pony/resolve/main/ip-adapter-faceid-plusv2_sdxl.bin"
+RUN huggingface-cli download IgorGent/pony ip-adapter-faceid-plusv2_sdxl.bin \
+    --local-dir extensions/sd-webui-controlnet/models \
+    --local-dir-use-symlinks False
 
-RUN cd extensions/sd-webui-controlnet/models && \
-    wget --tries=20 --timeout=300 --continue -O ip-adapter-faceid-plusv2_sdxl_lora.safetensors "https://huggingface.co/IgorGent/pony/resolve/main/ip-adapter-faceid-plusv2_sdxl_lora.safetensors"
+RUN huggingface-cli download IgorGent/pony ip-adapter-faceid-plusv2_sdxl_lora.safetensors \
+    --local-dir extensions/sd-webui-controlnet/models \
+    --local-dir-use-symlinks False
 
-RUN cd extensions/sd-webui-controlnet/models && \
-    wget --tries=20 --timeout=300 --continue -O ip-adapter-plus-face_sdxl_vit-h.safetensors "https://huggingface.co/IgorGent/pony/resolve/main/ip-adapter-plus-face_sdxl_vit-h.safetensors"
+RUN huggingface-cli download IgorGent/pony ip-adapter-plus-face_sdxl_vit-h.safetensors \
+    --local-dir extensions/sd-webui-controlnet/models \
+    --local-dir-use-symlinks False
 
-RUN cd extensions/sd-webui-controlnet/models && \
-    wget --tries=20 --timeout=300 --continue -O ip-adapter-plus_sdxl_vit-h_alt.safetensors "https://huggingface.co/IgorGent/pony/resolve/main/ip-adapter-plus_sdxl_vit-h%20(1).safetensors"
+RUN huggingface-cli download IgorGent/pony "ip-adapter-plus_sdxl_vit-h (1).safetensors" \
+    --local-dir extensions/sd-webui-controlnet/models \
+    --local-dir-use-symlinks False \
+    --filename ip-adapter-plus_sdxl_vit-h_alt.safetensors
 
-RUN cd extensions/sd-webui-controlnet/models && \
-    wget --tries=20 --timeout=300 --continue -O ip-adapter_sdxl_vit-h_alt.safetensors "https://huggingface.co/IgorGent/pony/resolve/main/ip-adapter_sdxl_vit-h%20(1).safetensors"
+RUN huggingface-cli download IgorGent/pony "ip-adapter_sdxl_vit-h (1).safetensors" \
+    --local-dir extensions/sd-webui-controlnet/models \
+    --local-dir-use-symlinks False \
+    --filename ip-adapter_sdxl_vit-h_alt.safetensors
 
-RUN cd extensions/sd-webui-controlnet/models && \
-    wget --tries=20 --timeout=300 --continue -O clip_h.pth "https://huggingface.co/IgorGent/pony/resolve/main/clip_h.pth"
+RUN huggingface-cli download IgorGent/pony clip_h.pth \
+    --local-dir extensions/sd-webui-controlnet/models \
+    --local-dir-use-symlinks False
 
-RUN cd extensions/sd-webui-controlnet/models && \
-    wget --tries=20 --timeout=300 --continue -O ip_adapter_instant_id_sdxl.bin "https://huggingface.co/IgorGent/pony/resolve/main/ip_adapter_instant_id_sdxl.bin"
+RUN huggingface-cli download IgorGent/pony ip_adapter_instant_id_sdxl.bin \
+    --local-dir extensions/sd-webui-controlnet/models \
+    --local-dir-use-symlinks False
 
-RUN cd extensions/sd-webui-controlnet/models && \
-    wget --tries=20 --timeout=300 --continue -O control_instant_id_sdxl.safetensors "https://huggingface.co/IgorGent/pony/resolve/main/control_instant_id_sdxl.safetensors"
+RUN huggingface-cli download IgorGent/pony control_instant_id_sdxl.safetensors \
+    --local-dir extensions/sd-webui-controlnet/models \
+    --local-dir-use-symlinks False
 
 # ReActor ONNX модели
-RUN cd extensions/sd-webui-reactor/models && \
-    wget --tries=20 --timeout=300 --continue -O inswapper_128.onnx "https://huggingface.co/IgorGent/pony/resolve/main/inswapper_128.onnx"
+RUN huggingface-cli download IgorGent/pony inswapper_128.onnx \
+    --local-dir extensions/sd-webui-reactor/models \
+    --local-dir-use-symlinks False
 
-RUN cd extensions/sd-webui-reactor/models && \
-    wget --tries=20 --timeout=300 --continue -O 1k3d68.onnx "https://huggingface.co/IgorGent/pony/resolve/main/1k3d68.onnx"
+RUN huggingface-cli download IgorGent/pony 1k3d68.onnx \
+    --local-dir extensions/sd-webui-reactor/models \
+    --local-dir-use-symlinks False
 
-RUN cd extensions/sd-webui-reactor/models && \
-    wget --tries=20 --timeout=300 --continue -O 2d106det.onnx "https://huggingface.co/IgorGent/pony/resolve/main/2d106det.onnx"
+RUN huggingface-cli download IgorGent/pony 2d106det.onnx \
+    --local-dir extensions/sd-webui-reactor/models \
+    --local-dir-use-symlinks False
 
-RUN cd extensions/sd-webui-reactor/models && \
-    wget --tries=20 --timeout=300 --continue -O genderage.onnx "https://huggingface.co/IgorGent/pony/resolve/main/genderage.onnx"
+RUN huggingface-cli download IgorGent/pony genderage.onnx \
+    --local-dir extensions/sd-webui-reactor/models \
+    --local-dir-use-symlinks False
 
-RUN cd extensions/sd-webui-reactor/models && \
-    wget --tries=20 --timeout=300 --continue -O glintr100.onnx "https://huggingface.co/IgorGent/pony/resolve/main/glintr100.onnx"
+RUN huggingface-cli download IgorGent/pony glintr100.onnx \
+    --local-dir extensions/sd-webui-reactor/models \
+    --local-dir-use-symlinks False
 
-RUN cd extensions/sd-webui-reactor/models && \
-    wget --tries=20 --timeout=300 --continue -O scrfd_10g_bnkps.onnx "https://huggingface.co/IgorGent/pony/resolve/main/scrfd_10g_bnkps.onnx"
+RUN huggingface-cli download IgorGent/pony scrfd_10g_bnkps.onnx \
+    --local-dir extensions/sd-webui-reactor/models \
+    --local-dir-use-symlinks False
 
-RUN cd extensions/sd-webui-reactor/models && \
-    wget --tries=20 --timeout=300 --continue -O det_10g.onnx "https://huggingface.co/IgorGent/pony/resolve/main/det_10g.onnx"
+RUN huggingface-cli download IgorGent/pony det_10g.onnx \
+    --local-dir extensions/sd-webui-reactor/models \
+    --local-dir-use-symlinks False
 
-RUN cd extensions/sd-webui-reactor/models && \
-    wget --tries=20 --timeout=300 --continue -O w600k_r50.onnx "https://huggingface.co/IgorGent/pony/resolve/main/w600k_r50.onnx"
+RUN huggingface-cli download IgorGent/pony w600k_r50.onnx \
+    --local-dir extensions/sd-webui-reactor/models \
+    --local-dir-use-symlinks False
 
 # GFPGAN / CodeFormer
-RUN cd models/GFPGAN && \
-    wget --tries=20 --timeout=300 --continue -O GFPGANv1.4.pth "https://huggingface.co/IgorGent/pony/resolve/main/GFPGANv1.4.pth"
+RUN huggingface-cli download IgorGent/pony GFPGANv1.4.pth \
+    --local-dir models/GFPGAN \
+    --local-dir-use-symlinks False
 
-RUN cd models/Codeformer && \
-    wget --tries=20 --timeout=300 --continue -O codeformer.pth "https://huggingface.co/IgorGent/pony/resolve/main/codeformer.pth"
+RUN huggingface-cli download IgorGent/pony codeformer.pth \
+    --local-dir models/Codeformer \
+    --local-dir-use-symlinks False
 
-RUN cd models/Codeformer && \
-    wget --tries=20 --timeout=300 --continue -O codeformer-v0.1.0.pth "https://huggingface.co/IgorGent/pony/resolve/main/codeformer-v0.1.0.pth"
+RUN huggingface-cli download IgorGent/pony codeformer-v0.1.0.pth \
+    --local-dir models/Codeformer \
+    --local-dir-use-symlinks False
 
-# Запуск
+# Запуск Forge с API
 EXPOSE 8080
 
 CMD ["python", "launch.py", \
