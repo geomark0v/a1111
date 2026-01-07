@@ -28,3 +28,6 @@ COPY entrypoint.sh /workspace/entrypoint.sh
 RUN chmod +x /workspace/entrypoint.sh
 
 EXPOSE 8080
+
+# CMD — RunPod Serverless вызывает его как runtime
+CMD ["/workspace/entrypoint.sh"]
