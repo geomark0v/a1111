@@ -1,55 +1,38 @@
+# download_models.py
 import os
+import subprocess
 from huggingface_hub import hf_hub_download
-from config import BASE, MODEL_DIR, SDXL_FILES, CONTROLNET_FILES, REACTOR_FILES, GFPGAN_FILES, CODEFORMER_FILES, ADETAILER_FILES
+from config import BASE, MODEL_DIR, SDXL_FILES, IP_ADAPTER_FILES, GFPGAN_FILES, CODEFORMER_FILES, CONTROLNET_REPO, REACTOR_FILES, REACTOR_REPO, ADETAILER_REPO
 
-def download(repo, filename, target_dir):
+# Создаём папки
+os.makedirs(MODEL_DIR, exist_ok=True)
+
+def download_hf_files(file_list, subfolder=""):
+    target_dir = os.path.join(MODEL_DIR, subfolder)
     os.makedirs(target_dir, exist_ok=True)
-    path = os.path.join(target_dir, filename)
-    if os.path.exists(path):
-        print(f"✔ {filename} already exists, skipping")
-        return path
-    print(f"⬇ Downloading {filename}")
-    return hf_hub_download(
-        repo_id=repo,
-        filename=filename,
-        local_dir=target_dir,
-        local_dir_use_symlinks=False
-    )
+    for filename in file_list:
+        print(f"Downloading {filename} → {target_dir}")
+        hf_hub_download(
+            repo_id="IgorGent/pony",
+            filename=filename,
+            cache_dir=target_dir,
+            force_download=False
+        )
 
-def download_all():
-    repo = "IgorGent/pony"
+# SDXL модели
+download_hf_files(SDXL_FILES, "Stable-diffusion")
 
-    # SDXL
-    sd_dir = os.path.join(MODEL_DIR, "Stable-diffusion")
-    for f in SDXL_FILES:
-        download(repo, f, sd_dir)
+# IP-Adapter / ControlNet модели
+download_hf_files(IP_ADAPTER_FILES, "extensions/sd-webui-controlnet/models")
 
-    # ControlNet
-    cn_dir = os.path.join(BASE, "extensions", "sd-webui-controlnet", "models")
-    for f in CONTROLNET_FILES:
-        download(repo, f, cn_dir)
+# ReActor модели
+download_hf_files(REACTOR_FILES, "extensions/sd-webui-reactor/models")
 
-    # ReActor
-    reactor_dir = os.path.join(BASE, "extensions", "sd-webui-reactor", "models")
-    for f in REACTOR_FILES:
-        download(repo, f, reactor_dir)
+# GFPGAN / CodeFormer
+download_hf_files(GFPGAN_FILES, "models/GFPGAN")
+download_hf_files(CODEFORMER_FILES, "models/Codeformer")
 
-    # GFPGAN
-    gfpgan_dir = os.path.join(MODEL_DIR, "GFPGAN")
-    for f in GFPGAN_FILES:
-        download(repo, f, gfpgan_dir)
-
-    # CodeFormer
-    codeformer_dir = os.path.join(MODEL_DIR, "Codeformer")
-    for f in CODEFORMER_FILES:
-        download(repo, f, codeformer_dir)
-
-    # ADetailer
-    adetailer_dir = os.path.join(BASE, "extensions", "adetailer", "models")
-    for f in ADETAILER_FILES:
-        download(repo, f, adetailer_dir)
-
-    print("✅ All models are downloaded and ready!")
-
-if __name__ == "__main__":
-    download_all()
+# Клонируем ControlNet и ReActor репозитории (runtime)
+controlnet_dir = os.path.join(MODEL_DIR, "extensions", "sd-webui-controlnet")
+if not os.path.exists(controlnet_dir):
+    subprocess.run(["git", "clone", CONTROLNET_REPO, controlnet_dir], che

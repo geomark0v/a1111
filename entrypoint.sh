@@ -1,8 +1,15 @@
 #!/bin/bash
 set -e
 
-# 1️⃣ Скачиваем модели в /runpod-volume
+echo "[INFO] Downloading all models into /runpod-volume..."
 python3 /workspace/download_models.py
 
-# 2️⃣ Preload + запуск Forge API
-python3 /workspace/launch.py
+echo "[INFO] Starting Forge..."
+exec python3 /workspace/stable-diffusion-webui-forge/launch.py \
+     --listen \
+     --port 8080 \
+     --api \
+     --skip-torch-cuda-test \
+     --no-half-vae \
+     --opt-sdp-no-mem-attention \
+     --xformers

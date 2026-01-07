@@ -46,16 +46,10 @@ RUN pip install --no-cache-dir \
 # Workspace
 WORKDIR /workspace
 
-# Forge + extensions
+# Forge + extensions (ControlNet и ReActor клонируются runtime)
 RUN git clone https://github.com/lllyasviel/stable-diffusion-webui-forge.git stable-diffusion-webui-forge
 RUN mkdir -p extensions
 WORKDIR /workspace/stable-diffusion-webui-forge
-
-# ControlNet
-RUN git clone https://github.com/Mikubill/sd-webui-controlnet extensions/sd-webui-controlnet
-
-# ReActor через ZIP (Python можно использовать для unzip)
-RUN mkdir -p extensions/sd-webui-reactor
 
 # ADetailer
 RUN git clone https://github.com/Bing-su/adetailer extensions/adetailer
@@ -75,4 +69,4 @@ RUN chmod +x /workspace/entrypoint.sh
 EXPOSE 8080
 
 # Запуск через entrypoint
-CMD ["/workspace/entrypoint.sh"]
+ENTRYPOINT ["/workspace/entrypoint.sh"]
