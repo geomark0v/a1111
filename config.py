@@ -1,9 +1,13 @@
 # config.py
-# Базовый путь на RunPod Network Volume
+
+# Network Volume (ОБЯЗАТЕЛЬНО)
 BASE = "/runpod-volume"
 MODEL_DIR = f"{BASE}/models"
 
-# ---------------- SDXL модели ----------------
+# Репозиторий HF
+HF_REPO = "IgorGent/pony"
+
+# ================= SDXL =================
 SDXL_FILES = [
     "cyberrealisticPony_v141.safetensors",
     "cyberrealisticPony_v141 (1).safetensors",
@@ -11,7 +15,7 @@ SDXL_FILES = [
     "cyberrealisticPony_v150.safetensors",
 ]
 
-# ---------------- ControlNet / IP-Adapter ----------------
+# ================= ControlNet / IP-Adapter =================
 CONTROLNET_REPO = "https://github.com/Mikubill/sd-webui-controlnet"
 
 IP_ADAPTER_FILES = [
@@ -25,7 +29,7 @@ IP_ADAPTER_FILES = [
     "control_instant_id_sdxl.safetensors",
 ]
 
-# ---------------- ReActor ----------------
+# ================= ReActor =================
 REACTOR_REPO = "https://codeberg.org/Gourieff/sd-webui-reactor.git"
 
 REACTOR_FILES = [
@@ -39,8 +43,11 @@ REACTOR_FILES = [
     "w600k_r50.onnx",
 ]
 
-# ---------------- GFPGAN / CodeFormer ----------------
-GFPGAN_FILES = ["GFPGANv1.4.pth"]
+# ================= GFPGAN / CodeFormer =================
+GFPGAN_FILES = [
+    "GFPGANv1.4.pth"
+]
+
 CODEFORMER_FILES = [
     "codeformer.pth",
     "codeformer-v0.1.0.pth"
