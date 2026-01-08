@@ -76,7 +76,7 @@ RUN pip install --no-cache-dir pillow-avif-plugin==1.4.3
 RUN pip install --no-cache-dir diffusers==0.31.0
 RUN pip install --no-cache-dir gradio_rangeslider==0.0.6
 RUN pip install --no-cache-dir gradio_imageslider==0.0.20
-RUN pip install --no-cache-dir loadimg==1.1.2
+RUN pip install --no-cache-dir loadimg==0.1.2
 RUN pip install --no-cache-dir tqdm==4.66.1
 RUN pip install --no-cache-dir peft==0.13.2
 RUN pip install --no-cache-dir huggingface-hub==0.26.2
