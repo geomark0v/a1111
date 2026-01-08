@@ -45,6 +45,7 @@ RUN pip install --no-cache-dir \
 RUN pip install --no-cache-dir huggingface_hub[hf-transfer]
 RUN pip install --no-cache-dir insightface==0.7.3 onnxruntime-gpu ultralytics xformers==0.0.26.post1
 RUN pip install --no-cache-dir runpod==1.7.0  # актуальная версия на 2026 год
+RUN pip install --no-cache-dir sentencepiece transformers
 # ----------------------------
 # 7. Рабочая директория
 # ----------------------------
