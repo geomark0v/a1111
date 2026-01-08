@@ -33,8 +33,16 @@ RUN pip install --no-cache-dir opencv-python-headless fvcore
 RUN pip install --no-cache-dir mediapipe
 RUN pip install --no-cache-dir sentencepiece transformers
 RUN pip install --no-cache-dir ultralytics
+RUN pip install --no-cache-dir bitsandbytes
+RUN pip install --no-cache-dir safetensors
 RUN pip install --no-cache-dir pillow
-
+RUN pip install --no-cache-dir psutil
+RUN pip install --no-cache-dir fastapi
+RUN pip install --no-cache-dir uvicorn
+RUN pip install --no-cache-dir numpy
+RUN pip install --no-cache-dir scipy
+RUN pip install --no-cache-dir tqdm
+RUN pip install --no-cache-dir gradio==4.44.0
 
 # ----------------------------
 # 5. Torch + CUDA 12.1
