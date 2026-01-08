@@ -25,7 +25,7 @@ RUN python3 -m pip install --upgrade pip setuptools wheel
 # ----------------------------
 RUN pip install --no-cache-dir pycairo
 RUN pip install --no-cache-dir svglib reportlab lxml
-
+RUN pip install --no-cache-dir numpy
 # ----------------------------
 # 4. OpenCV + fvcore + mediapipe
 # ----------------------------
@@ -53,7 +53,6 @@ RUN pip install --no-cache-dir inflection==0.5.1
 RUN pip install --no-cache-dir jsonmerge==1.8.0
 RUN pip install --no-cache-dir kornia==0.6.7
 RUN pip install --no-cache-dir lark==1.1.2
-RUN pip install --no-cache-dir numpy==1.26.2
 RUN pip install --no-cache-dir omegaconf==2.2.3
 RUN pip install --no-cache-dir open-clip-torch==2.20.0
 RUN pip install --no-cache-dir piexif==1.1.3
