@@ -11,8 +11,9 @@ API_URL = "http://127.0.0.1:8080"
 
 def start_forge():
     print("[INFO] Starting Forge...")
-    subprocess.Popen([
-        "python", LAUNCH_PY,
+
+    cmd = [
+        "python3", LAUNCH_PY,
         "--listen",
         "--port", "8080",
         "--api",
@@ -25,7 +26,9 @@ def start_forge():
         "--opt-sdp-no-mem-attention",
         "--xformers",
         "--nowebui"
-    ], cwd=FORGE_DIR)
+    ]
+
+       subprocess.run(cmd, check=True)
 
 def wait_for_api(timeout=300):
     print("[INFO] Waiting for Forge API...")
