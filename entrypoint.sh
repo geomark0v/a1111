@@ -51,13 +51,4 @@ python3 /workspace/download_models.py
 # Запуск Forge
 cd "$BASE"
 echo "[INFO] Launching Forge WebUI with API..."
-exec python3 /runpod-volume/stable-diffusion-webui-forge/launch.py \
-    --listen \
-    --port 8080 \
-    --api \
-    --api_auth "none:none" \
-    --skip-torch-cuda-test \
-    --no-half-vae \
-    --opt-sdp-no-mem-attention \
-    --xformers \
-    --theme dark
+python3 handler.py

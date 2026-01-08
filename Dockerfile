@@ -50,6 +50,7 @@ RUN pip install --no-cache-dir insightface==0.7.3 onnxruntime-gpu ultralytics xf
 # ----------------------------
 WORKDIR /workspace
 
+COPY handler.py .
 COPY download_models.py .
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
