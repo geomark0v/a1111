@@ -29,16 +29,17 @@ RUN pip install --no-cache-dir svglib reportlab lxml
 # ----------------------------
 # 4. OpenCV + fvcore + mediapipe
 # ----------------------------
-RUN pip install --no-cache-dir GitPython
 RUN pip install --no-cache-dir opencv-python-headless fvcore
 RUN pip install --no-cache-dir mediapipe
 RUN pip install --no-cache-dir sentencepiece
-RUN pip install --no-cache-dir ultralytics
 RUN pip install --no-cache-dir bitsandbytes
 RUN pip install --no-cache-dir pillow
 RUN pip install --no-cache-dir uvicorn
 RUN pip install --no-cache-dir scipy
 RUN pip install --no-cache-dir lightning
+RUN pip install --no-cache-dir setuptools==69.5.1
+RUN pip install --no-cache-dir GitPython==3.1.32
+RUN pip install --no-cache-dir Pillow==9.5.0
 RUN pip install --no-cache-dir accelerate==0.31.0
 RUN pip install --no-cache-dir blendmodes==2022
 RUN pip install --no-cache-dir clean-fid==0.1.35
@@ -52,6 +53,7 @@ RUN pip install --no-cache-dir inflection==0.5.1
 RUN pip install --no-cache-dir jsonmerge==1.8.0
 RUN pip install --no-cache-dir kornia==0.6.7
 RUN pip install --no-cache-dir lark==1.1.2
+RUN pip install --no-cache-dir numpy==1.26.2
 RUN pip install --no-cache-dir omegaconf==2.2.3
 RUN pip install --no-cache-dir open-clip-torch==2.20.0
 RUN pip install --no-cache-dir piexif==1.1.3
@@ -60,6 +62,7 @@ RUN pip install --no-cache-dir psutil==5.9.5
 RUN pip install --no-cache-dir pytorch_lightning==1.9.4
 RUN pip install --no-cache-dir resize-right==0.0.2
 RUN pip install --no-cache-dir safetensors==0.4.2
+RUN pip install --no-cache-dir scikit-image==0.21.0
 RUN pip install --no-cache-dir spandrel==0.3.4
 RUN pip install --no-cache-dir spandrel-extra-arches==0.1.1
 RUN pip install --no-cache-dir tomesd==0.1.3
@@ -75,6 +78,7 @@ RUN pip install --no-cache-dir loadimg==0.1.2
 RUN pip install --no-cache-dir tqdm==4.66.1
 RUN pip install --no-cache-dir peft==0.13.2
 RUN pip install --no-cache-dir pydantic==2.8.2
+RUN pip install --no-cache-dir huggingface-hub==0.26.2
 RUN pip install --no-cache-dir numpy scikit-image
 
 # ----------------------------
@@ -87,7 +91,6 @@ RUN pip install --no-cache-dir \
 # ----------------------------
 # 6. HuggingFace + xformers + остальное
 # ----------------------------
-RUN pip install --no-cache-dir huggingface_hub[hf-transfer]
 RUN pip install --no-cache-dir insightface==0.7.3 onnxruntime-gpu ultralytics xformers==0.0.26.post1
 RUN pip install --no-cache-dir runpod==1.7.0  # актуальная версия на 2026 год
 # ----------------------------
