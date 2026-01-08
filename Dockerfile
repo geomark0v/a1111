@@ -29,6 +29,7 @@ RUN pip install --no-cache-dir svglib reportlab lxml
 # ----------------------------
 # 4. OpenCV + fvcore + mediapipe
 # ----------------------------
+RUN pip install --no-cache-dir GitPython
 RUN pip install --no-cache-dir opencv-python-headless fvcore
 RUN pip install --no-cache-dir mediapipe
 RUN pip install --no-cache-dir sentencepiece
