@@ -4,6 +4,11 @@ ENV DEBIAN_FRONTEND=noninteractive \
     HF_HUB_ENABLE_HF_TRANSFER=1
 
 RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    python3-dev
+
+RUN apt-get update && apt-get install -y \
     # базовое
     ca-certificates \
     git \
