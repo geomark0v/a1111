@@ -47,14 +47,23 @@ RUN pip install --no-cache-dir \
 # ----------------------------
 # 6. Основные пакеты для Forge и расширений
 # ----------------------------
+# Основные пакеты (без xformers и insightface сначала)
 RUN pip install --no-cache-dir \
     huggingface_hub[hf-transfer] \
     transformers \
     sentencepiece \
-    insightface==0.7.3 \
-    onnxruntime-gpu \
     ultralytics \
-    xformers==0.0.26.post1
+    opencv-python-headless \
+    pillow
+
+# onnxruntime-gpu (рекомендуемая версия для CUDA 12.1)
+RUN pip install --no-cache-dir onnxruntime-gpu==1.18.0
+
+# insightface (после onnxruntime)
+RUN pip install --no-cache-dir insightface==0.7.3
+
+# xformers — совместимая версия для PyTorch 2.3.1 + cu121
+RUN pip install --no-cache-dir xformers==0.0.25.post1  # или 0.0.26 если работает, но 0.0.25 стабильнее
 
 # ----------------------------
 # 7. RunPod SDK (для handler'а, если используешь)
