@@ -28,7 +28,7 @@ def start_forge():
         "--nowebui"
     ]
 
-       subprocess.run(cmd, check=True)
+    subprocess.run(cmd, check=True)
 
 def wait_for_api(timeout=300):
     print("[INFO] Waiting for Forge API...")
