@@ -55,7 +55,7 @@ exec python3 /runpod-volume/stable-diffusion-webui-forge/launch.py \
     --listen \
     --port 8080 \
     --api \
-    --api-auth="" \
+    --api-auth "none:none" \
     --skip-torch-cuda-test \
     --no-half-vae \
     --opt-sdp-no-mem-attention \
