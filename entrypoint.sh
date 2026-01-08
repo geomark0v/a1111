@@ -51,4 +51,4 @@ python3 /workspace/download_models.py
 # Запуск Forge
 cd "$BASE"
 echo "[INFO] Launching Forge WebUI with API..."
-python3 handler.py
+python3 /workspace/handler.py
