@@ -77,7 +77,7 @@ RUN pip install --no-cache-dir gradio_imageslider==0.0.20
 RUN pip install --no-cache-dir loadimg==0.1.2
 RUN pip install --no-cache-dir tqdm==4.66.1
 RUN pip install --no-cache-dir peft==0.13.2
-RUN pip install --no-cache-dir pydantic==2.8.2
+RUN pip install --no-cache-dir pydantic==1.10.21
 RUN pip install --no-cache-dir huggingface-hub==0.26.2
 RUN pip install --no-cache-dir numpy scikit-image
 
