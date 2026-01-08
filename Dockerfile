@@ -21,32 +21,39 @@ RUN apt-get update && apt-get install -y \
     \
     # svglib / reportlab / cairo / pango
     libcairo2 \
+    libcairo2-dev \
     libpango-1.0-0 \
+    libpango1.0-dev \
     libpangocairo-1.0-0 \
     libgdk-pixbuf2.0-0 \
+    pkg-config \
     \
     # lxml / xml / xslt
     libxml2 \
     libxslt1.1 \
     \
-    ibcairo2 \
-        libcairo2-dev \
-        libpango-1.0-0 \
-        libpango1.0-dev \
-        libgdk-pixbuf2.0-0 \
-        libglib2.0-0 \
-        pkg-config \
     # прочее
     libffi-dev \
     ffmpeg \
-    \
     && rm -rf /var/lib/apt/lists/*
+
 
 RUN pip install --upgrade pip setuptools wheel && \
     pip install --no-cache-dir \
     opencv-python-headless \
     fvcore \
     mediapipe \
+    svglib \
+    reportlab \
+    lxml
+
+RUN pip install --upgrade pip setuptools wheel
+
+RUN pip install --no-cache-dir \
+    opencv-python-headless \
+    fvcore \
+    mediapipe \
+    pycairo \
     svglib \
     reportlab \
     lxml
@@ -59,16 +66,6 @@ RUN pip install --no-cache-dir \
     huggingface_hub[hf-transfer] \
     insightface==0.7.3 onnxruntime-gpu ultralytics xformers==0.0.26.post1
 
-RUN pip install --no-cache-dir pycairo
-
-RUN pip install --no-cache-dir svglib reportlab lxml
-
-RUN pip install --no-cache-dir \
-      fvcore \
-      mediapipe \
-      svglib \
-      reportlab \
-      lxml
 
 WORKDIR /workspace
 
