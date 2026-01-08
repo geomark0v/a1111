@@ -22,7 +22,7 @@ RUN pip install --no-cache-dir \
     --index-url https://download.pytorch.org/whl/cu121
 
 # numpy без версии (совместимый с Torch)
-RUN pip install --no-cache-dir numpy
+RUN pip install --no-cache-dir "numpy<2.0"
 
 # Pycairo + svglib
 RUN pip install --no-cache-dir pycairo
