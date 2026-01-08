@@ -3,9 +3,7 @@ FROM nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04
 ENV DEBIAN_FRONTEND=noninteractive \
     HF_HUB_ENABLE_HF_TRANSFER=1
 
-# ----------------------------
-# 1. Системные зависимости
-# ----------------------------
+# Системные зависимости
 RUN apt-get update && apt-get install -y \
     python3 python3-pip python3-dev build-essential \
     ca-certificates git wget curl unzip nano \
@@ -15,25 +13,31 @@ RUN apt-get update && apt-get install -y \
     libxml2 libxslt1.1 libffi-dev ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
-# ----------------------------
-# 2. Обновляем pip
-# ----------------------------
+# Обновляем pip
 RUN python3 -m pip install --upgrade pip setuptools wheel
 
-# ----------------------------
-# 3. Pycairo + svglib
-# ----------------------------
-RUN pip install --no-cache-dir pycairo
-RUN pip install --no-cache-dir svglib reportlab lxml
+# PyTorch + CUDA 12.1
+RUN pip install --no-cache-dir \
+    torch==2.3.1 torchvision==0.18.1 torchaudio==2.3.1 \
+    --index-url https://download.pytorch.org/whl/cu121
+
+# numpy без версии (совместимый с Torch)
 RUN pip install --no-cache-dir numpy
-# ----------------------------
-# 4. OpenCV + fvcore + mediapipe
-# ----------------------------
-RUN pip install --no-cache-dir opencv-python-headless fvcore
+
+# Pycairo + svglib
+RUN pip install --no-cache-dir pycairo
+RUN pip install --no-cache-dir svglib
+RUN pip install --no-cache-dir reportlab
+RUN pip install --no-cache-dir lxml
+
+# OpenCV + fvcore + mediapipe
+RUN pip install --no-cache-dir opencv-python-headless
+RUN pip install --no-cache-dir fvcore
 RUN pip install --no-cache-dir mediapipe
+
+# Основные пакеты (из репозитория Forge)
 RUN pip install --no-cache-dir sentencepiece
 RUN pip install --no-cache-dir bitsandbytes
-RUN pip install --no-cache-dir pillow
 RUN pip install --no-cache-dir uvicorn
 RUN pip install --no-cache-dir scipy
 RUN pip install --no-cache-dir lightning
@@ -61,7 +65,6 @@ RUN pip install --no-cache-dir psutil==5.9.5
 RUN pip install --no-cache-dir pytorch_lightning==1.9.4
 RUN pip install --no-cache-dir resize-right==0.0.2
 RUN pip install --no-cache-dir safetensors==0.4.2
-RUN pip install --no-cache-dir scikit-image==0.21.0
 RUN pip install --no-cache-dir spandrel==0.3.4
 RUN pip install --no-cache-dir spandrel-extra-arches==0.1.1
 RUN pip install --no-cache-dir tomesd==0.1.3
@@ -73,28 +76,26 @@ RUN pip install --no-cache-dir pillow-avif-plugin==1.4.3
 RUN pip install --no-cache-dir diffusers==0.31.0
 RUN pip install --no-cache-dir gradio_rangeslider==0.0.6
 RUN pip install --no-cache-dir gradio_imageslider==0.0.20
-RUN pip install --no-cache-dir loadimg==0.1.2
+RUN pip install --no-cache-dir loadimg==1.1.2
 RUN pip install --no-cache-dir tqdm==4.66.1
 RUN pip install --no-cache-dir peft==0.13.2
-RUN pip install --no-cache-dir pydantic==1.10.21
 RUN pip install --no-cache-dir huggingface-hub==0.26.2
-RUN pip install --no-cache-dir numpy scikit-image
 
-# ----------------------------
-# 5. Torch + CUDA 12.1
-# ----------------------------
-RUN pip install --no-cache-dir \
-    torch==2.3.1 torchvision==0.18.1 torchaudio==2.3.1 \
-    --index-url https://download.pytorch.org/whl/cu121
+# scikit-image после numpy (фикс binary incompatibility)
+RUN pip install --no-cache-dir scikit-image==0.21.0
 
-# ----------------------------
-# 6. HuggingFace + xformers + остальное
-# ----------------------------
-RUN pip install --no-cache-dir insightface==0.7.3 onnxruntime-gpu ultralytics xformers==0.0.26.post1
-RUN pip install --no-cache-dir runpod==1.7.0  # актуальная версия на 2026 год
-# ----------------------------
-# 7. Рабочая директория
-# ----------------------------
+# Pydantic v1 (фикс FieldInfo.in_)
+RUN pip install --no-cache-dir "pydantic<2.0" pydantic==1.10.21
+
+# xformers, insightface, ultralytics (в конце)
+RUN pip install --no-cache-dir xformers==0.0.26.post1
+RUN pip install --no-cache-dir insightface==0.7.3
+RUN pip install --no-cache-dir onnxruntime-gpu
+RUN pip install --no-cache-dir ultralytics
+
+# RunPod SDK
+RUN pip install --no-cache-dir runpod==1.7.0
+
 WORKDIR /workspace
 
 COPY handler.py .
