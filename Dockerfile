@@ -52,7 +52,6 @@ RUN pip install --no-cache-dir inflection==0.5.1
 RUN pip install --no-cache-dir jsonmerge==1.8.0
 RUN pip install --no-cache-dir kornia==0.6.7
 RUN pip install --no-cache-dir lark==1.1.2
-RUN pip install --no-cache-dir numpy==1.26.2
 RUN pip install --no-cache-dir omegaconf==2.2.3
 RUN pip install --no-cache-dir open-clip-torch==2.20.0
 RUN pip install --no-cache-dir piexif==1.1.3
@@ -61,7 +60,6 @@ RUN pip install --no-cache-dir psutil==5.9.5
 RUN pip install --no-cache-dir pytorch_lightning==1.9.4
 RUN pip install --no-cache-dir resize-right==0.0.2
 RUN pip install --no-cache-dir safetensors==0.4.2
-RUN pip install --no-cache-dir scikit-image==0.21.0
 RUN pip install --no-cache-dir spandrel==0.3.4
 RUN pip install --no-cache-dir spandrel-extra-arches==0.1.1
 RUN pip install --no-cache-dir tomesd==0.1.3
@@ -77,6 +75,7 @@ RUN pip install --no-cache-dir loadimg==0.1.2
 RUN pip install --no-cache-dir tqdm==4.66.1
 RUN pip install --no-cache-dir peft==0.13.2
 RUN pip install --no-cache-dir pydantic==2.8.2
+RUN pip install --no-cache-dir numpy scikit-image
 
 # ----------------------------
 # 5. Torch + CUDA 12.1
