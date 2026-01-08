@@ -37,7 +37,7 @@ RUN apt-get update && apt-get install -y \
 RUN python3 -m pip install --upgrade pip setuptools wheel
 
 # Ставим pycairo через бинарный wheel, чтобы svglib не падал
-RUN pip install --no-cache-dir pycairo --only-binary :all:
+RUN pip install --no-cache-dir pycairo
 
 # Основные зависимости Forge + ControlNet
 RUN pip install --no-cache-dir \
