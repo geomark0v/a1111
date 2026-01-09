@@ -1,8 +1,6 @@
 FROM nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04
 
-ENV DEBIAN_FRONTEND=noninteractive \
-    HF_HUB_ENABLE_HF_TRANSFER=1
-
+ENV DEBIAN_FRONTEND=noninteractive
 # Системные зависимости
 RUN apt-get update && apt-get install -y \
     python3 python3-pip python3-dev build-essential \
