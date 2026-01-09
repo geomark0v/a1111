@@ -43,3 +43,16 @@ pydantic==2.8.2
 huggingface-hub==0.26.2
 joblib
 ultralytics
+numexpr
+matplotlib
+pandas
+av
+pims
+imageio_ffmpeg
+rich
+gdown
+albumentations==1.4.3
+insightface==0.7.3
+onnx==1.16.1
+opencv-python>=4.7.0.72
+lark

@@ -38,9 +38,23 @@ for ext in "${extensions[@]}"; do
     name="${ext%%:*}"
     url="${ext#*:}"
     path="$BASE/extensions/$name"
+
     if [ ! -d "$path" ]; then
         echo "[INFO] Cloning $name..."
         git clone "$url" "$path"
+
+        # Проверяем и выполняем install.py ТОЛЬКО после первого клонирования
+        install_script="$path/install.py"
+        if [ -f "$install_script" ]; then
+            echo "[INFO] Found install.py in $name — running it..."
+            python3 "$install_script" || {
+                echo "[WARNING] install.py in $name failed, but continuing..."
+            }
+        else
+            echo "[SKIP] No install.py in $name"
+        fi
+    else
+        echo "[INFO] $name already exists — skipping clone and install"
     fi
 done
 
