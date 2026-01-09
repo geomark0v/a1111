@@ -81,9 +81,9 @@ ACTION_MAPPING = {
 }
 
 def handler(job):
-
-    payload = job.get("input", {})
-    action = job.get("action")
+    request = job.get("input", {})
+    action = request.get("action")
+    payload = request.get("input", {})
 
     if not action or action not in ACTION_MAPPING:
         return {"error": f"Invalid or unsupported action: {action}. Available: {', '.join(ACTION_MAPPING.keys())}"}
