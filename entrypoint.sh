@@ -30,14 +30,14 @@ extensions=(
     "sd-webui-controlnet:https://github.com/Mikubill/sd-webui-controlnet"
     "sd-webui-reactor:https://codeberg.org/Gourieff/sd-webui-reactor.git"
     "adetailer:https://github.com/Bing-su/adetailer"
-    "sd-webui-deforum:https://github.com/deforum-art/sd-webui-deforum"
+    "deforum:https://github.com/deforum-art/sd-webui-deforum"
     "sd-face-editor:https://github.com/ototadana/sd-face-editor.git"
 )
 
 for ext in "${extensions[@]}"; do
     name="${ext%%:*}"
     url="${ext#*:}"
-    path="$VOLUME/extensions/$name"
+    path="$BASE/extensions/$name"
     if [ ! -d "$path" ]; then
         echo "[INFO] Cloning $name..."
         git clone "$url" "$path"
@@ -64,7 +64,6 @@ python3 launch.py \
     --no-half-vae \
     --opt-sdp-no-mem-attention \
     --xformers \
-    --nowebui \
     &  # ← фон!
 
 echo "[INFO] Starting RunPod handler..."
