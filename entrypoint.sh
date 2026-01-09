@@ -51,4 +51,21 @@ python3 /workspace/download_models.py
 # Запуск Forge
 cd "$BASE"
 echo "[INFO] Launching Forge WebUI with API..."
-python3 /workspace/handler.py
+
+python3 launch.py \
+    --listen \
+    --port 8080 \
+    --api \
+    --skip-version-check \
+    --no-download-sd-model \
+    --skip-python-version-check \
+    --skip-install \
+    --no-hashing \
+    --no-half-vae \
+    --opt-sdp-no-mem-attention \
+    --xformers \
+    --nowebui \
+    &  # ← фон!
+
+echo "[INFO] Starting RunPod handler..."
+exec python3 /workspace/handler.py

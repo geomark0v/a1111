@@ -114,6 +114,5 @@ def handler(job):
         return {"error": f"Unexpected error: {str(e)}"}
 
 if __name__ == "__main__":
-    start_forge()
     wait_for_api()
     runpod.serverless.start({"handler": handler})
