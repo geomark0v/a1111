@@ -48,10 +48,6 @@ done
 echo "[INFO] Ensuring models are downloaded..."
 python3 /workspace/download_models.py
 
-# Симлинк на модели (Forge увидит их в своей папке)
-ln -sf "$VOLUME/models/Stable-diffusion" "$BASE/models/Stable-diffusion"
-echo "[INFO] Created symlink for models in Forge root"
-
 # Запуск Forge
 cd "$BASE"
 echo "[INFO] Launching Forge WebUI with API..."
