@@ -19,6 +19,9 @@ RUN python3 -m pip install --upgrade pip  wheel
 COPY requirements.txt /workspace/requirements.txt
 RUN pip install --no-cache-dir -r /workspace/requirements.txt
 
+# RunPod SDK
+RUN pip install --no-cache-dir runpod==1.7.0
+
 WORKDIR /workspace
 
 COPY handler.py .
