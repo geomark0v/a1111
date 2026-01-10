@@ -30,8 +30,6 @@ extensions=(
     "sd-webui-controlnet:https://github.com/Mikubill/sd-webui-controlnet"
     "sd-webui-reactor:https://codeberg.org/Gourieff/sd-webui-reactor.git"
     "adetailer:https://github.com/Bing-su/adetailer"
-    "deforum:https://github.com/deforum-art/sd-webui-deforum"
-    "sd-face-editor:https://github.com/ototadana/sd-face-editor.git"
 )
 
 for ext in "${extensions[@]}"; do
@@ -44,11 +42,11 @@ for ext in "${extensions[@]}"; do
         git clone "$url" "$path"
 
         # Проверяем и выполняем install.py ТОЛЬКО после первого клонирования
-        install_script="$path/install.py"
-        if [ -f "$install_script" ]; then
+        requirements="$path/requirements.txt"
+        if [ -f "$requirements" ]; then
             echo "[INFO] Found install.py in $name — running it..."
-            python3 "$install_script" || {
-                echo "[WARNING] install.py in $name failed, but continuing..."
+            pip install -r "$requirements" || {
+                echo "[WARNING] pip install --no-cache-dir -r requirements.txt in $name failed, but continuing..."
             }
         else
             echo "[SKIP] No install.py in $name"
