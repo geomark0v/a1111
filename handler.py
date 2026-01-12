@@ -30,7 +30,7 @@ def start_forge():
 
     subprocess.run(cmd, check=True)
 
-def wait_for_api(timeout=300):
+def wait_for_api(timeout=30000):
     print("[INFO] Waiting for Forge API...")
     for _ in range(timeout):
         try:
