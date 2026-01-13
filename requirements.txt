@@ -41,5 +41,3 @@ albumentations==1.4.3
 insightface==0.7.3
 onnx==1.16.1
 opencv-python>=4.7.0.72
-
-insightface
