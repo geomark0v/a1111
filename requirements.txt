@@ -34,7 +34,6 @@ transformers==4.46.1
 pillow-avif-plugin==1.4.4
 diffusers==0.31.0
 gradio_rangeslider==0.0.7
-gradio_imageslider==0.0.21
 tqdm==4.66.5
 peft==0.13.2
 huggingface-hub==0.26.2
