@@ -14,6 +14,10 @@ RUN apt-get update && apt-get install -y \
 # Обновляем pip
 RUN python3 -m pip install --upgrade pip  wheel
 
+RUN pip install --no-cache-dir \
+    torch==2.3.1 torchvision==0.18.1 torchaudio==2.3.1 \
+    --index-url https://download.pytorch.org/whl/cu121
+
 COPY requirements.txt /workspace/requirements.txt
 RUN pip install --no-cache-dir -r /workspace/requirements.txt
 
