@@ -13,6 +13,7 @@ huggingface-hub
 hf_transfer
 hf_xet
 setuptools
+pytorch_lightning
 
 ultralytics==8.3.75
 mediapipe==0.10.13
