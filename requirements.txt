@@ -52,4 +52,3 @@ imageio_ffmpeg
 rich
 gdown
 insightface
-onnxruntime

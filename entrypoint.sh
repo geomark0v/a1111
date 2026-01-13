@@ -2,7 +2,7 @@
 set -euo pipefail
 
 VOLUME="/runpod-volume"
-BASE="$VOLUME/stable-diffusion-webui-forge"
+BASE="$VOLUME/stable-diffusion-webui"
 
 echo "[INFO] RunPod Serverless worker started - $(date)"
 
@@ -20,7 +20,7 @@ mkdir -p "$VOLUME/models/Stable-diffusion" \
 # Forge
 if [ ! -d "$BASE" ]; then
     echo "[INFO] Cloning Forge (first time)..."
-    git clone https://github.com/lllyasviel/stable-diffusion-webui-forge.git "$BASE"
+    git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git "$BASE"
 else
     echo "[INFO] Forge found in volume"
 fi
