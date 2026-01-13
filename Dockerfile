@@ -1,5 +1,3 @@
-# ---------------------------------------------------------------------------- #
-FROM alpine/git:2.43.0 as download
 
 # ---------------------------------------------------------------------------- #
 #                        Stage 2: Build the final image                        #
@@ -10,7 +8,7 @@ ARG A1111_RELEASE=v1.9.3
 
 ENV DEBIAN_FRONTEND=noninteractive \
     PIP_PREFER_BINARY=1 \
-    ROOT=/runpod-volume/stable-diffusion-webui \
+    ROOT=/stable-diffusion-webui \
     PYTHONUNBUFFERED=1
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -26,7 +24,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     git reset --hard ${A1111_RELEASE} && \
     pip install xformers && \
     pip install -r requirements_versions.txt && \
-    python -c "from launch import prepare_environment; prepare_environment()" --skip-torch-cuda-test \
+    python -c "from launch import prepare_environment; prepare_environment()" --skip-torch-cuda-test
 
 COPY requirements.txt /workspace/requirements.txt
 
