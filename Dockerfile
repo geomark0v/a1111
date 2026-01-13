@@ -1,8 +1,9 @@
 # base image with cuda 12.1
-FROM nvidia/cuda:12.1.1-cudnn8-runtime-ubuntu22.04
+FROM nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04
 
 # install python 3.11 and pip
 ENV DEBIAN_FRONTEND=noninteractive
+# Install Python 3.11 + build dependencies (insightface needs these)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     software-properties-common \
     && add-apt-repository ppa:deadsnakes/ppa \
@@ -11,6 +12,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3.11-venv \
     python3-pip \
     git \
+    build-essential \
+    cmake \
+    libprotobuf-dev \
+    protobuf-compiler \
     && rm -rf /var/lib/apt/lists/*
 
 # set python3.11 as the default python
