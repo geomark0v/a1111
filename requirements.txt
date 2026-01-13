@@ -52,3 +52,4 @@ imageio_ffmpeg
 rich
 gdown
 insightface
+clip
