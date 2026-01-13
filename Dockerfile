@@ -1,34 +1,32 @@
-FROM nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04
+# ---------------------------------------------------------------------------- #
+FROM alpine/git:2.43.0 as download
 
-ENV DEBIAN_FRONTEND=noninteractive
+# ---------------------------------------------------------------------------- #
+#                        Stage 2: Build the final image                        #
+# ---------------------------------------------------------------------------- #
+FROM python:3.10.14-slim as build_final_image
 
-# System dependencies (you already have most, but ensure compilers are there)
-RUN apt-get update && apt-get install -y \
-    python3 python3-pip python3-dev build-essential \
-    ca-certificates git wget curl unzip nano \
-    libglib2.0-0 libcairo2 libcairo2-dev \
-    libpango-1.0-0 libpango1.0-dev libpangocairo-1.0-0 \
-    libgdk-pixbuf2.0-0 pkg-config \
-    libxml2 libxslt1.1 libffi-dev ffmpeg \
-    && rm -rf /var/lib/apt/lists/*
+ARG A1111_RELEASE=v1.9.3
 
-# Upgrade pip & wheel early
-RUN python3 -m pip install --upgrade pip wheel setuptools
+ENV DEBIAN_FRONTEND=noninteractive \
+    PIP_PREFER_BINARY=1 \
+    ROOT=/runpod-volume/stable-diffusion-webui \
+    PYTHONUNBUFFERED=1
 
-# Install torch first (good practice)
-RUN pip install --no-cache-dir \
-    torch==2.3.1 torchvision==0.18.1 torchaudio==2.3.1 \
-    --index-url https://download.pytorch.org/whl/cu121
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# Install critical dependencies with constraints FIRST (helps insightface build)
-RUN pip install --no-cache-dir \
-    onnx==1.16.1 \
-    protobuf>=3.20.2,<4.0.0 \
-    Cython
+RUN apt-get update && \
+    apt install -y \
+    fonts-dejavu-core rsync git jq moreutils aria2 wget libgoogle-perftools-dev libtcmalloc-minimal4 procps libgl1 libglib2.0-0 && \
+    apt-get autoremove -y && rm -rf /var/lib/apt/lists/* && apt-get clean -y
 
-# Now install onnxruntime-gpu from Microsoft index
-RUN pip install --no-cache-dir onnxruntime-gpu \
-    --extra-index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/onnxruntime-cuda-12/pypi/simple/
+RUN --mount=type=cache,target=/root/.cache/pip \
+    git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git && \
+    cd stable-diffusion-webui && \
+    git reset --hard ${A1111_RELEASE} && \
+    pip install xformers && \
+    pip install -r requirements_versions.txt && \
+    python -c "from launch import prepare_environment; prepare_environment()" --skip-torch-cuda-test \
 
 COPY requirements.txt /workspace/requirements.txt
 
