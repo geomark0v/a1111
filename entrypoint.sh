@@ -64,19 +64,21 @@ python3 /workspace/download_models.py
 cd "$BASE"
 echo "[INFO] Launching Forge WebUI with API..."
 
-python3 launch.py \
-    --listen \
-    --port 8080 \
-    --api \
-    --skip-version-check \
-    --no-download-sd-model \
-    --skip-python-version-check \
-    --skip-install \
-    --no-hashing \
-    --no-half-vae \
-    --opt-sdp-no-mem-attention \
-    --xformers \
-    &  # ← фон!
+python3 webui.py \
+          --xformers \
+          --no-half-vae \
+          --skip-python-version-check \
+          --skip-torch-cuda-test \
+          --skip-install \
+          --ckpt /model.safetensors \
+          --opt-sdp-attention \
+          --disable-safe-unpickle \
+          --port 3000 \
+          --api \
+          --nowebui \
+          --skip-version-check \
+          --no-hashing \
+          --no-download-sd-model &
 
 echo "[INFO] Starting RunPod handler..."
 exec python3 /workspace/handler.py

@@ -1,4 +1,4 @@
-setuptools==69.5.1  # temp fix for compatibility with some old packages
+setuptools==69.5.1
 GitPython==3.1.32
 Pillow==9.5.0
 accelerate==0.31.0
@@ -10,6 +10,7 @@ facexlib==0.3.0
 fastapi==0.104.1
 gradio==4.40.0
 httpcore==0.15
+httpx==0.24.1
 inflection==0.5.1
 jsonmerge==1.8.0
 kornia==0.6.7
@@ -31,7 +32,6 @@ torch
 torchdiffeq==0.2.3
 torchsde==0.2.6
 transformers==4.46.1
-httpx==0.24.1
 pillow-avif-plugin==1.4.3
 diffusers==0.31.0
 gradio_rangeslider==0.0.6
