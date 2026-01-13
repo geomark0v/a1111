@@ -34,8 +34,7 @@ lark==1.1.2
 jsonmerge==1.8.0
 inflection==0.5.1
 
-
-
+git
 
 blendmodes
 clean-fid
