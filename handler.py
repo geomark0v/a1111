@@ -1,265 +1,118 @@
-import os
-import base64
-
-import torch
-from diffusers import (
-    StableDiffusionXLPipeline,
-    StableDiffusionXLImg2ImgPipeline,
-    AutoencoderKL,
-)
-from diffusers.utils import load_image
-
-from diffusers import (
-    PNDMScheduler,
-    LMSDiscreteScheduler,
-    DDIMScheduler,
-    EulerDiscreteScheduler,
-    DPMSolverMultistepScheduler,
-    EulerAncestralDiscreteScheduler,
-    DPMSolverSinglestepScheduler,
-)
-
 import runpod
-from runpod.serverless.utils import rp_upload, rp_cleanup
-from runpod.serverless.utils.rp_validator import validate
+import requests
+import subprocess
+import time
+import os
 
-from schemas import INPUT_SCHEMA
+# Путь к Forge в volume
+FORGE_DIR = "/runpod-volume/stable-diffusion-webui-forge"
+LAUNCH_PY = os.path.join(FORGE_DIR, "launch.py")
+API_URL = "http://127.0.0.1:8080"
 
-torch.cuda.empty_cache()
+def start_forge():
+    print("[INFO] Starting Forge...")
 
+    cmd = [
+        "python3", LAUNCH_PY,
+        "--listen",
+        "--port", "8080",
+        "--api",
+        "--skip-version-check",
+        "--no-download-sd-model",
+        "--skip-python-version-check",
+        "--skip-install",
+        "--no-hashing",
+        "--no-half-vae",
+        "--opt-sdp-no-mem-attention",
+        "--xformers",
+        "--nowebui"
+    ]
 
-class ModelHandler:
-    def __init__(self):
-        self.base = None
-        self.refiner = None
-        self.load_models()
+    subprocess.run(cmd, check=True)
 
-    def load_base(self):
-        # Load VAE from cache using identifier
-        vae = AutoencoderKL.from_pretrained(
-            "madebyollin/sdxl-vae-fp16-fix",
-            torch_dtype=torch.float16,
-            local_files_only=True,
-        )
-        # Load Base Pipeline from cache using identifier
-        base_pipe = StableDiffusionXLPipeline.from_pretrained(
-            "stabilityai/stable-diffusion-xl-base-1.0",
-            vae=vae,
-            torch_dtype=torch.float16,
-            variant="fp16",
-            use_safetensors=True,
-            add_watermarker=False,
-            local_files_only=True,
-        ).to("cuda")
-        
-        # Enable memory optimizations
-        base_pipe.enable_xformers_memory_efficient_attention()
-        base_pipe.enable_model_cpu_offload()
-
-        return base_pipe
-
-    def load_refiner(self):
-        # Load VAE from cache using identifier
-        vae = AutoencoderKL.from_pretrained(
-            "madebyollin/sdxl-vae-fp16-fix",
-            torch_dtype=torch.float16,
-            local_files_only=True,
-        )
-        # Load Refiner Pipeline from cache using identifier
-        refiner_pipe = StableDiffusionXLImg2ImgPipeline.from_pretrained(
-            "stabilityai/stable-diffusion-xl-refiner-1.0",
-            vae=vae,
-            torch_dtype=torch.float16,
-            variant="fp16",
-            use_safetensors=True,
-            add_watermarker=False,
-            local_files_only=True,
-        ).to("cuda")
-        
-        # Enable memory optimizations
-        refiner_pipe.enable_xformers_memory_efficient_attention()
-        refiner_pipe.enable_model_cpu_offload()
-
-        return refiner_pipe
-
-    def load_models(self):
-        self.base = self.load_base()
-        self.refiner = self.load_refiner()
-
-
-MODELS = ModelHandler()
-
-
-def _save_and_upload_images(images, job_id):
-    os.makedirs(f"/{job_id}", exist_ok=True)
-    image_urls = []
-    for index, image in enumerate(images):
-        image_path = os.path.join(f"/{job_id}", f"{index}.png")
-        image.save(image_path)
-
-        if os.environ.get("BUCKET_ENDPOINT_URL", False):
-            image_url = rp_upload.upload_image(job_id, image_path)
-            image_urls.append(image_url)
-        else:
-            with open(image_path, "rb") as image_file:
-                image_data = base64.b64encode(image_file.read()).decode("utf-8")
-                image_urls.append(f"data:image/png;base64,{image_data}")
-
-    rp_cleanup.clean([f"/{job_id}"])
-    return image_urls
-
-
-def make_scheduler(name, config):
-    return {
-        "PNDM": PNDMScheduler.from_config(config),
-        "KLMS": LMSDiscreteScheduler.from_config(config),
-        "DDIM": DDIMScheduler.from_config(config),
-        "K_EULER": EulerDiscreteScheduler.from_config(config),
-        "K_EULER_ANCESTRAL": EulerAncestralDiscreteScheduler.from_config(config),
-        "DPMSolverMultistep": DPMSolverMultistepScheduler.from_config(config),
-        "DPMSolverSinglestep": DPMSolverSinglestepScheduler.from_config(config),
-    }[name]
-
-
-@torch.inference_mode()
-def generate_image(job):
-    """
-    Generate an image from text using your Model
-    """
-    # -------------------------------------------------------------------------
-    # 🐞 DEBUG LOGGING
-    # -------------------------------------------------------------------------
-    import json, pprint
-
-    # Log the exact structure RunPod delivers so we can see every nesting level.
-    print("[generate_image] RAW job dict:")
-    try:
-        print(json.dumps(job, indent=2, default=str), flush=True)
-    except Exception:
-        pprint.pprint(job, depth=4, compact=False)
-
-    # -------------------------------------------------------------------------
-    # Original (strict) behaviour – assume the expected single wrapper exists.
-    # -------------------------------------------------------------------------
-    job_input = job["input"]
-
-    print("[generate_image] job['input'] payload:")
-    try:
-        print(json.dumps(job_input, indent=2, default=str), flush=True)
-    except Exception:
-        pprint.pprint(job_input, depth=4, compact=False)
-
-    # Input validation
-    try:
-        validated_input = validate(job_input, INPUT_SCHEMA)
-    except Exception as err:
-        import traceback
-
-        print("[generate_image] validate(...) raised an exception:", err, flush=True)
-        traceback.print_exc()
-        # Re-raise so RunPod registers the failure (but logs are now visible).
-        raise
-
-    print("[generate_image] validate(...) returned:")
-    try:
-        print(json.dumps(validated_input, indent=2, default=str), flush=True)
-    except Exception:
-        pprint.pprint(validated_input, depth=4, compact=False)
-
-    if "errors" in validated_input:
-        return {"error": validated_input["errors"]}
-    job_input = validated_input["validated_input"]
-
-    starting_image = job_input["image_url"]
-
-    if job_input["seed"] is None:
-        job_input["seed"] = int.from_bytes(os.urandom(2), "big")
-
-    # Create generator with proper device handling
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    generator = torch.Generator(device).manual_seed(job_input["seed"])
-
-    MODELS.base.scheduler = make_scheduler(
-        job_input["scheduler"], MODELS.base.scheduler.config
-    )
-
-    if starting_image:  # If image_url is provided, run only the refiner pipeline
-        init_image = load_image(starting_image).convert("RGB")
-        with torch.inference_mode():
-            refiner_result = MODELS.refiner(
-                prompt=job_input["prompt"],
-                num_inference_steps=job_input["refiner_inference_steps"],
-                strength=job_input["strength"],
-                image=init_image,
-                generator=generator,
-            )
-            output = refiner_result.images
-    else:
+def wait_for_api(timeout=30000):
+    print("[INFO] Waiting for Forge API...")
+    for _ in range(timeout):
         try:
-            # Generate latent image using base pipeline
-            with torch.inference_mode():
-                base_result = MODELS.base(
-                    prompt=job_input["prompt"],
-                    negative_prompt=job_input["negative_prompt"],
-                    height=job_input["height"],
-                    width=job_input["width"],
-                    num_inference_steps=job_input["num_inference_steps"],
-                    guidance_scale=job_input["guidance_scale"],
-                    denoising_end=job_input["high_noise_frac"],
-                    output_type="latent",
-                    num_images_per_prompt=job_input["num_images"],
-                    generator=generator,
-                )
-                image = base_result.images
+            resp = requests.get(f"{API_URL}/sdapi/v1/sd-models", timeout=10)
+            if resp.status_code == 200:
+                print("[INFO] Forge API ready!")
+                return
+        except:
+            time.sleep(1)
+    raise TimeoutError("Forge API timeout")
 
-            # Debug: Log tensor info
-            if hasattr(image, 'dtype'):
-                print(f"[DEBUG] Base output dtype: {image.dtype}, shape: {image.shape}", flush=True)
-            elif isinstance(image, list) and len(image) > 0:
-                print(f"[DEBUG] Base output list, first item dtype: {image[0].dtype}, shape: {image[0].shape}", flush=True)
+# Маппинг action → (path, method)
+ACTION_MAPPING = {
+    "txt2img": ("/sdapi/v1/txt2img", "POST"),
+    "img2img": ("/sdapi/v1/img2img", "POST"),
+    "extra-single-image": ("/sdapi/v1/extra-single-image", "POST"),
+    "extra-batch-images": ("/sdapi/v1/extra-batch-images", "POST"),
+    "png-info": ("/sdapi/v1/png-info", "POST"),
+    "progress": ("/sdapi/v1/progress", "GET"),
+    "interrogate": ("/sdapi/v1/interrogate", "POST"),
+    "interrupt": ("/sdapi/v1/interrupt", "POST"),
+    "skip": ("/sdapi/v1/skip", "POST"),
+    "options-get": ("/sdapi/v1/options", "GET"),
+    "options-set": ("/sdapi/v1/options", "POST"),
+    "cmd-flags": ("/sdapi/v1/cmd-flags", "GET"),
+    "samplers": ("/sdapi/v1/samplers", "GET"),
+    "schedulers": ("/sdapi/v1/schedulers", "GET"),
+    "upscalers": ("/sdapi/v1/upscalers", "GET"),
+    "latent-upscale-modes": ("/sdapi/v1/latent-upscale-modes", "GET"),
+    "sd-models": ("/sdapi/v1/sd-models", "GET"),
+    "sd-modules": ("/sdapi/v1/sd-modules", "GET"),
+    "hypernetworks": ("/sdapi/v1/hypernetworks", "GET"),
+    "face-restorers": ("/sdapi/v1/face-restorers", "GET"),
+    "realesrgan-models": ("/sdapi/v1/realesrgan-models", "GET"),
+    "prompt-styles": ("/sdapi/v1/prompt-styles", "GET"),
+    "embeddings": ("/sdapi/v1/embeddings", "GET"),
+    "refresh-embeddings": ("/sdapi/v1/refresh-embeddings", "POST"),
+    "refresh-checkpoints": ("/sdapi/v1/refresh-checkpoints", "POST"),
+    "refresh-vae": ("/sdapi/v1/refresh-vae", "POST"),
+    "create-embedding": ("/sdapi/v1/create/embedding", "POST"),
+    "create-hypernetwork": ("/sdapi/v1/create/hypernetwork", "POST"),
+    "memory": ("/sdapi/v1/memory", "GET"),
+    "unload-checkpoint": ("/sdapi/v1/unload-checkpoint", "POST"),
+    "reload-checkpoint": ("/sdapi/v1/reload-checkpoint", "POST"),
+    "scripts": ("/sdapi/v1/scripts", "GET"),
+    "script-info": ("/sdapi/v1/script-info", "GET"),
+    "extensions": ("/sdapi/v1/extensions", "GET")
+}
 
-            # Ensure latent images have correct dtype for refiner
-            if hasattr(image, 'dtype') and hasattr(image, 'to'):
-                image = image.to(dtype=torch.float16)
-            elif isinstance(image, list) and len(image) > 0 and hasattr(image[0], 'dtype'):
-                image = [img.to(dtype=torch.float16) for img in image]
-            
-            # Refine the image
-            with torch.inference_mode():
-                refiner_result = MODELS.refiner(
-                    prompt=job_input["prompt"],
-                    num_inference_steps=job_input["refiner_inference_steps"],
-                    strength=job_input["strength"],
-                    image=image,
-                    num_images_per_prompt=job_input["num_images"],
-                    generator=generator,
-                )
-                output = refiner_result.images
-        except RuntimeError as err:
-            print(f"[ERROR] RuntimeError in generation pipeline: {err}", flush=True)
-            return {
-                "error": f"RuntimeError: {err}, Stack Trace: {err.__traceback__}",
-                "refresh_worker": True,
-            }
-        except Exception as err:
-            print(f"[ERROR] Unexpected error in generation pipeline: {err}", flush=True)
-            return {
-                "error": f"Unexpected error: {err}",
-                "refresh_worker": True,
-            }
+def handler(job):
+    request = job.get("input", {})
+    action = request.get("action")
+    payload = request.get("input", {})
 
-    image_urls = _save_and_upload_images(output, job["id"])
+    if not action or action not in ACTION_MAPPING:
+        return {"error": f"Invalid or unsupported action: {action}. Available: {', '.join(ACTION_MAPPING.keys())}"}
 
-    results = {
-        "images": image_urls,
-        "image_url": image_urls[0],
-        "seed": job_input["seed"],
-    }
+    path, method = ACTION_MAPPING[action]
+    url = API_URL + path
 
-    if starting_image:
-        results["refresh_worker"] = True
+    try:
+        if method == "GET":
+            resp = requests.get(url, timeout=600)
+        else:  # POST
+            resp = requests.post(url, json=payload, timeout=600)
 
-    return results
+        resp.raise_for_status()
 
+        try:
+            return resp.json()
+        except ValueError:
+            return {"text": resp.text, "status_code": resp.status_code}
 
-runpod.serverless.start({"handler": generate_image})
+    except requests.exceptions.Timeout:
+        return {"error": "Forge API timeout (600s)"}
+    except requests.exceptions.ConnectionError:
+        return {"error": "Cannot connect to Forge API"}
+    except requests.exceptions.HTTPError as e:
+        return {"error": f"Forge error {resp.status_code}: {resp.text}"}
+    except Exception as e:
+        return {"error": f"Unexpected error: {str(e)}"}
+
+if __name__ == "__main__":
+    wait_for_api()
+    runpod.serverless.start({"handler": handler})

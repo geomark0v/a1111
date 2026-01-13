@@ -31,11 +31,12 @@ RUN uv pip install torch --extra-index-url https://download.pytorch.org/whl/cu12
 COPY requirements.txt /requirements.txt
 RUN uv pip install -r /requirements.txt
 
-# copy files
-COPY download_weights.py schemas.py handler.py test_input.json /
+WORKDIR /workspace
 
-# download the weights from hugging face
-RUN python /download_weights.py
+COPY handler.py .
+COPY download_models.py .
+COPY entrypoint.sh .
+RUN chmod +x entrypoint.sh
 
-# run the handler
-CMD python -u /handler.py
+EXPOSE 8080
+CMD ["/workspace/entrypoint.sh"]

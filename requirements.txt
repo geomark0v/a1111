@@ -12,4 +12,13 @@ triton
 huggingface-hub
 hf_transfer
 hf_xet
-setuptools 
+setuptools
+
+ultralytics==8.3.75
+mediapipe==0.10.13
+rich==13.0.0
+
+albumentations==1.4.3
+insightface==0.7.3
+onnx==1.16.1
+opencv-python>=4.7.0.72
