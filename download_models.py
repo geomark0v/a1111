@@ -3,7 +3,7 @@ import os
 import sys
 
 VOLUME = "/runpod-volume"
-FORGE_ROOT = os.path.join(VOLUME, "stable-diffusion-webui-forge")
+FORGE_ROOT = os.path.join(VOLUME, "stable-diffusion-webui")
 
 def download_single(repo, filename, local_dir, new_filename=None):
     local_path = os.path.join(local_dir, new_filename or filename)
