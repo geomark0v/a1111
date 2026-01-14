@@ -23,8 +23,7 @@ rich==13.0.0
 albumentations==1.4.3
 insightface==0.7.3
 onnx==1.16.1
-
-opencv-python-headless>=4.7.0.72
+opencv-python>=4.7.0.72
 
 Cython>=0.29.28
 cmake>=3.22.3

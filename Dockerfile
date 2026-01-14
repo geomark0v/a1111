@@ -16,7 +16,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     cmake \
     libprotobuf-dev \
-    libglib2.0-0 libcairo2 libcairo2-dev \
+    libgl1-mesa-glx \
+    libcairo2 libcairo2-dev \
     libpango-1.0-0 libpango1.0-dev libpangocairo-1.0-0 \
     libgdk-pixbuf2.0-0 pkg-config \
     libxml2 libxslt1.1 libffi-dev ffmpeg \
