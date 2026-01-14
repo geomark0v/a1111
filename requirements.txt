@@ -15,9 +15,9 @@ hf_transfer
 hf_xet
 setuptools
 pytorch_lightning
+mediapipe==0.10.11
 protobuf==3.20.3
 ultralytics==8.3.75
-mediapipe==0.10.13
 rich==13.0.0
 
 albumentations==1.4.3
