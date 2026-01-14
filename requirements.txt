@@ -16,7 +16,7 @@ hf_xet
 setuptools
 pytorch_lightning
 mediapipe==0.10.11
-protobuf==3.20.3
+protobuf==3.20.0
 ultralytics==8.3.75
 rich==13.0.0
 
@@ -43,7 +43,6 @@ facexlib
 fastapi>=0.90.1
 gradio==3.41.2
 omegaconf
-open-clip-torch
 
 piexif
 open-clip-torch==2.20.0
