@@ -45,6 +45,7 @@ RUN uv pip install -r /requirements.txt --no-deps
 RUN uv pip install runpod==1.7.9
 RUN uv pip install pytorch_lightning==1.7.7
 RUN uv pip install torchmetrics==0.7.3
+RUN uv pip install torchvision
 
 WORKDIR /workspace
 
