@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libglib2.0-0 libcairo2 libcairo2-dev \
     libpango-1.0-0 libpango1.0-dev libpangocairo-1.0-0 \
     libgdk-pixbuf2.0-0 pkg-config \
-    libxml2 libxslt1.1 libffi-dev \
+    libxml2 libxslt1.1 libffi-dev ffmpeg \
     protobuf-compiler \
     && rm -rf /var/lib/apt/lists/*
 
