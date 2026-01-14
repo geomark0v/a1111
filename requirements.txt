@@ -46,7 +46,8 @@ omegaconf
 open-clip-torch
 
 piexif
-protobuf>=4.25.3
+open-clip-torch==2.20.0
+protobuf>=3.20.0,<4.0.0
 psutil
 requests
 resize-right
@@ -60,5 +61,3 @@ pillow-avif-plugin==1.4.3
 pytorch_lightning==1.7.7
 
 torchmetrics==0.7.3
-
-open-clip-torch==2.20.0
