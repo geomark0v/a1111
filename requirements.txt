@@ -60,3 +60,5 @@ pillow-avif-plugin==1.4.3
 pytorch_lightning==1.7.7
 
 torchmetrics==0.7.3
+
+open-clip-torch==2.20.0
