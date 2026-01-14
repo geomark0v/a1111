@@ -37,7 +37,7 @@ RUN uv venv --python 3.11 /.venv
 
 # install dependencies
 RUN uv pip install --no-cache-dir \
-    torch==2.4.0 torchvision==0.19.0+cu121 torchaudio==2.3.1 \
+    torch==2.4.0 torchvision==0.19.0+cu121 \
     --index-url https://download.pytorch.org/whl/cu121
 
 # install remaining dependencies from PyPI
