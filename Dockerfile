@@ -40,7 +40,7 @@ RUN uv pip install torch --extra-index-url https://download.pytorch.org/whl/cu12
 
 # install remaining dependencies from PyPI
 COPY requirements.txt /requirements.txt
-RUN uv pip install -r /requirements.txt
+RUN uv pip install -r /requirements.txt --no-deps
 
 WORKDIR /workspace
 

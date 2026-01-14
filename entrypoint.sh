@@ -58,7 +58,7 @@ done
 
 # Скачивание моделей (один раз или при обновлении)
 echo "[INFO] Ensuring models are downloaded..."
-python3 /workspace/download_models.py
+# python3 /workspace/download_models.py
 
 # Запуск Forge
 cd "$BASE"
