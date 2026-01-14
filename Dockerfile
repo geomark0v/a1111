@@ -36,7 +36,9 @@ ENV PATH="/.venv/bin:${PATH}"
 RUN uv venv --python 3.11 /.venv
 
 # install dependencies
-RUN uv pip install torch --extra-index-url https://download.pytorch.org/whl/cu121
+RUN uv pip install --no-cache-dir \
+    torch==2.3.1 torchvision==0.18.1 torchaudio==2.3.1 \
+    --index-url https://download.pytorch.org/whl/cu121
 
 # install remaining dependencies from PyPI
 COPY requirements.txt /requirements.txt
@@ -44,8 +46,7 @@ RUN uv pip install -r /requirements.txt --no-deps
 
 RUN uv pip install runpod==1.7.9
 RUN uv pip install pytorch_lightning==1.7.7
-RUN uv pip install torchmetrics==0.7.3
-RUN uv pip install torchvision
+
 
 WORKDIR /workspace
 
