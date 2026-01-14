@@ -15,9 +15,9 @@ hf_transfer
 hf_xet
 setuptools
 pytorch_lightning
-
+protobuf==3.20.3
 ultralytics==8.3.75
-mediapipe==0.10.13
+mediapipe==0.10.13 --no-deps
 rich==13.0.0
 
 albumentations==1.4.3
@@ -47,7 +47,6 @@ open-clip-torch
 
 piexif
 open-clip-torch==2.20.0
-protobuf>=3.20.0,<4.0.0
 psutil
 requests
 resize-right
