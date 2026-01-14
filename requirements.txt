@@ -55,8 +55,6 @@ torchdiffeq
 torchsde
 pillow-avif-plugin==1.4.3
 
-torchmetrics==0.7.3
-
 aiohttp
 multidict
 deprecate
