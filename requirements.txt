@@ -48,7 +48,6 @@ open-clip-torch
 piexif
 protobuf>=4.25.3
 psutil
-pytorch_lightning
 requests
 resize-right
 
@@ -57,3 +56,5 @@ tomesd
 torchdiffeq
 torchsde
 pillow-avif-plugin==1.4.3
+
+pytorch_lightning==1.7.7
