@@ -22,6 +22,7 @@ rich==13.0.0
 
 albumentations==1.4.3
 insightface==0.7.3
+onnx==1.17.1
 opencv-python>=4.7.0.72
 onnxruntime
 Cython>=0.29.28
