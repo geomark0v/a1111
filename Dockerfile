@@ -219,53 +219,53 @@ RUN echo "Downloading Qwen Image Edit models..."
 # RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/clip/qwen_2.5_vl_7b.safetensors "https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b.safetensors"
 
 # Download UNET&CLIP fp8 model (using correct URL structure)
-RUN hf download lightx2v/Qwen-Image-Lightning \
+RUN python -m huggingface_hub download lightx2v/Qwen-Image-Lightning \
     Qwen-Image-Edit-2509/qwen_image_edit_2509_fp8_e4m3fn_scaled.safetensors \
     --local-dir models/unet --local-dir-use-symlinks False
 
-RUN hf download Comfy-Org/z_image_turbo \
+RUN python -m huggingface_hub download Comfy-Org/z_image_turbo \
     split_files/diffusion_models/z_image_turbo_bf16.safetensors \
     --local-dir models/unet --local-dir-use-symlinks False
 
-RUN hf download Comfy-Org/Qwen-Image_ComfyUI \
+RUN python -m huggingface_hub download Comfy-Org/Qwen-Image_ComfyUI \
     split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors \
     --local-dir models/clip --local-dir-use-symlinks False
 
-RUN hf download Comfy-Org/z_image_turbo \
+RUN python -m huggingface_hub download Comfy-Org/z_image_turbo \
     split_files/text_encoders/qwen_3_4b.safetensors \
     --local-dir models/clip --local-dir-use-symlinks False
 
 # Download VAE model (using correct URL structure)
-RUN hf download Comfy-Org/Qwen-Image_ComfyUI \
+RUN python -m huggingface_hub download Comfy-Org/Qwen-Image_ComfyUI \
     split_files/vae/qwen_image_vae.safetensors \
     --local-dir models/vae --local-dir-use-symlinks False
 
-RUN hf download Comfy-Org/z_image_turbo \
+RUN python -m huggingface_hub download Comfy-Org/z_image_turbo \
     split_files/vae/ae.safetensors \
     --local-dir models/vae --local-dir-use-symlinks False
 
 # Download LoRA model (public file, no auth needed)
-RUN hf download lightx2v/Qwen-Image-Lightning \
+RUN python -m huggingface_hub download lightx2v/Qwen-Image-Lightning \
     Qwen-Image-Edit-2509/Qwen-Image-Edit-2509-Lightning-8steps-V1.0-bf16.safetensors \
     --local-dir models/loras --local-dir-use-symlinks False
 
-RUN hf download lightx2v/Qwen-Image-Lightning \
+RUN python -m huggingface_hub download lightx2v/Qwen-Image-Lightning \
     Qwen-Image-Edit-2509/Qwen-Image-Edit-2509-Lightning-4steps-V1.0-bf16.safetensors \
     --local-dir models/loras --local-dir-use-symlinks False
 
 RUN wget -q -O models/loras/Qwen-Image-Analog-v1.1.safetensors "https://studio.swapify.link/assets/Qwen-Image-Analog-v1.1.safetensors"
 RUN wget -q -O models/loras/lenovo.safetensors "https://studio.swapify.link/assets/lenovo.safetensors"
 
-RUN hf download valiantcat/Qwen-Image-Edit-2509-photous \
+RUN python -m huggingface_hub download valiantcat/Qwen-Image-Edit-2509-photous \
     QwenEdit2509_photous_000010000.safetensors \
     --local-dir models/loras --local-dir-use-symlinks False
 
-RUN hf download tlennon-ie/qwen-edit-skin \
+RUN python -m huggingface_hub download tlennon-ie/qwen-edit-skin \
     qwen-edit-skin_1.1_000002750.safetensors \
     --local-dir models/loras --local-dir-use-symlinks False
 
 # Download upscale model (4xLSDIR.pth)
-RUN hf download wavespeed/misc \
+RUN python -m huggingface_hub download wavespeed/misc \
     upscalers/4xLSDIR.pth \
     --local-dir models/upscale_models --local-dir-use-symlinks False
 
@@ -281,7 +281,7 @@ RUN wget -q -O models/facerestore_models/GFPGANv1.4.pth "https://app.swapify.lin
 # Download NSFW detector models
 RUN echo "Downloading NSFW detector models..."
 RUN mkdir -p models/nsfw_detector/vit-base-nsfw-detector
-RUN hf download AdamCodd/vit-base-nsfw-detector \
+RUN python -m huggingface_hub download AdamCodd/vit-base-nsfw-detector \
     --local-dir models/nsfw_detector/vit-base-nsfw-detector \
     --local-dir-use-symlinks False
 
@@ -308,58 +308,58 @@ RUN wget -q -O models/ultralytics/segm/person_yolov8m-seg.pt "https://app.swapif
 
 # Download additional models from the A1111 list adapted for ComfyUI
 RUN echo "Downloading main generation models..."
-RUN hf download IgorGent/pony \
+RUN python -m huggingface_hub download IgorGent/pony \
     cyberrealisticPony_v141.safetensors \
     --local-dir models/checkpoints --local-dir-use-symlinks False
 
-RUN hf download IgorGent/pony \
+RUN python -m huggingface_hub download IgorGent/pony \
     "cyberrealisticPony_v141 (1).safetensors" \
     --local-dir models/checkpoints --local-dir-use-symlinks False
 
-RUN hf download IgorGent/pony \
+RUN python -m huggingface_hub download IgorGent/pony \
     cyberrealisticPony_v150bf16.safetensors \
     --local-dir models/checkpoints --local-dir-use-symlinks False
 
-RUN hf download IgorGent/pony \
+RUN python -m huggingface_hub download IgorGent/pony \
     cyberrealisticPony_v150.safetensors \
     --local-dir models/checkpoints --local-dir-use-symlinks False
 
 RUN echo "Downloading ControlNet and related models..."
-RUN hf download IgorGent/pony \
+RUN python -m huggingface_hub download IgorGent/pony \
     ip-adapter-faceid-plusv2_sdxl.bin \
     --local-dir models/controlnet --local-dir-use-symlinks False
 
-RUN hf download IgorGent/pony \
+RUN python -m huggingface_hub download IgorGent/pony \
     ip-adapter-faceid-plusv2_sdxl_lora.safetensors \
     --local-dir models/loras --local-dir-use-symlinks False
 
-RUN hf download IgorGent/pony \
+RUN python -m huggingface_hub download IgorGent/pony \
     ip-adapter-plus-face_sdxl_vit-h.safetensors \
     --local-dir models/controlnet --local-dir-use-symlinks False
 
-RUN hf download IgorGent/pony \
+RUN python -m huggingface_hub download IgorGent/pony \
     "ip-adapter-plus_sdxl_vit-h (1).safetensors" \
     --local-dir models/controlnet --local-dir-use-symlinks False
 
-RUN hf download IgorGent/pony \
+RUN python -m huggingface_hub download IgorGent/pony \
     "ip-adapter_sdxl_vit-h (1).safetensors" \
     --local-dir models/controlnet --local-dir-use-symlinks False
 
-RUN hf download IgorGent/pony \
+RUN python -m huggingface_hub download IgorGent/pony \
     clip_h.pth \
     --local-dir models/clip_vision --local-dir-use-symlinks False
 
-RUN hf download IgorGent/pony \
+RUN python -m huggingface_hub download IgorGent/pony \
     ip_adapter_instant_id_sdxl.bin \
     --local-dir models/controlnet --local-dir-use-symlinks False
 
-RUN hf download IgorGent/pony \
+RUN python -m huggingface_hub download IgorGent/pony \
     control_instant_id_sdxl.safetensors \
     --local-dir models/controlnet --local-dir-use-symlinks False
 
 RUN echo "Downloading insightface antelopev2 models..."
 RUN mkdir -p models/insightface/models/antelopev2
-RUN hf download IgorGent/pony \
+RUN python -m huggingface_hub download IgorGent/pony \
     --local-dir models/insightface/models/antelopev2 \
     --local-dir-use-symlinks False \
     --include "1k3d68.onnx" \
@@ -369,18 +369,18 @@ RUN hf download IgorGent/pony \
     --include "scrfd_10g_bnkps.onnx"
 
 RUN echo "Downloading CodeFormer and GFPGAN models..."
-RUN hf download IgorGent/pony \
+RUN python -m huggingface_hub download IgorGent/pony \
     --local-dir models/codeformer \
     --local-dir-use-symlinks False \
     --include "codeformer*.pth"
 
-RUN hf download IgorGent/pony \
+RUN python -m huggingface_hub download IgorGent/pony \
     --local-dir models/facedetection \
     --local-dir-use-symlinks False \
     --include "parsing_*.pth"
 
 RUN echo "Downloading A-Detailer models..."
-RUN hf download IgorGent/pony \
+RUN python -m huggingface_hub download IgorGent/pony \
     --local-dir models/adetailer \
     --local-dir-use-symlinks False \
     --include "A-Detailer/*.pt"
