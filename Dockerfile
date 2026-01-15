@@ -24,6 +24,8 @@ ENV NUMBA_OPT=0
 # Speed up some cmake builds
 ENV CMAKE_BUILD_PARALLEL_LEVEL=8
 
+ENV DOWNLOAD_MODELS=false
+
 # Install Python, git and other necessary tools
 RUN apt-get update && apt-get install -y \
     python3.12 \
@@ -207,8 +209,10 @@ COPY download_models.py /download_models.py
 # Устанавливаем зависимости
 RUN uv pip install --no-cache-dir huggingface_hub hf-transfer requests
 
-# Запускаем скачивание всех моделей одним RUN
-RUN python /download_models.py
+RUN if [ "$DOWNLOAD_MODELS" = "true" ]; then \
+      # Запускаем скачивание всех моделей одним RUN
+      python /download_models.py; \
+    fi
 
 # Copy Eyes.pt file if it exists
 COPY Eyes.pt /Eyes.pt
