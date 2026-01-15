@@ -36,11 +36,9 @@ ENV PATH="/.venv/bin:${PATH}"
 RUN uv venv --python 3.10 /.venv
 
 # install dependencies
-RUN uv pip install \
-         torch==2.1.2+cu118 \
-         torchvision==0.17.2 \
-         torchaudio==2.1.2+cu118 \
-         --index-url https://download.pytorch.org/whl/cu118
+RUN pip install --no-cache-dir \
+    torch==2.2.2+cu118 torchvision==0.17.2+cu118 torchaudio==2.2.2+cu118 \
+    --index-url https://download.pytorch.org/whl/cu118
 
 # install remaining dependencies from PyPI
 COPY requirements.txt /requirements.txt
