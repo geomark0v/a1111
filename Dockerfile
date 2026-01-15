@@ -59,6 +59,8 @@ ENV PATH="/opt/venv/bin:${PATH}"
 # Установка инструментов для скачивания (один раз в начале стадии downloader)
 RUN uv pip install --no-cache-dir "huggingface_hub[cli]" hf-transfer
 
+RUN ln -sf /opt/venv/bin/hf /usr/local/bin/hf
+
 # Install comfy-cli + dependencies needed by it to install ComfyUI
 RUN uv pip install comfy-cli pip setuptools wheel
 
