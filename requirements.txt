@@ -12,11 +12,10 @@ hf_transfer
 hf_xet
 setuptools==69.5.1
 pytorch_lightning==1.9.4
-mediapipe==0.10.15
 protobuf==3.20.0
 ultralytics==8.4.0
 rich==14.2.0
-
+mediapipe
 albumentations==1.4.3
 insightface==0.7.3
 onnx==1.16.1 # вернуть на 1.17.1
