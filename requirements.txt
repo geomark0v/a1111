@@ -18,7 +18,7 @@ rich==14.2.0
 mediapipe
 albumentations==1.4.3
 insightface==0.7.3
-onnx==1.16.1 # вернуть на 1.17.1
+onnx
 opencv-python==4.10.0.84
 onnxruntime-gpu==1.17.1
 Cython==3.2.4
