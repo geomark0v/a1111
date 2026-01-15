@@ -24,6 +24,11 @@ ENV NUMBA_OPT=0
 # Speed up some cmake builds
 ENV CMAKE_BUILD_PARALLEL_LEVEL=8
 
+# Включаем ускоренный режим скачивания (рекомендуется для файлов >5 ГБ)
+ENV HF_HUB_ENABLE_HF_TRANSFER=1
+
+ENV HF_TOKEN=${HUGGINGFACE_ACCESS_TOKEN}
+
 # Install Python, git and other necessary tools
 RUN apt-get update && apt-get install -y \
     python3.12 \
@@ -38,6 +43,9 @@ RUN apt-get update && apt-get install -y \
     ffmpeg \
     && ln -sf /usr/bin/python3.12 /usr/bin/python \
     && ln -sf /usr/bin/pip3 /usr/bin/pip
+
+# Установка инструментов для скачивания (один раз в начале стадии downloader)
+RUN uv pip install --no-cache-dir "huggingface_hub[cli]" hf-transfer
 
 # Clean up to reduce image size
 RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
@@ -209,26 +217,55 @@ RUN echo "Downloading Qwen Image Edit models..."
 # RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/clip/qwen_2.5_vl_7b.safetensors "https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b.safetensors"
 
 # Download UNET&CLIP fp8 model (using correct URL structure)
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/unet/qwen_image_edit_2509_fp8_e4m3fn_scaled.safetensors "https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Edit-2509/qwen_image_edit_2509_fp8_e4m3fn_scaled.safetensors"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/unet/z_image_turbo_bf16.safetensors "https://huggingface.co/Comfy-Org/z_image_turbo/resolve/main/split_files/diffusion_models/z_image_turbo_bf16.safetensors"
+RUN hf download lightx2v/Qwen-Image-Lightning \
+    Qwen-Image-Edit-2509/qwen_image_edit_2509_fp8_e4m3fn_scaled.safetensors \
+    --local-dir models/unet --local-dir-use-symlinks False
 
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/clip/qwen_2.5_vl_7b_fp8_scaled.safetensors "https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/clip/qwen_3_4b.safetensors "https://huggingface.co/Comfy-Org/z_image_turbo/resolve/main/split_files/text_encoders/qwen_3_4b.safetensors"
+RUN hf download Comfy-Org/z_image_turbo \
+    split_files/diffusion_models/z_image_turbo_bf16.safetensors \
+    --local-dir models/unet --local-dir-use-symlinks False
+
+RUN hf download Comfy-Org/Qwen-Image_ComfyUI \
+    split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors \
+    --local-dir models/clip --local-dir-use-symlinks False
+
+RUN hf download Comfy-Org/z_image_turbo \
+    split_files/text_encoders/qwen_3_4b.safetensors \
+    --local-dir models/clip --local-dir-use-symlinks False
 
 # Download VAE model (using correct URL structure)
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/vae/qwen_image_vae.safetensors "https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/vae/ae.safetensors "https://huggingface.co/Comfy-Org/z_image_turbo/resolve/main/split_files/vae/ae.safetensors"
+RUN hf download Comfy-Org/Qwen-Image_ComfyUI \
+    split_files/vae/qwen_image_vae.safetensors \
+    --local-dir models/vae --local-dir-use-symlinks False
+
+RUN hf download Comfy-Org/z_image_turbo \
+    split_files/vae/ae.safetensors \
+    --local-dir models/vae --local-dir-use-symlinks False
 
 # Download LoRA model (public file, no auth needed)
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/loras/Qwen-Image-Edit-2509-Lightning-8steps-V1.0-bf16.safetensors "https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Edit-2509/Qwen-Image-Edit-2509-Lightning-8steps-V1.0-bf16.safetensors"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/loras/Qwen-Image-Edit-2509-Lightning-4steps-V1.0-bf16.safetensors "https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Edit-2509/Qwen-Image-Edit-2509-Lightning-4steps-V1.0-bf16.safetensors"
+RUN hf download lightx2v/Qwen-Image-Lightning \
+    Qwen-Image-Edit-2509/Qwen-Image-Edit-2509-Lightning-8steps-V1.0-bf16.safetensors \
+    --local-dir models/loras --local-dir-use-symlinks False
+
+RUN hf download lightx2v/Qwen-Image-Lightning \
+    Qwen-Image-Edit-2509/Qwen-Image-Edit-2509-Lightning-4steps-V1.0-bf16.safetensors \
+    --local-dir models/loras --local-dir-use-symlinks False
+
 RUN wget -q -O models/loras/Qwen-Image-Analog-v1.1.safetensors "https://studio.swapify.link/assets/Qwen-Image-Analog-v1.1.safetensors"
 RUN wget -q -O models/loras/lenovo.safetensors "https://studio.swapify.link/assets/lenovo.safetensors"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/loras/QwenEdit2509_photous_000010000.safetensors "https://huggingface.co/valiantcat/Qwen-Image-Edit-2509-photous/resolve/main/QwenEdit2509_photous_000010000.safetensors"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/loras/qwen-edit-skin_1.1_000002750.safetensors "https://huggingface.co/tlennon-ie/qwen-edit-skin/resolve/main/qwen-edit-skin_1.1_000002750.safetensors"
+
+RUN hf download valiantcat/Qwen-Image-Edit-2509-photous \
+    QwenEdit2509_photous_000010000.safetensors \
+    --local-dir models/loras --local-dir-use-symlinks False
+
+RUN hf download tlennon-ie/qwen-edit-skin \
+    qwen-edit-skin_1.1_000002750.safetensors \
+    --local-dir models/loras --local-dir-use-symlinks False
 
 # Download upscale model (4xLSDIR.pth)
-RUN wget -q -O models/upscale_models/4xLSDIR.pth "https://huggingface.co/wavespeed/misc/resolve/main/upscalers/4xLSDIR.pth"
+RUN hf download wavespeed/misc \
+    upscalers/4xLSDIR.pth \
+    --local-dir models/upscale_models --local-dir-use-symlinks False
 
 # Download ReActor models
 RUN echo "Downloading ReActor models..."
@@ -242,9 +279,9 @@ RUN wget -q -O models/facerestore_models/GFPGANv1.4.pth "https://app.swapify.lin
 # Download NSFW detector models
 RUN echo "Downloading NSFW detector models..."
 RUN mkdir -p models/nsfw_detector/vit-base-nsfw-detector
-RUN wget -q -O models/nsfw_detector/vit-base-nsfw-detector/config.json "https://huggingface.co/AdamCodd/vit-base-nsfw-detector/resolve/main/config.json"
-RUN wget -q -O models/nsfw_detector/vit-base-nsfw-detector/model.safetensors "https://huggingface.co/AdamCodd/vit-base-nsfw-detector/resolve/main/model.safetensors"
-RUN wget -q -O models/nsfw_detector/vit-base-nsfw-detector/preprocessor_config.json "https://huggingface.co/AdamCodd/vit-base-nsfw-detector/resolve/main/preprocessor_config.json"
+RUN hf download AdamCodd/vit-base-nsfw-detector \
+    --local-dir models/nsfw_detector/vit-base-nsfw-detector \
+    --local-dir-use-symlinks False
 
 # Download additional ReActor models
 RUN echo "Downloading additional ReActor models..."
@@ -266,45 +303,86 @@ RUN mkdir -p models/ultralytics/bbox models/ultralytics/segm
 RUN wget -q -O models/ultralytics/bbox/face_yolov8m.pt "https://app.swapify.link/assets/face_yolov8m.pt"
 RUN wget -q -O models/ultralytics/bbox/hand_yolov8s.pt "https://app.swapify.link/assets/hand_yolov8s.pt"
 RUN wget -q -O models/ultralytics/segm/person_yolov8m-seg.pt "https://app.swapify.link/assets/person_yolov8m-seg.pt"
+
 # Download additional models from the A1111 list adapted for ComfyUI
 RUN echo "Downloading main generation models..."
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/checkpoints/cyberrealisticPony_v141.safetensors "https://huggingface.co/IgorGent/pony/resolve/main/cyberrealisticPony_v141.safetensors?download=true"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/checkpoints/cyberrealisticPony_v141_fp32.safetensors "https://huggingface.co/IgorGent/pony/resolve/main/cyberrealisticPony_v141 (1).safetensors?download=true"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/checkpoints/cyberrealisticPony_v150bf16.safetensors "https://huggingface.co/IgorGent/pony/resolve/main/cyberrealisticPony_v150bf16.safetensors?download=true"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/checkpoints/cyberrealisticPony_v150.safetensors "https://huggingface.co/IgorGent/pony/resolve/main/cyberrealisticPony_v150.safetensors?download=true"
+RUN hf download IgorGent/pony \
+    cyberrealisticPony_v141.safetensors \
+    --local-dir models/checkpoints --local-dir-use-symlinks False
+
+RUN hf download IgorGent/pony \
+    "cyberrealisticPony_v141 (1).safetensors" \
+    --local-dir models/checkpoints --local-dir-use-symlinks False
+
+RUN hf download IgorGent/pony \
+    cyberrealisticPony_v150bf16.safetensors \
+    --local-dir models/checkpoints --local-dir-use-symlinks False
+
+RUN hf download IgorGent/pony \
+    cyberrealisticPony_v150.safetensors \
+    --local-dir models/checkpoints --local-dir-use-symlinks False
 
 RUN echo "Downloading ControlNet and related models..."
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/controlnet/ip-adapter-faceid-plusv2_sdxl.bin "https://huggingface.co/IgorGent/pony/resolve/main/ip-adapter-faceid-plusv2_sdxl.bin?download=true"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/loras/ip-adapter-faceid-plusv2_sdxl_lora.safetensors "https://huggingface.co/IgorGent/pony/resolve/main/ip-adapter-faceid-plusv2_sdxl_lora.safetensors?download=true"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/controlnet/ip-adapter-plus-face_sdxl_vit-h.safetensors "https://huggingface.co/IgorGent/pony/resolve/main/ip-adapter-plus-face_sdxl_vit-h.safetensors?download=true"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/controlnet/ip-adapter-plus_sdxl_vit-h.safetensors "https://huggingface.co/IgorGent/pony/resolve/main/ip-adapter-plus_sdxl_vit-h (1).safetensors?download=true"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/controlnet/ip-adapter_sdxl_vit-h.safetensors "https://huggingface.co/IgorGent/pony/resolve/main/ip-adapter_sdxl_vit-h (1).safetensors?download=true"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/clip_vision/clip_h.pth "https://huggingface.co/IgorGent/pony/resolve/main/clip_h.pth?download=true"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/controlnet/ip-adapter_instant_id_sdxl.bin "https://huggingface.co/IgorGent/pony/resolve/main/ip_adapter_instant_id_sdxl.bin?download=true"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/controlnet/control_instant_id_sdxl.safetensors "https://huggingface.co/IgorGent/pony/resolve/main/control_instant_id_sdxl.safetensors?download=true"
+RUN hf download IgorGent/pony \
+    ip-adapter-faceid-plusv2_sdxl.bin \
+    --local-dir models/controlnet --local-dir-use-symlinks False
+
+RUN hf download IgorGent/pony \
+    ip-adapter-faceid-plusv2_sdxl_lora.safetensors \
+    --local-dir models/loras --local-dir-use-symlinks False
+
+RUN hf download IgorGent/pony \
+    ip-adapter-plus-face_sdxl_vit-h.safetensors \
+    --local-dir models/controlnet --local-dir-use-symlinks False
+
+RUN hf download IgorGent/pony \
+    "ip-adapter-plus_sdxl_vit-h (1).safetensors" \
+    --local-dir models/controlnet --local-dir-use-symlinks False
+
+RUN hf download IgorGent/pony \
+    "ip-adapter_sdxl_vit-h (1).safetensors" \
+    --local-dir models/controlnet --local-dir-use-symlinks False
+
+RUN hf download IgorGent/pony \
+    clip_h.pth \
+    --local-dir models/clip_vision --local-dir-use-symlinks False
+
+RUN hf download IgorGent/pony \
+    ip_adapter_instant_id_sdxl.bin \
+    --local-dir models/controlnet --local-dir-use-symlinks False
+
+RUN hf download IgorGent/pony \
+    control_instant_id_sdxl.safetensors \
+    --local-dir models/controlnet --local-dir-use-symlinks False
 
 RUN echo "Downloading insightface antelopev2 models..."
 RUN mkdir -p models/insightface/models/antelopev2
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/insightface/models/antelopev2/1k3d68.onnx "https://huggingface.co/IgorGent/pony/resolve/main/1k3d68.onnx?download=true"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/insightface/models/antelopev2/2d106det.onnx "https://huggingface.co/IgorGent/pony/resolve/main/2d106det.onnx?download=true"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/insightface/models/antelopev2/genderage.onnx "https://huggingface.co/IgorGent/pony/resolve/main/genderage.onnx?download=true"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/insightface/models/antelopev2/glintr100.onnx "https://huggingface.co/IgorGent/pony/resolve/main/glintr100.onnx?download=true"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/insightface/models/antelopev2/scrfd_10g_bnkps.onnx "https://huggingface.co/IgorGent/pony/resolve/main/scrfd_10g_bnkps.onnx?download=true"
+RUN hf download IgorGent/pony \
+    --local-dir models/insightface/models/antelopev2 \
+    --local-dir-use-symlinks False \
+    --include "1k3d68.onnx" \
+    --include "2d106det.onnx" \
+    --include "genderage.onnx" \
+    --include "glintr100.onnx" \
+    --include "scrfd_10g_bnkps.onnx"
 
 RUN echo "Downloading CodeFormer and GFPGAN models..."
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/codeformer/codeformer-v0.1.0.pth "https://huggingface.co/IgorGent/pony/resolve/main/codeformer-v0.1.0.pth?download=true"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/facedetection/parsing_bisenet.pth "https://huggingface.co/IgorGent/pony/resolve/main/parsing_bisenet.pth?download=true"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/facedetection/parsing_parsenet.pth "https://huggingface.co/IgorGent/pony/resolve/main/parsing_parsenet.pth?download=true"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/codeformer/codeformer.pth "https://huggingface.co/IgorGent/pony/resolve/main/codeformer.pth?download=true"
+RUN hf download IgorGent/pony \
+    --local-dir models/codeformer \
+    --local-dir-use-symlinks False \
+    --include "codeformer*.pth"
+
+RUN hf download IgorGent/pony \
+    --local-dir models/facedetection \
+    --local-dir-use-symlinks False \
+    --include "parsing_*.pth"
 
 RUN echo "Downloading A-Detailer models..."
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/adetailer/Eyeful_v1.pt      "https://huggingface.co/IgorGent/pony/resolve/main/A-Detailer/Eyeful_v1 (3).pt?download=true"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/adetailer/Eyes.pt           "https://huggingface.co/IgorGent/pony/resolve/main/A-Detailer/Eyes (1) (2).pt?download=true"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/adetailer/Eyes_4.pt         "https://huggingface.co/IgorGent/pony/resolve/main/A-Detailer/Eyes (4).pt?download=true"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/adetailer/FacesV1.pt        "https://huggingface.co/IgorGent/pony/resolve/main/A-Detailer/FacesV1 (2).pt?download=true"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/adetailer/face_yolov8m.pt   "https://huggingface.co/IgorGent/pony/resolve/main/A-Detailer/face_yolov8m (2).pt?download=true"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/adetailer/penis.pt          "https://huggingface.co/IgorGent/pony/resolve/main/A-Detailer/penis (1) (2).pt?download=true"
-RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/adetailer/penis_3.pt        "https://huggingface.co/IgorGent/pony/resolve/main/A-Detailer/penis (3).pt?download=true"
+RUN hf download IgorGent/pony \
+    --local-dir models/adetailer \
+    --local-dir-use-symlinks False \
+    --include "A-Detailer/*.pt"
+
 
 # Verify ReActor models were downloaded
 RUN echo "Verifying ReActor models..."
