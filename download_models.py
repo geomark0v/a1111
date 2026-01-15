@@ -1,96 +1,178 @@
-from huggingface_hub import hf_hub_download
+# download_models.py
+"""
+Скрипт скачивает все модели в точном порядке из вашего оригинального списка
+Место сохранения: /comfyui/models/...
+"""
+
 import os
 import sys
+import requests
+from pathlib import Path
+from huggingface_hub import hf_hub_download
 
-VOLUME = "/runpod-volume"
-FORGE_ROOT = os.path.join(VOLUME, "stable-diffusion-webui")
+# Основная директория моделей
+MODELS_DIR = Path("/comfyui/models")
+MODELS_DIR.mkdir(parents=True, exist_ok=True)
 
-def download_single(repo, filename, local_dir, new_filename=None):
-    local_path = os.path.join(local_dir, new_filename or filename)
-    if os.path.exists(local_path):
-        print(f"[SKIP] {filename} already exists as {local_path}")
+# Токен Hugging Face (если приватные репозитории)
+HF_TOKEN = os.getenv("HUGGINGFACE_ACCESS_TOKEN")
+
+def hf_download(repo_id, filename, subdir=""):
+    """Скачивание файла с Hugging Face в указанную подпапку"""
+    target_dir = MODELS_DIR / subdir
+    target_dir.mkdir(parents=True, exist_ok=True)
+
+    target_path = target_dir / Path(filename).name
+
+    if target_path.exists() and target_path.stat().st_size > 0:
+        print(f"[SKIP] {filename} уже существует")
         return
-    print(f"[DOWNLOAD] {filename}...")
+
+    print(f"[DOWNLOAD] {filename} из {repo_id} → {target_dir}")
+
     try:
         hf_hub_download(
-            repo_id=repo,
+            repo_id=repo_id,
             filename=filename,
-            local_dir=local_dir,
-            local_dir_use_symlinks=False
+            local_dir=target_dir,
+            local_dir_use_symlinks=False,
+            token=HF_TOKEN if HF_TOKEN else None,
+            resume_download=True
         )
-        # Переименовываем, если нужно
-        old_path = os.path.join(local_dir, filename)
-        if new_filename and os.path.exists(old_path):
-            os.rename(old_path, local_path)
-        print(f"[OK] {filename} downloaded to {local_path}")
+        print(f"[OK] {filename}")
     except Exception as e:
-        print(f"[ERROR] Failed to download {filename}: {e}")
-        sys.exit(1)
+        print(f"[ERROR] Не удалось скачать {filename}: {str(e)}")
+        # Продолжаем дальше, не прерываем весь процесс
 
-# Создаём все нужные папки
-os.makedirs(os.path.join(FORGE_ROOT, "models", "Stable-diffusion"), exist_ok=True)
-os.makedirs(os.path.join(FORGE_ROOT, "models", "ControlNet"), exist_ok=True)
-os.makedirs(os.path.join(FORGE_ROOT, "models", "Lora"), exist_ok=True)
-os.makedirs(os.path.join(FORGE_ROOT, "models", "clip_vision"), exist_ok=True)
-os.makedirs(os.path.join(FORGE_ROOT, "models", "insightface", "models", "antelopev2"), exist_ok=True)
-os.makedirs(os.path.join(FORGE_ROOT, "models", "insightface", "models", "buffalo_l"), exist_ok=True)
-os.makedirs(os.path.join(FORGE_ROOT, "models", "insightface"), exist_ok=True)
-os.makedirs(os.path.join(FORGE_ROOT, "models", "Codeformer"), exist_ok=True)
-os.makedirs(os.path.join(FORGE_ROOT, "models", "GFPGAN"), exist_ok=True)
-os.makedirs(os.path.join(FORGE_ROOT, "models", "adetailer"), exist_ok=True)
+def wget_download(url, target_path):
+    """Прямое скачивание по URL (для swapify, github и т.п.)"""
+    target_path = Path(target_path)
+    target_path.parent.mkdir(parents=True, exist_ok=True)
 
-# Pony модели
-pony_dir = os.path.join(FORGE_ROOT, "models", "Stable-diffusion")
-download_single("IgorGent/pony", "cyberrealisticPony_v141.safetensors", pony_dir)
-download_single("IgorGent/pony", "cyberrealisticPony_v141 (1).safetensors", pony_dir, new_filename="cyberrealisticPony_v141_alt.safetensors")
-download_single("IgorGent/pony", "cyberrealisticPony_v150bf16.safetensors", pony_dir)
-download_single("IgorGent/pony", "cyberrealisticPony_v150.safetensors", pony_dir)
+    if target_path.exists() and target_path.stat().st_size > 0:
+        print(f"[SKIP] {target_path.name} уже существует")
+        return
 
-# ControlNet модели
-controlnet_dir = os.path.join(FORGE_ROOT, "models", "ControlNet")
-download_single("IgorGent/pony", "ip-adapter-faceid-plusv2_sdxl.bin", controlnet_dir)
-download_single("IgorGent/pony", "ip-adapter-faceid-plusv2_sdxl_lora.safetensors", controlnet_dir)
-download_single("IgorGent/pony", "ip-adapter-plus-face_sdxl_vit-h.safetensors", controlnet_dir)
-download_single("IgorGent/pony", "ip-adapter-plus_sdxl_vit-h (1).safetensors", controlnet_dir, new_filename="ip-adapter-plus_sdxl_vit-h_alt.safetensors")
-download_single("IgorGent/pony", "ip-adapter_sdxl_vit-h (1).safetensors", controlnet_dir, new_filename="ip-adapter_sdxl_vit-h_alt.safetensors")
-download_single("IgorGent/pony", "clip_h.pth", os.path.join(FORGE_ROOT, "models", "clip_vision"))
-download_single("IgorGent/pony", "ip_adapter_instant_id_sdxl.bin", controlnet_dir)
-download_single("IgorGent/pony", "control_instant_id_sdxl.safetensors", controlnet_dir)
+    print(f"[DOWNLOAD] {url} → {target_path}")
 
-# ReActor ONNX
-reactor_dir = os.path.join(FORGE_ROOT, "extensions", "sd-webui-reactor", "models")
-download_single("IgorGent/pony", "inswapper_128.onnx", reactor_dir)
+    try:
+        r = requests.get(url, stream=True, timeout=60)
+        r.raise_for_status()
+        with open(target_path, 'wb') as f:
+            for chunk in r.iter_content(chunk_size=8192):
+                if chunk:
+                    f.write(chunk)
+        print(f"[OK] {target_path.name}")
+    except Exception as e:
+        print(f"[ERROR] Не удалось скачать {url}: {str(e)}")
 
-# Insightface antelopev2
-antelope_dir = os.path.join(FORGE_ROOT, "models", "insightface", "models", "antelopev2")
-download_single("IgorGent/pony", "1k3d68.onnx", antelope_dir)
-download_single("IgorGent/pony", "2d106det.onnx", antelope_dir)
-download_single("IgorGent/pony", "genderage.onnx", antelope_dir)
-download_single("IgorGent/pony", "glintr100.onnx", antelope_dir)
-download_single("IgorGent/pony", "scrfd_10g_bnkps.onnx", antelope_dir)
 
-# Insightface buffalo_l
-buffalo_dir = os.path.join(FORGE_ROOT, "models", "insightface", "models", "buffalo_l")
-download_single("IgorGent/pony", "det_10g.onnx", buffalo_dir)
-download_single("IgorGent/pony", "w600k_r50.onnx", buffalo_dir)
+if __name__ == "__main__":
+    print("=== Запуск скачивания моделей в порядке из списка ===")
 
-# Codeformer и GFPGAN
-codeformer_dir = os.path.join(FORGE_ROOT, "models", "Codeformer")
-download_single("IgorGent/pony", "codeformer-v0.1.0.pth", codeformer_dir)
-download_single("IgorGent/pony", "codeformer.pth", codeformer_dir)
+    # 1. Download UNET&CLIP fp8 model
+    hf_download("lightx2v/Qwen-Image-Lightning", "Qwen-Image-Edit-2509/qwen_image_edit_2509_fp8_e4m3fn_scaled.safetensors", "unet")
+    hf_download("Comfy-Org/z_image_turbo", "split_files/diffusion_models/z_image_turbo_bf16.safetensors", "unet")
 
-gfpgan_dir = os.path.join(FORGE_ROOT, "models", "GFPGAN")
-download_single("IgorGent/pony", "GFPGANv1.4.pth", gfpgan_dir)
-download_single("IgorGent/pony", "detection_Resnet50_Final.pth", gfpgan_dir)
-download_single("IgorGent/pony", "parsing_bisenet.pth", gfpgan_dir)
-download_single("IgorGent/pony", "parsing_parsenet.pth", gfpgan_dir)
+    # 2. CLIP
+    hf_download("Comfy-Org/Qwen-Image_ComfyUI", "split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors", "clip")
+    hf_download("Comfy-Org/z_image_turbo", "split_files/text_encoders/qwen_3_4b.safetensors", "clip")
 
-# A-Detailer (скачиваем всю папку)
-adetailer_dir = os.path.join(FORGE_ROOT, "models", "adetailer")
-if not os.path.exists(adetailer_dir):
-    print("[DOWNLOAD TREE] A-Detailer models...")
-    snapshot_download(repo_id="IgorGent/pony", allow_patterns="A-Detailer/*", local_dir=adetailer_dir, local_dir_use_symlinks=False)
-else:
-    print("[SKIP] A-Detailer directory already exists")
+    # 3. VAE
+    hf_download("Comfy-Org/Qwen-Image_ComfyUI", "split_files/vae/qwen_image_vae.safetensors", "vae")
+    hf_download("Comfy-Org/z_image_turbo", "split_files/vae/ae.safetensors", "vae")
 
-print("🎉 All models ready!")
+    # 4. LoRA модели
+    hf_download("lightx2v/Qwen-Image-Lightning", "Qwen-Image-Edit-2509/Qwen-Image-Edit-2509-Lightning-8steps-V1.0-bf16.safetensors", "loras")
+    hf_download("lightx2v/Qwen-Image-Lightning", "Qwen-Image-Edit-2509/Qwen-Image-Edit-2509-Lightning-4steps-V1.0-bf16.safetensors", "loras")
+
+    wget_download("https://studio.swapify.link/assets/Qwen-Image-Analog-v1.1.safetensors",
+                  "models/loras/Qwen-Image-Analog-v1.1.safetensors")
+
+    wget_download("https://studio.swapify.link/assets/lenovo.safetensors",
+                  "models/loras/lenovo.safetensors")
+
+    hf_download("valiantcat/Qwen-Image-Edit-2509-photous", "QwenEdit2509_photous_000010000.safetensors", "loras")
+    hf_download("tlennon-ie/qwen-edit-skin", "qwen-edit-skin_1.1_000002750.safetensors", "loras")
+
+    # 5. Upscale model
+    hf_download("wavespeed/misc", "upscalers/4xLSDIR.pth", "upscale_models")
+
+    # 6. ReActor models (wget)
+    print("\nDownloading ReActor models...")
+    wget_download("https://app.swapify.link/assets/inswapper_128.onnx", "models/insightface/inswapper_128.onnx")
+    wget_download("https://app.swapify.link/assets/detection_Resnet50_Final.pth", "models/facedetection/detection_Resnet50_Final.pth")
+    wget_download("https://app.swapify.link/assets/GFPGANv1.4.pth", "models/facerestore_models/GFPGANv1.4.pth")
+
+    # 7. NSFW detector
+    print("\nDownloading NSFW detector models...")
+    Path("models/nsfw_detector/vit-base-nsfw-detector").mkdir(parents=True, exist_ok=True)
+    hf_download("AdamCodd/vit-base-nsfw-detector", "config.json", "nsfw_detector/vit-base-nsfw-detector")
+    hf_download("AdamCodd/vit-base-nsfw-detector", "model.safetensors", "nsfw_detector/vit-base-nsfw-detector")
+    hf_download("AdamCodd/vit-base-nsfw-detector", "preprocessor_config.json", "nsfw_detector/vit-base-nsfw-detector")
+
+    # 8. Additional ReActor models (buffalo_l + parsing)
+    print("\nDownloading additional ReActor models...")
+    Path("models/insightface/models/buffalo_l").mkdir(parents=True, exist_ok=True)
+    wget_download("https://app.swapify.link/assets/buffalo_l/1k3d68.onnx", "models/insightface/models/buffalo_l/1k3d68.onnx")
+    wget_download("https://app.swapify.link/assets/buffalo_l/2d106det.onnx", "models/insightface/models/buffalo_l/2d106det.onnx")
+    wget_download("https://app.swapify.link/assets/buffalo_l/det_10g.onnx", "models/insightface/models/buffalo_l/det_10g.onnx")
+    wget_download("https://app.swapify.link/assets/buffalo_l/genderage.onnx", "models/insightface/models/buffalo_l/genderage.onnx")
+    wget_download("https://app.swapify.link/assets/buffalo_l/w600k_r50.onnx", "models/insightface/models/buffalo_l/w600k_r50.onnx")
+
+    wget_download("https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/parsing_parsenet.pth",
+                  "models/facedetection/parsing_parsenet.pth")
+
+    # 9. YOLO models
+    print("\nDownloading YOLO models for detection and segmentation...")
+    Path("models/ultralytics/bbox").mkdir(parents=True, exist_ok=True)
+    Path("models/ultralytics/segm").mkdir(parents=True, exist_ok=True)
+    wget_download("https://app.swapify.link/assets/face_yolov8m.pt", "models/ultralytics/bbox/face_yolov8m.pt")
+    wget_download("https://app.swapify.link/assets/hand_yolov8s.pt", "models/ultralytics/bbox/hand_yolov8s.pt")
+    wget_download("https://app.swapify.link/assets/person_yolov8m-seg.pt", "models/ultralytics/segm/person_yolov8m-seg.pt")
+
+    # 10. A1111 adapted models — Pony checkpoints
+    print("\nDownloading main generation models...")
+    hf_download("IgorGent/pony", "cyberrealisticPony_v141.safetensors", "checkpoints")
+    hf_download("IgorGent/pony", "cyberrealisticPony_v141 (1).safetensors", "checkpoints")
+    hf_download("IgorGent/pony", "cyberrealisticPony_v150bf16.safetensors", "checkpoints")
+    hf_download("IgorGent/pony", "cyberrealisticPony_v150.safetensors", "checkpoints")
+
+    # ControlNet
+    print("\nDownloading ControlNet and related models...")
+    hf_download("IgorGent/pony", "ip-adapter-faceid-plusv2_sdxl.bin", "controlnet")
+    hf_download("IgorGent/pony", "ip-adapter-faceid-plusv2_sdxl_lora.safetensors", "loras")
+    hf_download("IgorGent/pony", "ip-adapter-plus-face_sdxl_vit-h.safetensors", "controlnet")
+    hf_download("IgorGent/pony", "ip-adapter-plus_sdxl_vit-h (1).safetensors", "controlnet")
+    hf_download("IgorGent/pony", "ip-adapter_sdxl_vit-h (1).safetensors", "controlnet")
+    hf_download("IgorGent/pony", "clip_h.pth", "clip_vision")
+    hf_download("IgorGent/pony", "ip_adapter_instant_id_sdxl.bin", "controlnet")
+    hf_download("IgorGent/pony", "control_instant_id_sdxl.safetensors", "controlnet")
+
+    # insightface antelopev2
+    print("\nDownloading insightface antelopev2 models...")
+    Path("models/insightface/models/antelopev2").mkdir(parents=True, exist_ok=True)
+    hf_download("IgorGent/pony", "1k3d68.onnx", "insightface/models/antelopev2")
+    hf_download("IgorGent/pony", "2d106det.onnx", "insightface/models/antelopev2")
+    hf_download("IgorGent/pony", "genderage.onnx", "insightface/models/antelopev2")
+    hf_download("IgorGent/pony", "glintr100.onnx", "insightface/models/antelopev2")
+    hf_download("IgorGent/pony", "scrfd_10g_bnkps.onnx", "insightface/models/antelopev2")
+
+    # CodeFormer + parsing
+    print("\nDownloading CodeFormer and GFPGAN models...")
+    hf_download("IgorGent/pony", "codeformer-v0.1.0.pth", "codeformer")
+    hf_download("IgorGent/pony", "parsing_bisenet.pth", "facedetection")
+    hf_download("IgorGent/pony", "parsing_parsenet.pth", "facedetection")
+    hf_download("IgorGent/pony", "codeformer.pth", "codeformer")
+
+    # A-Detailer
+    print("\nDownloading A-Detailer models...")
+    hf_download("IgorGent/pony", "A-Detailer/Eyeful_v1 (3).pt", "adetailer")
+    hf_download("IgorGent/pony", "A-Detailer/Eyes (1) (2).pt", "adetailer")
+    hf_download("IgorGent/pony", "A-Detailer/Eyes (4).pt", "adetailer")
+    hf_download("IgorGent/pony", "A-Detailer/FacesV1 (2).pt", "adetailer")
+    hf_download("IgorGent/pony", "A-Detailer/face_yolov8m (2).pt", "adetailer")
+    hf_download("IgorGent/pony", "A-Detailer/penis (1) (2).pt", "adetailer")
+    hf_download("IgorGent/pony", "A-Detailer/penis (3).pt", "adetailer")
+
+    print("\n=== Скачивание всех моделей завершено! ===")

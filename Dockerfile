@@ -24,11 +24,6 @@ ENV NUMBA_OPT=0
 # Speed up some cmake builds
 ENV CMAKE_BUILD_PARALLEL_LEVEL=8
 
-# Включаем ускоренный режим скачивания (рекомендуется для файлов >5 ГБ)
-ENV HF_HUB_ENABLE_HF_TRANSFER=1
-
-ENV HF_TOKEN=${HUGGINGFACE_ACCESS_TOKEN}
-
 # Install Python, git and other necessary tools
 RUN apt-get update && apt-get install -y \
     python3.12 \
@@ -40,6 +35,7 @@ RUN apt-get update && apt-get install -y \
     libsm6 \
     libxext6 \
     libxrender1 \
+    huggingface-hub \
     ffmpeg \
     && ln -sf /usr/bin/python3.12 /usr/bin/python \
     && ln -sf /usr/bin/pip3 /usr/bin/pip
@@ -55,11 +51,6 @@ RUN wget -qO- https://astral.sh/uv/install.sh | sh \
 
 # Use the virtual environment for all subsequent commands
 ENV PATH="/opt/venv/bin:${PATH}"
-
-# Установка инструментов для скачивания (один раз в начале стадии downloader)
-RUN uv pip install --no-cache-dir "huggingface_hub[cli]" hf-transfer
-
-RUN ln -sf /opt/venv/bin/hf /usr/local/bin/hf
 
 # Install comfy-cli + dependencies needed by it to install ComfyUI
 RUN uv pip install comfy-cli pip setuptools wheel
@@ -211,201 +202,14 @@ WORKDIR /comfyui
 # Create necessary directories upfront
 RUN mkdir -p models/checkpoints models/vae models/unet models/clip models/loras models/upscale_models models/insightface models/facerestore_models models/facedetection models/nsfw_detector models/controlnet models/clip_vision models/codeformer models/adetailer
 
-# Download Qwen Image Edit models
-RUN echo "Downloading Qwen Image Edit models..."
+# Копируем скрипт
+COPY download_models.py /download_models.py
 
-# Download UNET&CLIP Large model (using correct URL structure)
-# RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/unet/qwen_image_edit_2509_bf16.safetensors "https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_edit_2509_bf16.safetensors"
-# RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/clip/qwen_2.5_vl_7b.safetensors "https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b.safetensors"
+# Устанавливаем зависимости
+RUN uv pip install --no-cache-dir huggingface_hub hf-transfer requests
 
-# Download UNET&CLIP fp8 model (using correct URL structure)
-RUN python -m huggingface_hub download lightx2v/Qwen-Image-Lightning \
-    Qwen-Image-Edit-2509/qwen_image_edit_2509_fp8_e4m3fn_scaled.safetensors \
-    --local-dir models/unet --local-dir-use-symlinks False
-
-RUN python -m huggingface_hub download Comfy-Org/z_image_turbo \
-    split_files/diffusion_models/z_image_turbo_bf16.safetensors \
-    --local-dir models/unet --local-dir-use-symlinks False
-
-RUN python -m huggingface_hub download Comfy-Org/Qwen-Image_ComfyUI \
-    split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors \
-    --local-dir models/clip --local-dir-use-symlinks False
-
-RUN python -m huggingface_hub download Comfy-Org/z_image_turbo \
-    split_files/text_encoders/qwen_3_4b.safetensors \
-    --local-dir models/clip --local-dir-use-symlinks False
-
-# Download VAE model (using correct URL structure)
-RUN python -m huggingface_hub download Comfy-Org/Qwen-Image_ComfyUI \
-    split_files/vae/qwen_image_vae.safetensors \
-    --local-dir models/vae --local-dir-use-symlinks False
-
-RUN python -m huggingface_hub download Comfy-Org/z_image_turbo \
-    split_files/vae/ae.safetensors \
-    --local-dir models/vae --local-dir-use-symlinks False
-
-# Download LoRA model (public file, no auth needed)
-RUN python -m huggingface_hub download lightx2v/Qwen-Image-Lightning \
-    Qwen-Image-Edit-2509/Qwen-Image-Edit-2509-Lightning-8steps-V1.0-bf16.safetensors \
-    --local-dir models/loras --local-dir-use-symlinks False
-
-RUN python -m huggingface_hub download lightx2v/Qwen-Image-Lightning \
-    Qwen-Image-Edit-2509/Qwen-Image-Edit-2509-Lightning-4steps-V1.0-bf16.safetensors \
-    --local-dir models/loras --local-dir-use-symlinks False
-
-RUN wget -q -O models/loras/Qwen-Image-Analog-v1.1.safetensors "https://studio.swapify.link/assets/Qwen-Image-Analog-v1.1.safetensors"
-RUN wget -q -O models/loras/lenovo.safetensors "https://studio.swapify.link/assets/lenovo.safetensors"
-
-RUN python -m huggingface_hub download valiantcat/Qwen-Image-Edit-2509-photous \
-    QwenEdit2509_photous_000010000.safetensors \
-    --local-dir models/loras --local-dir-use-symlinks False
-
-RUN python -m huggingface_hub download tlennon-ie/qwen-edit-skin \
-    qwen-edit-skin_1.1_000002750.safetensors \
-    --local-dir models/loras --local-dir-use-symlinks False
-
-# Download upscale model (4xLSDIR.pth)
-RUN python -m huggingface_hub download wavespeed/misc \
-    upscalers/4xLSDIR.pth \
-    --local-dir models/upscale_models --local-dir-use-symlinks False
-
-# Download ReActor models
-RUN echo "Downloading ReActor models..."
-# Download inswapper model for face swapping
-RUN wget -q -O models/insightface/inswapper_128.onnx "https://app.swapify.link/assets/inswapper_128.onnx"
-# Download detection model for face detection
-RUN wget -q -O models/facedetection/detection_Resnet50_Final.pth "https://app.swapify.link/assets/detection_Resnet50_Final.pth"
-# Download GFPGAN model for face restoration
-RUN wget -q -O models/facerestore_models/GFPGANv1.4.pth "https://app.swapify.link/assets/GFPGANv1.4.pth"
-
-# Download NSFW detector models
-RUN echo "Downloading NSFW detector models..."
-RUN mkdir -p models/nsfw_detector/vit-base-nsfw-detector
-RUN python -m huggingface_hub download AdamCodd/vit-base-nsfw-detector \
-    --local-dir models/nsfw_detector/vit-base-nsfw-detector \
-    --local-dir-use-symlinks False
-
-# Download additional ReActor models
-RUN echo "Downloading additional ReActor models..."
-# Create insightface models directory
-RUN mkdir -p models/insightface/models
-# Download buffalo_l model files directly from Swapify server
-RUN mkdir -p models/insightface/models/buffalo_l
-RUN wget -q -O models/insightface/models/buffalo_l/1k3d68.onnx "https://app.swapify.link/assets/buffalo_l/1k3d68.onnx"
-RUN wget -q -O models/insightface/models/buffalo_l/2d106det.onnx "https://app.swapify.link/assets/buffalo_l/2d106det.onnx"
-RUN wget -q -O models/insightface/models/buffalo_l/det_10g.onnx "https://app.swapify.link/assets/buffalo_l/det_10g.onnx"
-RUN wget -q -O models/insightface/models/buffalo_l/genderage.onnx "https://app.swapify.link/assets/buffalo_l/genderage.onnx"
-RUN wget -q -O models/insightface/models/buffalo_l/w600k_r50.onnx "https://app.swapify.link/assets/buffalo_l/w600k_r50.onnx"
-# Download parsing_parsenet.pth (face parsing model)
-RUN wget -q -O models/facedetection/parsing_parsenet.pth "https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/parsing_parsenet.pth"
-
-# Download YOLO models for detection and segmentation
-RUN echo "Downloading YOLO models for detection and segmentation..."
-RUN mkdir -p models/ultralytics/bbox models/ultralytics/segm
-RUN wget -q -O models/ultralytics/bbox/face_yolov8m.pt "https://app.swapify.link/assets/face_yolov8m.pt"
-RUN wget -q -O models/ultralytics/bbox/hand_yolov8s.pt "https://app.swapify.link/assets/hand_yolov8s.pt"
-RUN wget -q -O models/ultralytics/segm/person_yolov8m-seg.pt "https://app.swapify.link/assets/person_yolov8m-seg.pt"
-
-# Download additional models from the A1111 list adapted for ComfyUI
-RUN echo "Downloading main generation models..."
-RUN python -m huggingface_hub download IgorGent/pony \
-    cyberrealisticPony_v141.safetensors \
-    --local-dir models/checkpoints --local-dir-use-symlinks False
-
-RUN python -m huggingface_hub download IgorGent/pony \
-    "cyberrealisticPony_v141 (1).safetensors" \
-    --local-dir models/checkpoints --local-dir-use-symlinks False
-
-RUN python -m huggingface_hub download IgorGent/pony \
-    cyberrealisticPony_v150bf16.safetensors \
-    --local-dir models/checkpoints --local-dir-use-symlinks False
-
-RUN python -m huggingface_hub download IgorGent/pony \
-    cyberrealisticPony_v150.safetensors \
-    --local-dir models/checkpoints --local-dir-use-symlinks False
-
-RUN echo "Downloading ControlNet and related models..."
-RUN python -m huggingface_hub download IgorGent/pony \
-    ip-adapter-faceid-plusv2_sdxl.bin \
-    --local-dir models/controlnet --local-dir-use-symlinks False
-
-RUN python -m huggingface_hub download IgorGent/pony \
-    ip-adapter-faceid-plusv2_sdxl_lora.safetensors \
-    --local-dir models/loras --local-dir-use-symlinks False
-
-RUN python -m huggingface_hub download IgorGent/pony \
-    ip-adapter-plus-face_sdxl_vit-h.safetensors \
-    --local-dir models/controlnet --local-dir-use-symlinks False
-
-RUN python -m huggingface_hub download IgorGent/pony \
-    "ip-adapter-plus_sdxl_vit-h (1).safetensors" \
-    --local-dir models/controlnet --local-dir-use-symlinks False
-
-RUN python -m huggingface_hub download IgorGent/pony \
-    "ip-adapter_sdxl_vit-h (1).safetensors" \
-    --local-dir models/controlnet --local-dir-use-symlinks False
-
-RUN python -m huggingface_hub download IgorGent/pony \
-    clip_h.pth \
-    --local-dir models/clip_vision --local-dir-use-symlinks False
-
-RUN python -m huggingface_hub download IgorGent/pony \
-    ip_adapter_instant_id_sdxl.bin \
-    --local-dir models/controlnet --local-dir-use-symlinks False
-
-RUN python -m huggingface_hub download IgorGent/pony \
-    control_instant_id_sdxl.safetensors \
-    --local-dir models/controlnet --local-dir-use-symlinks False
-
-RUN echo "Downloading insightface antelopev2 models..."
-RUN mkdir -p models/insightface/models/antelopev2
-RUN python -m huggingface_hub download IgorGent/pony \
-    --local-dir models/insightface/models/antelopev2 \
-    --local-dir-use-symlinks False \
-    --include "1k3d68.onnx" \
-    --include "2d106det.onnx" \
-    --include "genderage.onnx" \
-    --include "glintr100.onnx" \
-    --include "scrfd_10g_bnkps.onnx"
-
-RUN echo "Downloading CodeFormer and GFPGAN models..."
-RUN python -m huggingface_hub download IgorGent/pony \
-    --local-dir models/codeformer \
-    --local-dir-use-symlinks False \
-    --include "codeformer*.pth"
-
-RUN python -m huggingface_hub download IgorGent/pony \
-    --local-dir models/facedetection \
-    --local-dir-use-symlinks False \
-    --include "parsing_*.pth"
-
-RUN echo "Downloading A-Detailer models..."
-RUN python -m huggingface_hub download IgorGent/pony \
-    --local-dir models/adetailer \
-    --local-dir-use-symlinks False \
-    --include "A-Detailer/*.pt"
-
-
-# Verify ReActor models were downloaded
-RUN echo "Verifying ReActor models..."
-RUN ls -la models/insightface/ || echo "No models found in models/insightface"
-RUN ls -la models/insightface/models/ || echo "No models found in models/insightface/models"
-RUN ls -la models/facedetection/ || echo "No models found in models/facedetection"
-RUN ls -la models/facerestore_models/ || echo "No models found in models/facerestore_models"
-RUN ls -la models/nsfw_detector/ || echo "No models found in models/nsfw_detector"
-RUN ls -la models/nsfw_detector/vit-base-nsfw-detector/ || echo "No models found in models/nsfw_detector/vit-base-nsfw-detector"
-RUN ls -la models/clip_vision/ || echo "No models found in models/clip_vision"
-RUN ls -la models/clip_interrogator/ || echo "No models found in models/clip_interrogator"
-RUN ls -la models/prompt_generator/ || echo "No models found in models/prompt_generator"
-RUN if [ -f "models/insightface/inswapper_128.onnx" ]; then echo "inswapper_128.onnx downloaded successfully"; else echo "inswapper_128.onnx download failed"; fi
-RUN if [ -f "models/insightface/models/buffalo_l/1k3d68.onnx" ]; then echo "buffalo_l model downloaded successfully"; else echo "buffalo_l model download failed"; fi
-RUN if [ -f "models/facedetection/detection_Resnet50_Final.pth" ]; then echo "detection_Resnet50_Final.pth downloaded successfully"; else echo "detection_Resnet50_Final.pth download failed"; fi
-RUN if [ -f "models/facedetection/parsing_parsenet.pth" ]; then echo "parsing_parsenet.pth downloaded successfully"; else echo "parsing_parsenet.pth download failed"; fi
-RUN if [ -f "models/facerestore_models/GFPGANv1.4.pth" ]; then echo "GFPGANv1.4.pth downloaded successfully"; else echo "GFPGANv1.4.pth download failed"; fi
-RUN if [ -f "models/nsfw_detector/vit-base-nsfw-detector/model.safetensors" ]; then echo "NSFW detector model downloaded successfully"; else echo "NSFW detector model download failed"; fi
-RUN if [ -f "models/ultralytics/bbox/face_yolov8m.pt" ]; then echo "YOLO face detection model downloaded successfully"; else echo "YOLO face detection model download failed"; fi
-RUN if [ -f "models/ultralytics/bbox/hand_yolov8s.pt" ]; then echo "YOLO hand detection model downloaded successfully"; else echo "YOLO hand detection model download failed"; fi
-RUN if [ -f "models/ultralytics/segm/person_yolov8m-seg.pt" ]; then echo "YOLO person segmentation model downloaded successfully"; else echo "YOLO person segmentation model download failed"; fi
+# Запускаем скачивание всех моделей одним RUN
+RUN python /download_models.py
 
 # Copy Eyes.pt file if it exists
 COPY Eyes.pt /Eyes.pt
