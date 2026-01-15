@@ -8,9 +8,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     software-properties-common \
     && add-apt-repository ppa:deadsnakes/ppa \
     && apt-get update && apt-get install -y --no-install-recommends \
-    python3.11 \
-    python3.11-venv \
-    python3.11-dev \
+    python3.10 \
+    python3.10-venv \
+    python3.10-dev \
     python3-pip \
     git \
     build-essential \
@@ -33,7 +33,7 @@ RUN pip install uv
 
 # create venv
 ENV PATH="/.venv/bin:${PATH}"
-RUN uv venv --python 3.11 /.venv
+RUN uv venv --python 3.10 /.venv
 
 # install dependencies
 RUN uv pip install --no-cache-dir \
@@ -44,6 +44,7 @@ RUN uv pip install --no-cache-dir \
 COPY requirements.txt /requirements.txt
 RUN uv pip install -r /requirements.txt
 
+RUN uv pip install xformers
 RUN uv pip install runpod==1.7.9
 RUN uv pip install pytorch_lightning==1.7.7
 RUN uv pip install torchmetrics==0.11.4 --no-deps
