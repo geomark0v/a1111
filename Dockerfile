@@ -62,7 +62,7 @@ RUN uv pip install comfy-cli pip setuptools wheel
 #    fi
 
 # Вместо этого — прямая установка (самый стабильный способ в 2026)
-RUN git clone https://github.com/comfyanonymous/ComfyUI.git /comfyui && \
+RUN git clone https://github.com/Comfy-Org/ComfyUI /comfyui && \
     cd /comfyui && \
     uv pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu121 && \
     # Если нужен ночной/форк — меняем здесь ссылку
