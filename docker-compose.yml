@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  qwen-image-edit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        HUGGINGFACE_ACCESS_TOKEN: ${HUGGINGFACE_ACCESS_TOKEN:-}
+        MODEL_TYPE: qwen-image-edit
+    ports:
+      - "8188:8188"
+    environment:
+      - COMFY_LOG_LEVEL=DEBUG
+      - SERVE_API_LOCALLY=true
+      - REFRESH_WORKER=false
+      - WEBSOCKET_RECONNECT_ATTEMPTS=5
+      - WEBSOCKET_RECONNECT_DELAY_S=3
+      - WEBSOCKET_TRACE=false
+    volumes:
+      - ./workflows:/comfyui/workflows
+      - ./models:/comfyui/models
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped

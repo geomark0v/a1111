@@ -1,0 +1,500 @@
+2025-10-12  22:58:10.421 | info | zx1f41ul8llek8 | FETCH ComfyRegistry Data: 65/99\n
+2025-10-12  22:58:06.182 | info | zx1f41ul8llek8 | FETCH ComfyRegistry Data: 60/99\n
+2025-10-12  22:58:05.235 | info | zx1f41ul8llek8 | worker-qwen-image-edit - Execution finished for prompt a114235f-c21f-4f06-9275-8e001aee168c\n
+2025-10-12  22:58:04.916 | info | zx1f41ul8llek8 | Event before-parse.s3.PutObject: calling handler <function handle_expires_header at 0x79cad2111940>\n
+2025-10-12  22:58:04.916 | info | zx1f41ul8llek8 | Event before-parse.s3.PutObject: calling handler <function _handle_200_error at 0x79cad2111b20>\n
+2025-10-12  22:58:04.530 | info | zx1f41ul8llek8 | Event before-call.s3.PutObject: calling handler <function add_recursion_detection_header at 0x79cad20e6480>\n
+2025-10-12  22:58:04.530 | info | zx1f41ul8llek8 | Event before-call.s3.PutObject: calling handler <bound method S3ExpressIdentityResolver.apply_signing_cache_key of <botocore.utils.S3ExpressIdentityResolver object at 0x79cabd272a50>>\n
+2025-10-12  22:58:04.530 | info | zx1f41ul8llek8 | Adding expect 100 continue header to request.\n
+2025-10-12  22:58:04.530 | info | zx1f41ul8llek8 | Event before-call.s3.PutObject: calling handler <function add_expect_header at 0x79cad20e76a0>\n
+2025-10-12  22:58:04.530 | info | zx1f41ul8llek8 | Selected auth type "v4" as "v4" with signing context params: {'region': 'us-east-1', 'signing_name': 's3', 'disableDoubleEncoding': True}\n
+2025-10-12  22:58:04.530 | info | zx1f41ul8llek8 | Selecting from endpoint provider's list of auth schemes: "sigv4". User selected auth scheme is: "None"\n
+2025-10-12  22:58:04.530 | info | zx1f41ul8llek8 | Endpoint provider result: https://437fbe75131d306865fef83015b8a764.r2.cloudflarestorage.com/studio\n
+2025-10-12  22:58:04.530 | info | zx1f41ul8llek8 | Calling endpoint provider with parameters: {'Bucket': 'studio', 'Region': 'us-east-1', 'UseFIPS': False, 'UseDualStack': False, 'Endpoint': 'https://437fbe75131d306865fef83015b8a764.r2.cloudflarestorage.com', 'ForcePathStyle': True, 'Accelerate': False, 'UseGlobalEndpoint': True, 'Key': 'generations/roman/face1_0.jpg', 'DisableMultiRegionAccessPoints': False, 'UseArnRegion': True}\n
+2025-10-12  22:58:04.530 | info | zx1f41ul8llek8 | Event before-endpoint-resolution.s3: calling handler <bound method S3RegionRedirectorv2.redirect_from_cache of <botocore.utils.S3RegionRedirectorv2 object at 0x79cabd146210>>\n
+2025-10-12  22:58:04.530 | info | zx1f41ul8llek8 | Event before-endpoint-resolution.s3: calling handler <function customize_endpoint_resolver_builtins at 0x79cad2111800>\n
+2025-10-12  22:58:04.530 | info | zx1f41ul8llek8 | Event before-parameter-build.s3.PutObject: calling handler <function _handle_request_validation_mode_member at 0x79cad2111d00>\n
+2025-10-12  22:58:04.530 | info | zx1f41ul8llek8 | Event before-parameter-build.s3.PutObject: calling handler <function generate_idempotent_uuid at 0x79cad20e7100>\n
+2025-10-12  22:58:04.530 | info | zx1f41ul8llek8 | Event before-parameter-build.s3.PutObject: calling handler <bound method ClientCreator._inject_s3_input_parameters of <botocore.client.ClientCreator object at 0x79cabd146930>>\n
+2025-10-12  22:58:04.530 | info | zx1f41ul8llek8 | Event before-parameter-build.s3.PutObject: calling handler <bound method S3RegionRedirectorv2.annotate_request_context of <botocore.utils.S3RegionRedirectorv2 object at 0x79cabd146210>>\n
+2025-10-12  22:58:04.530 | info | zx1f41ul8llek8 | Event before-parameter-build.s3.PutObject: calling handler <function remove_bucket_from_url_paths_from_model at 0x79cad2111620>\n
+2025-10-12  22:58:04.530 | info | zx1f41ul8llek8 | Event before-parameter-build.s3.PutObject: calling handler <function validate_bucket_name at 0x79cad20e72e0>\n
+2025-10-12  22:58:04.530 | info | zx1f41ul8llek8 | Event before-parameter-build.s3.PutObject: calling handler <function convert_body_to_file_like_object at 0x79cad2110ae0>\n
+2025-10-12  22:58:04.530 | info | zx1f41ul8llek8 | Event before-parameter-build.s3.PutObject: calling handler <function sse_md5 at 0x79cad20e7380>\n
+2025-10-12  22:58:04.530 | info | zx1f41ul8llek8 | Event before-parameter-build.s3.PutObject: calling handler <function validate_ascii_metadata at 0x79cad21100e0>\n
+2025-10-12  22:58:02.700 | info | zx1f41ul8llek8 | Размер данных изображения (JPG): 341446 байт\n
+2025-10-12  22:58:02.700 | info | zx1f41ul8llek8 | Registering S3Express Identity Resolver\n
+2025-10-12  22:58:02.700 | info | zx1f41ul8llek8 | Registering S3 region redirector handler\n
+2025-10-12  22:58:02.700 | info | zx1f41ul8llek8 | Registering retry handlers for service: s3\n
+2025-10-12  22:58:02.700 | info | zx1f41ul8llek8 | Loading JSON file: /opt/venv/lib/python3.12/site-packages/botocore/data/_retry.json\n
+2025-10-12  22:58:02.700 | info | zx1f41ul8llek8 | Setting s3 timeout as (60, 60)\n
+2025-10-12  22:58:02.700 | info | zx1f41ul8llek8 | Event creating-client-class.s3: calling handler <function add_generate_presigned_url at 0x79cad205fd80>\n
+2025-10-12  22:58:02.700 | info | zx1f41ul8llek8 | Event creating-client-class.s3: calling handler <function lazy_call.<locals>._handler at 0x79cabd002de0>\n
+2025-10-12  22:58:02.700 | info | zx1f41ul8llek8 | Event creating-client-class.s3: calling handler <function add_generate_presigned_post at 0x79cad2074040>\n
+2025-10-12  22:58:02.700 | info | zx1f41ul8llek8 | Loading JSON file: /opt/venv/lib/python3.12/site-packages/botocore/data/partitions.json\n
+2025-10-12  22:58:02.700 | info | zx1f41ul8llek8 | Loading JSON file: /opt/venv/lib/python3.12/site-packages/botocore/data/s3/2006-03-01/endpoint-rule-set-1.json.gz\n
+2025-10-12  22:58:02.700 | info | zx1f41ul8llek8 | Loading JSON file: /opt/venv/lib/python3.12/site-packages/botocore/data/s3/2006-03-01/service-2.sdk-extras.json\n
+2025-10-12  22:58:02.700 | info | zx1f41ul8llek8 | Loading JSON file: /opt/venv/lib/python3.12/site-packages/botocore/data/s3/2006-03-01/service-2.json.gz\n
+2025-10-12  22:58:02.700 | info | zx1f41ul8llek8 | Event choose-service-name: calling handler <function handle_service_name_alias at 0x79cad20e54e0>\n
+2025-10-12  22:58:02.699 | info | zx1f41ul8llek8 | Loading JSON file: /opt/venv/lib/python3.12/site-packages/botocore/data/sdk-default-configuration.json\n
+2025-10-12  22:58:02.699 | info | zx1f41ul8llek8 | Loading JSON file: /opt/venv/lib/python3.12/site-packages/botocore/data/endpoints.json\n
+2025-10-12  22:58:02.699 | info | zx1f41ul8llek8 | Changing event name from docs.*.cloudsearchdomain.Search.complete-section to docs.*.cloudsearch-domain.Search.complete-section\n
+2025-10-12  22:58:02.699 | info | zx1f41ul8llek8 | Changing event name from before-parameter-build.cloudsearchdomain.Search to before-parameter-build.cloudsearch-domain.Search\n
+2025-10-12  22:58:02.699 | info | zx1f41ul8llek8 | Changing event name from docs.*.logs.CreateExportTask.complete-section to docs.*.cloudwatch-logs.CreateExportTask.complete-section\n
+2025-10-12  22:58:02.699 | info | zx1f41ul8llek8 | Changing event name from before-parameter-build.logs.CreateExportTask to before-parameter-build.cloudwatch-logs.CreateExportTask\n
+2025-10-12  22:58:02.699 | info | zx1f41ul8llek8 | Changing event name from docs.*.autoscaling.CreateLaunchConfiguration.complete-section to docs.*.auto-scaling.CreateLaunchConfiguration.complete-section\n
+2025-10-12  22:58:02.699 | info | zx1f41ul8llek8 | Changing event name from request-created.cloudsearchdomain.Search to request-created.cloudsearch-domain.Search\n
+2025-10-12  22:58:02.699 | info | zx1f41ul8llek8 | Changing event name from before-parameter-build.route53 to before-parameter-build.route-53\n
+2025-10-12  22:58:02.699 | info | zx1f41ul8llek8 | Changing event name from before-parameter-build.autoscaling.CreateLaunchConfiguration to before-parameter-build.auto-scaling.CreateLaunchConfiguration\n
+2025-10-12  22:58:02.699 | info | zx1f41ul8llek8 | Changing event name from request-created.machinelearning.Predict to request-created.machine-learning.Predict\n
+2025-10-12  22:58:02.699 | info | zx1f41ul8llek8 | Changing event name from before-call.apigateway to before-call.api-gateway\n
+2025-10-12  22:58:02.699 | info | zx1f41ul8llek8 | Changing event name from creating-client-class.iot-data to creating-client-class.iot-data-plane\n
+2025-10-12  22:58:02.584 | info | zx1f41ul8llek8 | # 😺dzNodes: LayerStyle -> [1;32mFilmV2 Processed 1 image(s).[m\n
+2025-10-12  22:58:01.677 | info | zx1f41ul8llek8 | FETCH ComfyRegistry Data: 55/99\n
+2025-10-12  22:58:00.875 | info | zx1f41ul8llek8 | Making RGB grain, width: 666, height: 1000, saturation: 0.5, grain-size: 1.5, power: 50, seed: 1760281079\n
+2025-10-12  22:58:00.875 | info | zx1f41ul8llek8 | [ReActor] 14:57:57 - [38;5;173mSTATUS[0m - Restoring with GFPGANv1.4.pth | Face Size is set to 512\n
+2025-10-12  22:57:57.958 | info | zx1f41ul8llek8 | [ReActor] 14:57:57 - [38;5;173mSTATUS[0m - --Done!--\n
+2025-10-12  22:57:57.840 | info | zx1f41ul8llek8 | [ReActor] 14:57:57 - [38;5;173mSTATUS[0m - Swapping...\n
+2025-10-12  22:57:57.458 | info | zx1f41ul8llek8 | FETCH ComfyRegistry Data: 50/99\n
+2025-10-12  22:57:56.429 | info | zx1f41ul8llek8 | [ReActor] 14:57:56 - [38;5;173mSTATUS[0m - Analyzing Target Image...\n
+2025-10-12  22:57:56.429 | info | zx1f41ul8llek8 | [ReActor] 14:57:53 - [38;5;173mSTATUS[0m - Analyzing Source Image...\n
+2025-10-12  22:57:53.637 | info | zx1f41ul8llek8 | [ReActor] 14:57:53 - [38;5;173mSTATUS[0m - Working: source face index [0], target face index [0]\n
+2025-10-12  22:57:53.637 | info | zx1f41ul8llek8 | STREAM b'IDAT' 41 65536\n
+2025-10-12  22:57:53.637 | info | zx1f41ul8llek8 | STREAM b'IHDR' 16 13\n
+2025-10-12  22:57:53.431 | info | zx1f41ul8llek8 | [ReActor] 14:57:53 - [38;5;173mSTATUS[0m - Ensuring NSFW detection model exists...\n
+2025-10-12  22:57:52.916 | info | zx1f41ul8llek8 | FETCH ComfyRegistry Data: 45/99\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.29.txt_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.29.txt_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.29.img_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.29.img_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.28.txt_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.28.txt_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.28.img_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.28.img_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.27.txt_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.27.txt_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.27.img_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.27.img_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.26.txt_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.26.txt_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.26.img_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.26.img_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.25.txt_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.25.txt_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.25.img_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.25.img_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.24.txt_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.24.txt_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.24.img_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.24.img_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.23.txt_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.23.txt_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.23.img_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.23.img_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.22.txt_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.22.txt_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.22.img_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.22.img_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.21.txt_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.21.txt_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.21.img_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.21.img_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.20.txt_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.20.txt_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.20.img_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.20.img_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.2.txt_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.2.txt_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.2.img_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.2.img_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.19.txt_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.19.txt_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.19.img_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.19.img_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.18.txt_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.18.txt_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.18.img_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.18.img_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.17.txt_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.17.txt_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.17.img_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.17.img_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.16.txt_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.16.txt_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.16.img_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.16.img_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.15.txt_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.15.txt_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.15.img_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.15.img_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.14.txt_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.14.txt_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.14.img_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.14.img_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.13.txt_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.13.txt_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.13.img_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.13.img_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.12.txt_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.12.txt_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.12.img_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.12.img_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.11.txt_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.11.txt_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.11.img_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.11.img_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.10.txt_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.10.txt_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.10.img_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.10.img_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.1.txt_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.1.txt_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.1.img_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.1.img_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.0.txt_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.0.txt_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.0.img_norm2\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.transformer_blocks.0.img_norm1\n
+2025-10-12  22:57:52.584 | info | zx1f41ul8llek8 | freed diffusion_model.norm_out.norm\n
+2025-10-12  22:57:51.721 | info | zx1f41ul8llek8 | Unloading QwenImage\n
+2025-10-12  22:57:49.079 | info | zx1f41ul8llek8 | FETCH ComfyRegistry Data: 40/99\n
+2025-10-12  22:57:47.668 | info | zx1f41ul8llek8 | Unloading QwenImageTEModel_\n
+2025-10-12  22:57:47.206 | info | zx1f41ul8llek8 | \r  0%|          | 0/6 [00:00<?, ?it/s]\r 17%|█▋        | 1/6 [00:02<00:14,  2.83s/it]\r 33%|███▎      | 2/6 [00:05<00:11,  2.93s/it]\r 50%|█████     | 3/6 [00:08<00:08,  2.98s/it]\r 67%|██████▋   | 4/6 [00:11<00:06,  3.00s/it]\r 83%|████████▎ | 5/6 [00:14<00:03,  3.02s/it]\r100%|██████████| 6/6 [00:18<00:00,  3.04s/it]\r100%|██████████| 6/6 [00:18<00:00,  3.00s/it]\n
+2025-10-12  22:57:44.788 | info | zx1f41ul8llek8 | FETCH ComfyRegistry Data: 35/99\n
+2025-10-12  22:57:40.824 | info | zx1f41ul8llek8 | FETCH ComfyRegistry Data: 30/99\n
+2025-10-12  22:57:36.734 | info | zx1f41ul8llek8 | FETCH ComfyRegistry Data: 25/99\n
+2025-10-12  22:57:32.549 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.7.attn.norm_added_k RMSNorm((128,), eps=1e-06, elementwise_affine=True)\n
+2025-10-12  22:57:32.549 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.7.attn.norm_added_q RMSNorm((128,), eps=1e-06, elementwise_affine=True)\n
+2025-10-12  22:57:32.549 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.7.attn.norm_k RMSNorm((128,), eps=1e-06, elementwise_affine=True)\n
+2025-10-12  22:57:32.549 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.7.attn.norm_q RMSNorm((128,), eps=1e-06, elementwise_affine=True)\n
+2025-10-12  22:57:32.549 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.8.attn.norm_added_k RMSNorm((128,), eps=1e-06, elementwise_affine=True)\n
+2025-10-12  22:57:32.549 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.8.attn.norm_added_q RMSNorm((128,), eps=1e-06, elementwise_affine=True)\n
+2025-10-12  22:57:32.548 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.8.attn.norm_k RMSNorm((128,), eps=1e-06, elementwise_affine=True)\n
+2025-10-12  22:57:32.548 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.8.attn.norm_q RMSNorm((128,), eps=1e-06, elementwise_affine=True)\n
+2025-10-12  22:57:32.548 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.9.attn.norm_added_k RMSNorm((128,), eps=1e-06, elementwise_affine=True)\n
+2025-10-12  22:57:32.548 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.9.attn.norm_added_q RMSNorm((128,), eps=1e-06, elementwise_affine=True)\n
+2025-10-12  22:57:32.548 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.9.attn.norm_k RMSNorm((128,), eps=1e-06, elementwise_affine=True)\n
+2025-10-12  22:57:32.548 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.9.attn.norm_q RMSNorm((128,), eps=1e-06, elementwise_affine=True)\n
+2025-10-12  22:57:32.548 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.txt_norm RMSNorm((3584,), eps=1e-06, elementwise_affine=True)\n
+2025-10-12  22:57:32.548 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.proj_out Linear(in_features=3072, out_features=64, bias=True)\n
+2025-10-12  22:57:32.548 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.img_in Linear(in_features=64, out_features=3072, bias=True)\n
+2025-10-12  22:57:32.548 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.time_text_embed.timestep_embedder.linear_1 Linear(in_features=256, out_features=3072, bias=True)\n
+2025-10-12  22:57:32.548 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.time_text_embed.timestep_embedder.linear_2 Linear(in_features=3072, out_features=3072, bias=True)\n
+2025-10-12  22:57:29.120 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.14.attn.to_k Linear(in_features=3072, out_features=3072, bias=True)\n
+2025-10-12  22:57:28.918 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.26.attn.to_out.0 Linear(in_features=3072, out_features=3072, bias=True)\n
+2025-10-12  22:57:28.715 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.39.attn.add_q_proj Linear(in_features=3072, out_features=3072, bias=True)\n
+2025-10-12  22:57:28.514 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.50.attn.add_v_proj Linear(in_features=3072, out_features=3072, bias=True)\n
+2025-10-12  22:57:28.311 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.9.attn.to_q Linear(in_features=3072, out_features=3072, bias=True)\n
+2025-10-12  22:57:28.104 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.19.img_mlp.net.2 Linear(in_features=12288, out_features=3072, bias=True)\n
+2025-10-12  22:57:27.996 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.24.img_mlp.net.2 Linear(in_features=12288, out_features=3072, bias=True)\n
+2025-10-12  22:57:27.780 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.35.img_mlp.net.2 Linear(in_features=12288, out_features=3072, bias=True)\n
+2025-10-12  22:57:27.566 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.46.img_mlp.net.2 Linear(in_features=12288, out_features=3072, bias=True)\n
+2025-10-12  22:57:27.351 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.56.txt_mlp.net.2 Linear(in_features=12288, out_features=3072, bias=True)\n
+2025-10-12  22:57:27.142 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.12.txt_mlp.net.0.proj Linear(in_features=3072, out_features=12288, bias=True)\n
+2025-10-12  22:57:26.926 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.23.txt_mlp.net.0.proj Linear(in_features=3072, out_features=12288, bias=True)\n
+2025-10-12  22:57:26.710 | info | zx1f41ul8llek8 | lowvram: loaded module regularly diffusion_model.transformer_blocks.34.txt_mlp.net.0.proj Linear(in_features=3072, out_features=12288, bias=True)\n
+2025-10-12  22:57:26.501 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.12.mlp.up_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.501 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.13.mlp.down_proj Linear(in_features=18944, out_features=3584, bias=False)\n
+2025-10-12  22:57:26.501 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.13.mlp.gate_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.501 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.13.mlp.up_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.501 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.14.mlp.down_proj Linear(in_features=18944, out_features=3584, bias=False)\n
+2025-10-12  22:57:26.501 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.14.mlp.gate_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.501 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.14.mlp.up_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.501 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.15.mlp.down_proj Linear(in_features=18944, out_features=3584, bias=False)\n
+2025-10-12  22:57:26.501 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.15.mlp.gate_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.501 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.15.mlp.up_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.16.mlp.down_proj Linear(in_features=18944, out_features=3584, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.16.mlp.gate_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.16.mlp.up_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.17.mlp.down_proj Linear(in_features=18944, out_features=3584, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.17.mlp.gate_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.17.mlp.up_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.18.mlp.down_proj Linear(in_features=18944, out_features=3584, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.18.mlp.gate_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.18.mlp.up_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.19.mlp.down_proj Linear(in_features=18944, out_features=3584, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.19.mlp.gate_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.19.mlp.up_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.2.mlp.down_proj Linear(in_features=18944, out_features=3584, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.2.mlp.gate_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.2.mlp.up_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.20.mlp.down_proj Linear(in_features=18944, out_features=3584, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.20.mlp.gate_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.20.mlp.up_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.21.mlp.down_proj Linear(in_features=18944, out_features=3584, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.21.mlp.gate_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.21.mlp.up_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.22.mlp.down_proj Linear(in_features=18944, out_features=3584, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.22.mlp.gate_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.22.mlp.up_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.23.mlp.down_proj Linear(in_features=18944, out_features=3584, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.23.mlp.gate_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.23.mlp.up_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.24.mlp.down_proj Linear(in_features=18944, out_features=3584, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.24.mlp.gate_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.24.mlp.up_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.25.mlp.down_proj Linear(in_features=18944, out_features=3584, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.25.mlp.gate_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.25.mlp.up_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.26.mlp.down_proj Linear(in_features=18944, out_features=3584, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.26.mlp.gate_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.26.mlp.up_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.27.mlp.down_proj Linear(in_features=18944, out_features=3584, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.27.mlp.gate_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.27.mlp.up_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.3.mlp.down_proj Linear(in_features=18944, out_features=3584, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.3.mlp.gate_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.3.mlp.up_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.4.mlp.down_proj Linear(in_features=18944, out_features=3584, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.4.mlp.gate_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.4.mlp.up_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.5.mlp.down_proj Linear(in_features=18944, out_features=3584, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.5.mlp.gate_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.5.mlp.up_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.6.mlp.down_proj Linear(in_features=18944, out_features=3584, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.6.mlp.gate_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.6.mlp.up_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.7.mlp.down_proj Linear(in_features=18944, out_features=3584, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.7.mlp.gate_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.7.mlp.up_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.8.mlp.down_proj Linear(in_features=18944, out_features=3584, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.8.mlp.gate_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.8.mlp.up_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.9.mlp.down_proj Linear(in_features=18944, out_features=3584, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.9.mlp.gate_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.layers.9.mlp.up_proj Linear(in_features=3584, out_features=18944, bias=False)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly qwen25_7b.transformer.model.embed_tokens Embedding(152064, 3584)\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | Requested to load QwenImageTEModel_\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | loaded completely 32684.275390625 242.02829551696777 True\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.head.0 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.12.residual.0 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.12.residual.3 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.13.residual.0 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.13.residual.3 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.14.residual.0 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.14.residual.3 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.0.residual.0 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.0.residual.3 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.1.residual.0 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.1.residual.3 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.3.residual.0 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.10.residual.0 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.10.residual.3 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.4.residual.0 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.8.residual.0 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.8.residual.3 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.9.residual.0 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.9.residual.3 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.3.residual.3 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.4.residual.0 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.4.residual.3 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.6.residual.0 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly conv2 CausalConv3d(16, 16, kernel_size=(1, 1, 1), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.middle.0.residual.0 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.middle.0.residual.3 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.middle.1.norm RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.middle.2.residual.0 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.middle.2.residual.3 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.0.residual.0 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.0.residual.3 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.1.residual.0 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.1.residual.3 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.2.residual.0 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.2.residual.3 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.4.residual.3 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.5.residual.0 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.5.residual.3 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.6.residual.0 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.6.residual.3 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.10.residual.0 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.10.residual.3 RMS_norm()\n
+2025-10-12  22:57:26.500 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.6.residual.3 RMS_norm()\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.7.residual.0 RMS_norm()\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.7.residual.3 RMS_norm()\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.9.residual.0 RMS_norm()\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.9.residual.3 RMS_norm()\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.head.0 RMS_norm()\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.middle.0.residual.0 RMS_norm()\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.middle.0.residual.3 RMS_norm()\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.middle.1.norm RMS_norm()\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.middle.2.residual.0 RMS_norm()\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.middle.2.residual.3 RMS_norm()\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly conv1 CausalConv3d(32, 32, kernel_size=(1, 1, 1), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.head.2 CausalConv3d(96, 3, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.conv1 CausalConv3d(3, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.3.shortcut CausalConv3d(96, 192, kernel_size=(1, 1, 1), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.4.shortcut CausalConv3d(192, 384, kernel_size=(1, 1, 1), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.6.shortcut CausalConv3d(192, 384, kernel_size=(1, 1, 1), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.2.resample.1 Conv2d(96, 96, kernel_size=(3, 3), stride=(2, 2))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.5.time_conv CausalConv3d(192, 192, kernel_size=(3, 1, 1), stride=(2, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.middle.1.proj Conv2d(384, 384, kernel_size=(1, 1), stride=(1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.middle.1.proj Conv2d(384, 384, kernel_size=(1, 1), stride=(1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.11.resample.1 Conv2d(192, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.conv1 CausalConv3d(16, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.12.residual.2 CausalConv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.12.residual.6 CausalConv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.13.residual.2 CausalConv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.13.residual.6 CausalConv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.14.residual.2 CausalConv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.14.residual.6 CausalConv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.0.residual.2 CausalConv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.0.residual.6 CausalConv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.1.residual.2 CausalConv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.1.residual.6 CausalConv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.head.2 CausalConv3d(384, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.5.resample.1 Conv2d(192, 192, kernel_size=(3, 3), stride=(2, 2))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.8.time_conv CausalConv3d(384, 384, kernel_size=(3, 1, 1), stride=(2, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.middle.1.to_qkv Conv2d(384, 1152, kernel_size=(1, 1), stride=(1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.middle.1.to_qkv Conv2d(384, 1152, kernel_size=(1, 1), stride=(1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.3.residual.2 CausalConv3d(96, 192, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.3.resample.1 Conv2d(384, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.7.resample.1 Conv2d(384, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.3.time_conv CausalConv3d(384, 768, kernel_size=(3, 1, 1), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.7.time_conv CausalConv3d(384, 768, kernel_size=(3, 1, 1), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.10.residual.2 CausalConv3d(192, 192, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.10.residual.6 CausalConv3d(192, 192, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.8.residual.2 CausalConv3d(192, 192, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.8.residual.6 CausalConv3d(192, 192, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.9.residual.2 CausalConv3d(192, 192, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.9.residual.6 CausalConv3d(192, 192, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.3.residual.6 CausalConv3d(192, 192, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.4.residual.2 CausalConv3d(192, 192, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.4.residual.6 CausalConv3d(192, 192, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.8.resample.1 Conv2d(384, 384, kernel_size=(3, 3), stride=(2, 2))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.4.residual.2 CausalConv3d(192, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.6.residual.2 CausalConv3d(192, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.middle.0.residual.2 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.middle.0.residual.6 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.middle.2.residual.2 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.middle.2.residual.6 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.0.residual.2 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.0.residual.6 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.1.residual.2 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.1.residual.6 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.2.residual.2 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.2.residual.6 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.4.residual.6 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.5.residual.2 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.5.residual.6 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.6.residual.2 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly decoder.upsamples.6.residual.6 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.10.residual.2 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.10.residual.6 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.6.residual.6 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.7.residual.2 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.7.residual.6 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.9.residual.2 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.downsamples.9.residual.6 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.middle.0.residual.2 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.middle.0.residual.6 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.middle.2.residual.2 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | lowvram: loaded module regularly encoder.middle.2.residual.6 CausalConv3d(384, 384, kernel_size=(3, 3, 3), stride=(1, 1, 1))\n
+2025-10-12  22:57:26.499 | info | zx1f41ul8llek8 | Requested to load WanVAE\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | clip unexpected: ['lm_head.weight', 'model.layers.0.self_attn.q_proj.scale_input', 'model.layers.0.self_attn.k_proj.scale_input', 'model.layers.0.self_attn.v_proj.scale_input', 'model.layers.0.self_attn.o_proj.scale_input', 'model.layers.0.mlp.gate_proj.scale_input', 'model.layers.0.mlp.up_proj.scale_input', 'model.layers.0.mlp.down_proj.scale_input', 'model.layers.1.self_attn.q_proj.scale_input', 'model.layers.1.self_attn.k_proj.scale_input', 'model.layers.1.self_attn.v_proj.scale_input', 'model.layers.1.self_attn.o_proj.scale_input', 'model.layers.1.mlp.gate_proj.scale_input', 'model.layers.1.mlp.up_proj.scale_input', 'model.layers.1.mlp.down_proj.scale_input', 'model.layers.2.self_attn.q_proj.scale_input', 'model.layers.2.self_attn.k_proj.scale_input', 'model.layers.2.self_attn.v_proj.scale_input', 'model.layers.2.self_attn.o_proj.scale_input', 'model.layers.2.mlp.gate_proj.scale_input', 'model.layers.2.mlp.up_proj.scale_input', 'model.layers.2.mlp.down_proj.scale_input', 'model.layers.3.self_attn.q_proj.scale_input', 'model.layers.3.self_attn.k_proj.scale_input', 'model.layers.3.self_attn.v_proj.scale_input', 'model.layers.3.self_attn.o_proj.scale_input', 'model.layers.3.mlp.gate_proj.scale_input', 'model.layers.3.mlp.up_proj.scale_input', 'model.layers.3.mlp.down_proj.scale_input', 'model.layers.4.self_attn.q_proj.scale_input', 'model.layers.4.self_attn.k_proj.scale_input', 'model.layers.4.self_attn.v_proj.scale_input', 'model.layers.4.self_attn.o_proj.scale_input', 'model.layers.4.mlp.gate_proj.scale_input', 'model.layers.4.mlp.up_proj.scale_input', 'model.layers.4.mlp.down_proj.scale_input', 'model.layers.5.self_attn.q_proj.scale_input', 'model.layers.5.self_attn.k_proj.scale_input', 'model.layers.5.self_attn.v_proj.scale_input', 'model.layers.5.self_attn.o_proj.scale_input', 'model.layers.5.mlp.gate_proj.scale_input', 'model.layers.5.mlp.up_proj.scale_input', 'model.layers.5.mlp.down_proj.scale_input', 'model.layers.6.self_attn.q_proj.scale_input', 'model.layers.6.self_attn.k_proj.scale_input', 'model.layers.6.self_attn.v_proj.scale_input', 'model.layers.6.self_attn.o_proj.scale_input', 'model.layers.6.mlp.gate_proj.scale_input', 'model.layers.6.mlp.up_proj.scale_input', 'model.layers.6.mlp.down_proj.scale_input', 'model.layers.7.self_attn.q_proj.scale_input', 'model.layers.7.self_attn.k_proj.scale_input', 'model.layers.7.self_attn.v_proj.scale_input', 'model.layers.7.self_attn.o_proj.scale_input', 'model.layers.7.mlp.gate_proj.scale_input', 'model.layers.7.mlp.up_proj.scale_input', 'model.layers.7.mlp.down_proj.scale_input', 'model.layers.8.self_attn.q_proj.scale_input', 'model.layers.8.self_attn.k_proj.scale_input', 'model.layers.8.self_attn.v_proj.scale_input', 'model.layers.8.self_attn.o_proj.scale_input', 'model.layers.8.mlp.gate_proj.scale_input', 'model.layers.8.mlp.up_proj.scale_input', 'model.layers.8.mlp.down_proj.scale_input', 'model.layers.9.self_attn.q_proj.scale_input', 'model.layers.9.self_attn.k_proj.scale_input', 'model.layers.9.self_attn.v_proj.scale_input', 'model.layers.9.self_attn.o_proj.scale_input', 'model.layers.9.mlp.gate_proj.scale_input', 'model.layers.9.mlp.up_proj.scale_input', 'model.layers.9.mlp.down_proj.scale_input', 'model.layers.10.self_attn.q_proj.scale_input', 'model.layers.10.self_attn.k_proj.scale_input', 'model.layers.10.self_attn.v_proj.scale_input', 'model.layers.10.self_attn.o_proj.scale_input', 'model.layers.10.mlp.gate_proj.scale_input', 'model.layers.10.mlp.up_proj.scale_input', 'model.layers.10.mlp.down_proj.scale_input', 'model.layers.11.self_attn.q_proj.scale_input', 'model.layers.11.self_attn.k_proj.scale_input', 'model.layers.11.self_attn.v_proj.scale_input', 'model.layers.11.self_attn.o_proj.scale_input', 'model.layers.11.mlp.gate_proj.scale_input', 'model.layers.11.mlp.up_proj.scale_input', 'model.layers.11.mlp.down_proj.scale_input', 'model.layers.12.self_attn.q_proj.scale_input', 'model.layers.12.self_attn.k_proj.scale_input', 'model.layers.12.self_attn.v_proj.scale_input', 'model.layers.12.self_attn.o_proj.scale_input', 'model.layers.12.mlp.gate_proj.scale_input', 'model.layers.12.mlp.up_proj.scale_input', 'model.layers.12.mlp.down_proj.scale_input', 'model.layers.13.self_attn.q_proj.scale_input', 'model.layers.13.self_attn.k_proj.scale_input', 'model.layers.13.self_attn.v_proj.scale_input', 'model.layers.13.self_attn.o_proj.scale_input', 'model.layers.13.mlp.gate_proj.scale_input', 'model.layers.13.mlp.up_proj.scale_input', 'model.layers.13.mlp.down_proj.scale_input', 'model.layers.14.self_attn.q_proj.scale_input', 'model.layers.14.self_attn.k_proj.scale_input', 'model.layers.14.self_attn.v_proj.scale_input', 'model.layers.14.self_attn.o_proj.scale_input', 'model.layers.14.mlp.gate_proj.scale_input', 'model.layers.14.mlp.up_proj.scale_input', 'model.layers.14.mlp.down_proj.scale_input', 'model.layers.15.self_attn.q_proj.scale_input', 'model.layers.15.self_attn.k_proj.scale_input', 'model.layers.15.self_attn.v_proj.scale_input', 'model.layers.15.self_attn.o_proj.scale_input', 'model.layers.15.mlp.gate_proj.scale_input', 'model.layers.15.mlp.up_proj.scale_input', 'model.layers.15.mlp.down_proj.scale_input', 'model.layers.16.self_attn.q_proj.scale_input', 'model.layers.16.self_attn.k_proj.scale_input', 'model.layers.16.self_attn.v_proj.scale_input', 'model.layers.16.self_attn.o_proj.scale_input', 'model.layers.16.mlp.gate_proj.scale_input', 'model.layers.16.mlp.up_proj.scale_input', 'model.layers.16.mlp.down_proj.scale_input', 'model.layers.17.self_attn.q_proj.scale_input', 'model.layers.17.self_attn.k_proj.scale_input', 'model.layers.17.self_attn.v_proj.scale_input', 'model.layers.17.self_attn.o_proj.scale_input', 'model.layers.17.mlp.gate_proj.scale_input', 'model.layers.17.mlp.up_proj.scale_input', 'model.layers.17.mlp.down_proj.scale_input', 'model.layers.18.self_attn.q_proj.scale_input', 'model.layers.18.self_attn.k_proj.scale_input', 'model.layers.18.self_attn.v_proj.scale_input', 'model.layers.18.self_attn.o_proj.scale_input', 'model.layers.18.mlp.gate_proj.scale_input', 'model.layers.18.mlp.up_proj.scale_input', 'model.layers.18.mlp.down_proj.scale_input', 'model.layers.19.self_attn.q_proj.scale_input', 'model.layers.19.self_attn.k_proj.scale_input', 'model.layers.19.self_attn.v_proj.scale_input', 'model.layers.19.self_attn.o_proj.scale_input', 'model.layers.19.mlp.gate_proj.scale_input', 'model.layers.19.mlp.up_proj.scale_input', 'model.layers.19.mlp.down_proj.scale_input', 'model.layers.20.self_attn.q_proj.scale_input', 'model.layers.20.self_attn.k_proj.scale_input', 'model.layers.20.self_attn.v_proj.scale_input', 'model.layers.20.self_attn.o_proj.scale_input', 'model.layers.20.mlp.gate_proj.scale_input', 'model.layers.20.mlp.up_proj.scale_input', 'model.layers.20.mlp.down_proj.scale_input', 'model.layers.21.self_attn.q_proj.scale_input', 'model.layers.21.self_attn.k_proj.scale_input', 'model.layers.21.self_attn.v_proj.scale_input', 'model.layers.21.self_attn.o_proj.scale_input', 'model.layers.21.mlp.gate_proj.scale_input', 'model.layers.21.mlp.up_proj.scale_input', 'model.layers.21.mlp.down_proj.scale_input', 'model.layers.22.self_attn.q_proj.scale_input', 'model.layers.22.self_attn.k_proj.scale_input', 'model.layers.22.self_attn.v_proj.scale_input', 'model.layers.22.self_attn.o_proj.scale_input', 'model.layers.22.mlp.gate_proj.scale_input', 'model.layers.22.mlp.up_proj.scale_input', 'model.layers.22.mlp.down_proj.scale_input', 'model.layers.23.self_attn.q_proj.scale_input', 'model.layers.23.self_attn.k_proj.scale_input', 'model.layers.23.self_attn.v_proj.scale_input', 'model.layers.23.self_attn.o_proj.scale_input', 'model.layers.23.mlp.gate_proj.scale_input', 'model.layers.23.mlp.up_proj.scale_input', 'model.layers.23.mlp.down_proj.scale_input', 'model.layers.24.self_attn.q_proj.scale_input', 'model.layers.24.self_attn.k_proj.scale_input', 'model.layers.24.self_attn.v_proj.scale_input', 'model.layers.24.self_attn.o_proj.scale_input', 'model.layers.24.mlp.gate_proj.scale_input', 'model.layers.24.mlp.up_proj.scale_input', 'model.layers.24.mlp.down_proj.scale_input', 'model.layers.25.self_attn.q_proj.scale_input', 'model.layers.25.self_attn.k_proj.scale_input', 'model.layers.25.self_attn.v_proj.scale_input', 'model.layers.25.self_attn.o_proj.scale_input', 'model.layers.25.mlp.gate_proj.scale_input', 'model.layers.25.mlp.up_proj.scale_input', 'model.layers.25.mlp.down_proj.scale_input', 'model.layers.26.self_attn.q_proj.scale_input', 'model.layers.26.self_attn.k_proj.scale_input', 'model.layers.26.self_attn.v_proj.scale_input', 'model.layers.26.self_attn.o_proj.scale_input', 'model.layers.26.mlp.gate_proj.scale_input', 'model.layers.26.mlp.up_proj.scale_input', 'model.layers.26.mlp.down_proj.scale_input', 'model.layers.27.self_attn.q_proj.scale_input', 'model.layers.27.self_attn.k_proj.scale_input', 'model.layers.27.self_attn.v_proj.scale_input', 'model.layers.27.self_attn.o_proj.scale_input', 'model.layers.27.mlp.gate_proj.scale_input', 'model.layers.27.mlp.up_proj.scale_input', 'model.layers.27.mlp.down_proj.scale_input', 'visual.blocks.0.attn.qkv.scale_input', 'visual.blocks.0.attn.proj.scale_input', 'visual.blocks.0.mlp.gate_proj.scale_input', 'visual.blocks.0.mlp.up_proj.scale_input', 'visual.blocks.0.mlp.down_proj.scale_input', 'visual.blocks.1.attn.qkv.scale_input', 'visual.blocks.1.attn.proj.scale_input', 'visual.blocks.1.mlp.gate_proj.scale_input', 'visual.blocks.1.mlp.up_proj.scale_input', 'visual.blocks.1.mlp.down_proj.scale_input', 'visual.blocks.2.attn.qkv.scale_input', 'visual.blocks.2.attn.proj.scale_input', 'visual.blocks.2.mlp.gate_proj.scale_input', 'visual.blocks.2.mlp.up_proj.scale_input', 'visual.blocks.2.mlp.down_proj.scale_input', 'visual.blocks.3.attn.qkv.scale_input', 'visual.blocks.3.attn.proj.scale_input', 'visual.blocks.3.mlp.gate_proj.scale_input', 'visual.blocks.3.mlp.up_proj.scale_input', 'visual.blocks.3.mlp.down_proj.scale_input', 'visual.blocks.4.attn.qkv.scale_input', 'visual.blocks.4.attn.proj.scale_input', 'visual.blocks.4.mlp.gate_proj.scale_input', 'visual.blocks.4.mlp.up_proj.scale_input', 'visual.blocks.4.mlp.down_proj.scale_input', 'visual.blocks.5.attn.qkv.scale_input', 'visual.blocks.5.attn.proj.scale_input', 'visual.blocks.5.mlp.gate_proj.scale_input', 'visual.blocks.5.mlp.up_proj.scale_input', 'visual.blocks.5.mlp.down_proj.scale_input', 'visual.blocks.6.attn.qkv.scale_input', 'visual.blocks.6.attn.proj.scale_input', 'visual.blocks.6.mlp.gate_proj.scale_input', 'visual.blocks.6.mlp.up_proj.scale_input', 'visual.blocks.6.mlp.down_proj.scale_input', 'visual.blocks.7.attn.qkv.scale_input', 'visual.blocks.7.attn.proj.scale_input', 'visual.blocks.7.mlp.gate_proj.scale_input', 'visual.blocks.7.mlp.up_proj.scale_input', 'visual.blocks.7.mlp.down_proj.scale_input', 'visual.blocks.8.attn.qkv.scale_input', 'visual.blocks.8.attn.proj.scale_input', 'visual.blocks.8.mlp.gate_proj.scale_input', 'visual.blocks.8.mlp.up_proj.scale_input', 'visual.blocks.8.mlp.down_proj.scale_input', 'visual.blocks.9.attn.qkv.scale_input', 'visual.blocks.9.attn.proj.scale_input', 'visual.blocks.9.mlp.gate_proj.scale_input', 'visual.blocks.9.mlp.up_proj.scale_input', 'visual.blocks.9.mlp.down_proj.scale_input', 'visual.blocks.10.attn.qkv.scale_input', 'visual.blocks.10.attn.proj.scale_input', 'visual.blocks.10.mlp.gate_proj.scale_input', 'visual.blocks.10.mlp.up_proj.scale_input', 'visual.blocks.10.mlp.down_proj.scale_input', 'visual.blocks.11.attn.qkv.scale_input', 'visual.blocks.11.attn.proj.scale_input', 'visual.blocks.11.mlp.gate_proj.scale_input', 'visual.blocks.11.mlp.up_proj.scale_input', 'visual.blocks.11.mlp.down_proj.scale_input', 'visual.blocks.12.attn.qkv.scale_input', 'visual.blocks.12.attn.proj.scale_input', 'visual.blocks.12.mlp.gate_proj.scale_input', 'visual.blocks.12.mlp.up_proj.scale_input', 'visual.blocks.12.mlp.down_proj.scale_input', 'visual.blocks.13.attn.qkv.scale_input', 'visual.blocks.13.attn.proj.scale_input', 'visual.blocks.13.mlp.gate_proj.scale_input', 'visual.blocks.13.mlp.up_proj.scale_input', 'visual.blocks.13.mlp.down_proj.scale_input', 'visual.blocks.14.attn.qkv.scale_input', 'visual.blocks.14.attn.proj.scale_input', 'visual.blocks.14.mlp.gate_proj.scale_input', 'visual.blocks.14.mlp.up_proj.scale_input', 'visual.blocks.14.mlp.down_proj.scale_input', 'visual.blocks.15.attn.qkv.scale_input', 'visual.blocks.15.attn.proj.scale_input', 'visual.blocks.15.mlp.gate_proj.scale_input', 'visual.blocks.15.mlp.up_proj.scale_input', 'visual.blocks.15.mlp.down_proj.scale_input', 'visual.blocks.16.attn.qkv.scale_input', 'visual.blocks.16.attn.proj.scale_input', 'visual.blocks.16.mlp.gate_proj.scale_input', 'visual.blocks.16.mlp.up_proj.scale_input', 'visual.blocks.16.mlp.down_proj.scale_input', 'visual.blocks.17.attn.qkv.scale_input', 'visual.blocks.17.attn.proj.scale_input', 'visual.blocks.17.mlp.gate_proj.scale_input', 'visual.blocks.17.mlp.up_proj.scale_input', 'visual.blocks.17.mlp.down_proj.scale_input', 'visual.blocks.18.attn.qkv.scale_input', 'visual.blocks.18.attn.proj.scale_input', 'visual.blocks.18.mlp.gate_proj.scale_input', 'visual.blocks.18.mlp.up_proj.scale_input', 'visual.blocks.18.mlp.down_proj.scale_input', 'visual.blocks.19.attn.qkv.scale_input', 'visual.blocks.19.attn.proj.scale_input', 'visual.blocks.19.mlp.gate_proj.scale_input', 'visual.blocks.19.mlp.up_proj.scale_input', 'visual.blocks.19.mlp.down_proj.scale_input', 'visual.blocks.20.attn.qkv.scale_input', 'visual.blocks.20.attn.proj.scale_input', 'visual.blocks.20.mlp.gate_proj.scale_input', 'visual.blocks.20.mlp.up_proj.scale_input', 'visual.blocks.20.mlp.down_proj.scale_input', 'visual.blocks.21.attn.qkv.scale_input', 'visual.blocks.21.attn.proj.scale_input', 'visual.blocks.21.mlp.gate_proj.scale_input', 'visual.blocks.21.mlp.up_proj.scale_input', 'visual.blocks.21.mlp.down_proj.scale_input', 'visual.blocks.22.attn.qkv.scale_input', 'visual.blocks.22.attn.proj.scale_input', 'visual.blocks.22.mlp.gate_proj.scale_input', 'visual.blocks.22.mlp.up_proj.scale_input', 'visual.blocks.22.mlp.down_proj.scale_input', 'visual.blocks.23.attn.qkv.scale_input', 'visual.blocks.23.attn.proj.scale_input', 'visual.blocks.23.mlp.gate_proj.scale_input', 'visual.blocks.23.mlp.up_proj.scale_input', 'visual.blocks.23.mlp.down_proj.scale_input', 'visual.blocks.24.attn.qkv.scale_input', 'visual.blocks.24.attn.proj.scale_input', 'visual.blocks.24.mlp.gate_proj.scale_input', 'visual.blocks.24.mlp.up_proj.scale_input', 'visual.blocks.24.mlp.down_proj.scale_input', 'visual.blocks.25.attn.qkv.scale_input', 'visual.blocks.25.attn.proj.scale_input', 'visual.blocks.25.mlp.gate_proj.scale_input', 'visual.blocks.25.mlp.up_proj.scale_input', 'visual.blocks.25.mlp.down_proj.scale_input', 'visual.blocks.26.attn.qkv.scale_input', 'visual.blocks.26.attn.proj.scale_input', 'visual.blocks.26.mlp.gate_proj.scale_input', 'visual.blocks.26.mlp.up_proj.scale_input', 'visual.blocks.26.mlp.down_proj.scale_input', 'visual.blocks.27.attn.qkv.scale_input', 'visual.blocks.27.attn.proj.scale_input', 'visual.blocks.27.mlp.gate_proj.scale_input', 'visual.blocks.27.mlp.up_proj.scale_input', 'visual.blocks.27.mlp.down_proj.scale_input', 'visual.blocks.28.attn.qkv.scale_input', 'visual.blocks.28.attn.proj.scale_input', 'visual.blocks.28.mlp.gate_proj.scale_input', 'visual.blocks.28.mlp.up_proj.scale_input', 'visual.blocks.28.mlp.down_proj.scale_input', 'visual.blocks.29.attn.qkv.scale_input', 'visual.blocks.29.attn.proj.scale_input', 'visual.blocks.29.mlp.gate_proj.scale_input', 'visual.blocks.29.mlp.up_proj.scale_input', 'visual.blocks.29.mlp.down_proj.scale_input', 'visual.blocks.30.attn.qkv.scale_input', 'visual.blocks.30.attn.proj.scale_input', 'visual.blocks.30.mlp.gate_proj.scale_input', 'visual.blocks.30.mlp.up_proj.scale_input', 'visual.blocks.30.mlp.down_proj.scale_input', 'visual.blocks.31.attn.qkv.scale_input', 'visual.blocks.31.attn.proj.scale_input', 'visual.blocks.31.mlp.gate_proj.scale_input', 'visual.blocks.31.mlp.up_proj.scale_input', 'visual.blocks.31.mlp.down_proj.scale_input', 'visual.merger.mlp.0.scale_input', 'visual.merger.mlp.2.scale_input']\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | CLIP/text encoder model load device: cuda:0, offload device: cpu, current: cpu, dtype: torch.float16\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Model doesn't have a device attribute.\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Using scaled fp8: fp8 matrix mult: False, scale input: False\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | FETCH ComfyRegistry Data: 5/99\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | adm 0\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | model_type FLUX\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | model weight dtype torch.float8_e4m3fn, manual cast: torch.bfloat16\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | VAE load device: cuda:0, offload device: cpu, dtype: torch.bfloat16\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Model doesn't have a device attribute.\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Using pytorch attention in VAE\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Using pytorch attention in VAE\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | https://www.shutterstock.com:443 "GET /image-photo/beautiful-young-asian-woman-pointing-600nw-2341582245.jpg HTTP/1.1" 200 21603\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Starting new HTTPS connection (1): www.shutterstock.com:443\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | found 2 files\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | recursive file list on directory /comfyui/models/upscale_models\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | worker-qwen-image-edit - Status update: 1 items remaining in queue\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Using selector: EpollSelector\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | worker-qwen-image-edit - Status update: 1 items remaining in queue\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | worker-qwen-image-edit - Status update: 0 items remaining in queue\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | worker-qwen-image-edit - Waiting for workflow execution (a114235f-c21f-4f06-9275-8e001aee168c)...\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | worker-qwen-image-edit - Queued workflow with ID: a114235f-c21f-4f06-9275-8e001aee168c\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | found 1 files\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | recursive file list on directory /comfyui/models/diffusion_models\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | found 2 files\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | recursive file list on directory /comfyui/models/unet\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | found 4 files\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | recursive file list on directory /comfyui/models/loras\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | found 1 files\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | recursive file list on directory /comfyui/models/vae_approx\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | found 2 files\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | recursive file list on directory /comfyui/models/vae\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | got prompt\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | worker-qwen-image-edit - Websocket connected\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | worker-qwen-image-edit - Connecting to websocket: ws://127.0.0.1:8188/ws?clientId=ae49991e-926d-4d40-87c4-a4b13bf0eb76\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | worker-qwen-image-edit - API is reachable\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | To see the GUI go to: http://127.0.0.1:8188\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | \n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Starting server\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Found example workflow folder 'workflows' for custom node 'RES4LYF', consider renaming it to 'example_workflows'\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Found example workflow folder 'workflow' for custom node 'ComfyUI_LayerStyle', consider renaming it to 'example_workflows'\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Found example workflow folder 'workflows' for custom node 'ComfyUI_Comfyroll_CustomNodes', consider renaming it to 'example_workflows'\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | No target revision found.\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Will assume non-transactional DDL.\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Context impl SQLiteImpl.\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Database URL: sqlite:////comfyui/user/comfyui.db\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | \n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    1.4 seconds: /comfyui/custom_nodes/ComfyUI-ReActor\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.5 seconds: /comfyui/custom_nodes/RES4LYF\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.5 seconds: /comfyui/custom_nodes/ComfyUI_Comfyroll_CustomNodes\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.3 seconds: /comfyui/custom_nodes/ComfyUI_LayerStyle\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.2 seconds: /comfyui/custom_nodes/ComfyUI-KJNodes\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.1 seconds: /comfyui/custom_nodes/rgthree-comfy\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.1 seconds: /comfyui/custom_nodes/ComfyUI-Manager\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.0 seconds: /comfyui/custom_nodes/ComfyUI-S3-R2-Tools\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.0 seconds: /comfyui/custom_nodes/ComfyUI_UltimateSDUpscale\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.0 seconds: /comfyui/custom_nodes/cg-image-picker\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.0 seconds: /comfyui/custom_nodes/ComfyUI_LoadImageFromHttpURL\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.0 seconds: /comfyui/custom_nodes/websocket_image_save.py\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Import times for custom nodes:\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | \n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Trying to load custom node /comfyui/custom_nodes/cg-image-picker\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | (RES4LYF) Importing legacy samplers.\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | (RES4LYF) Importing beta samplers.\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | (RES4LYF) Init\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Loaded backend Agg version v2.2.\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Using pytorch attention\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Trying to load custom node /comfyui/custom_nodes/RES4LYF\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Trying to load custom node /comfyui/custom_nodes/ComfyUI_UltimateSDUpscale\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Trying to load custom node /comfyui/custom_nodes/ComfyUI_LoadImageFromHttpURL\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | For detail refer to [4mhttps://github.com/chflame163/ComfyUI_LayerStyle/issues/5[0m[m\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | A few nodes cannot works properly, while most nodes are not affected. Please REINSTALL package 'opencv-contrib-python'.\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | # 😺dzNodes: LayerStyle -> [1;33mCannot import name 'guidedFilter' from 'cv2.ximgproc'\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Trying to load custom node /comfyui/custom_nodes/ComfyUI_LayerStyle\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | ------------------------------------------\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | ** For help, please see the wiki at https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes/wiki\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | ** For changes, please see patch notes at https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes/blob/main/Patch_Notes.md\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | ------------------------------------------\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | [34mComfyroll Studio v1.76 : [92m 175 Nodes Loaded[0m\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | ------------------------------------------\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Using fontManager instance from /root/.cache/matplotlib/fontlist-v390.json\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | CACHEDIR=/root/.cache/matplotlib\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | platform is linux\n
+2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | interactive is False\n
+2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | CONFIGDIR=/root/.config/matplotlib\n
+2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | matplotlib data path: /opt/venv/lib/python3.12/site-packages/matplotlib/mpl-data\n
+2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | found 1 files\n
+2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | recursive file list on directory /comfyui/models/controlnet\n
+2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | Trying to load custom node /comfyui/custom_nodes/ComfyUI_Comfyroll_CustomNodes\n
+2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | Trying to load custom node /comfyui/custom_nodes/ComfyUI-S3-R2-Tools\n
+2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | Update Settings with 'yolo settings key=value', i.e. 'yolo settings runs_dir=path/to/dir'. For help see https://docs.ultralytics.com/quickstart/#ultralytics-settings.\n
+2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | View Ultralytics Settings with 'yolo settings' or at '/root/.config/Ultralytics/settings.json'\n
+2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | Creating new Ultralytics Settings v0.0.6 file ✅ \n
+2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | Torch version: 2.8.0+cu128\n
+2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | [0;33m[ReActor][0m - [38;5;173mSTATUS[0m - [0;32mRunning v0.6.2-b1 in ComfyUI[0m\n
+2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | \n
+2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | generated new fontManager\n
+2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | font search path [PosixPath('/opt/venv/lib/python3.12/site-packages/matplotlib/mpl-data/fonts/ttf'), PosixPath('/opt/venv/lib/python3.12/site-packages/matplotlib/mpl-data/fonts/afm'), PosixPath('/opt/venv/lib/python3.12/site-packages/matplotlib/mpl-data/fonts/pdfcorefonts')]\n
+2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | CACHEDIR=/root/.cache/matplotlib\n
+2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | platform is linux\n
+2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | interactive is False\n
+2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | CONFIGDIR=/root/.config/matplotlib\n
+2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | matplotlib data path: /opt/venv/lib/python3.12/site-packages/matplotlib/mpl-data\n
+2025-10-12  22:56:03.034 | info | 04x7w0yxttvufx | FETCH ComfyRegistry Data: 20/99\n
+2025-10-12  22:56:00.253 | info | 04x7w0yxttvufx | FETCH ComfyRegistry Data: 15/99\n
+2025-10-12  22:56:00.253 | info | 04x7w0yxttvufx | FETCH ComfyRegistry Data: 10/99\n
+2025-10-12  22:56:00.253 | info | 04x7w0yxttvufx | Finished.
+2025-10-12  22:56:00.253 | info | 04x7w0yxttvufx | worker-qwen-image-edit - Closing websocket connection.\n

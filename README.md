@@ -1,78 +1,270 @@
-![SDXL Worker Banner](https://cpjrphpz3t5wbwfe.public.blob.vercel-storage.com/worker-sdxl_banner-c7nsJLBOGHnmsxcshN7kSgALHYawnW.jpeg)
+# ComfyUI Qwen Image Edit - RunPod Serverless
 
----
+Этот проект адаптирует ComfyUI Qwen Image Edit для работы на RunPod Serverless, используя архитектуру воркера на основе ComfyUI Flux.
 
-Run [Stable Diffusion XL](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0) as a serverless endpoint to generate images.
+## 🚀 Возможности
 
----
+- **Qwen Image Edit**: Редактирование изображений с помощью Qwen2.5-VL-7B-Instruct
+- **RunPod Serverless**: Полная поддержка serverless архитектуры
+- **Автоматическая загрузка моделей**: Все необходимые модели загружаются автоматически
+- **Docker контейнеризация**: Готовый к развертыванию Docker образ
+- **WebSocket API**: Реальное время мониторинга выполнения задач
 
-[![RunPod](https://api.runpod.io/badge/runpod-workers/worker-sdxl)](https://www.runpod.io/console/hub/runpod-workers/worker-sdxl)
+## 📁 Структура проекта
 
----
+```
+SwapifyStudio/
+├── Dockerfile                 # Docker образ для RunPod Serverless
+├── docker-compose.yml         # Локальная разработка и тестирование
+├── handler.py                 # RunPod Serverless handler
+├── start.sh                   # Скрипт запуска ComfyUI и handler
+├── requirements.txt           # Python зависимости
+├── test_input.json           # Пример входных данных для тестирования
+├── setup.sh                  # Скрипт настройки проекта
+├── README.md                 # Этот файл
+├── DEPLOYMENT.md             # Инструкции по развертыванию
+├── SUMMARY.md                # Сводка изменений
+├── models/                   # Папка для моделей (создается автоматически)
+├── workflows/                # ComfyUI workflow файлы
+│   ├── Qwen_image_edit.json
+│   ├── Qwen_Image_To_Dateset_Workflow.json
+│   └── Qwen_Workflow.json
+├── src_worker/               # Исходные файлы ComfyUI Flux
+└── scripts/                  # Вспомогательные скрипты
+    └── comfy-node-install.sh
+```
 
-## Usage
+## 🛠️ Быстрый старт
 
-The worker accepts the following input parameters:
+### 1. Настройка проекта
 
-| Parameter                 | Type    | Default  | Required  | Description                                                                                                         |
-| :------------------------ | :------ | :------- | :-------- | :------------------------------------------------------------------------------------------------------------------ |
-| `prompt`                  | `str`   | `None`   | **Yes\*** | The main text prompt describing the desired image.                                                                  |
-| `negative_prompt`         | `str`   | `None`   | No        | Text prompt specifying concepts to exclude from the image                                                           |
-| `height`                  | `int`   | `1024`   | No        | The height of the generated image in pixels                                                                         |
-| `width`                   | `int`   | `1024`   | No        | The width of the generated image in pixels                                                                          |
-| `seed`                    | `int`   | `None`   | No        | Random seed for reproducibility. If `None`, a random seed is generated                                              |
-| `scheduler`               | `str`   | `'DDIM'` | No        | The noise scheduler to use. Options include `PNDM`, `KLMS`, `DDIM`, `K_EULER`, `DPMSolverMultistep`                 |
-| `num_inference_steps`     | `int`   | `25`     | No        | Number of denoising steps for the base model                                                                        |
-| `refiner_inference_steps` | `int`   | `50`     | No        | Number of denoising steps for the refiner model                                                                     |
-| `guidance_scale`          | `float` | `7.5`    | No        | Classifier-Free Guidance scale. Higher values lead to images closer to the prompt, lower values more creative       |
-| `strength`                | `float` | `0.3`    | No        | The strength of the noise added when using an `image_url` for image-to-image or refinement                          |
-| `image_url`               | `str`   | `None`   | No        | URL of an initial image to use for image-to-image generation (runs only refiner). If `None`, performs text-to-image |
-| `num_images`              | `int`   | `1`      | No        | Number of images to generate per prompt (Constraint: must be 1 or 2)                                                |
-| `high_noise_frac`         | `float` | `None`   | No        | Fraction of denoising steps performed by the base model (e.g., 0.8 for 80%). `denoising_end` for base               |
+```bash
+# Клонируйте репозиторий
+git clone <your-repo-url>
+cd SwapifyStudio
 
-> [!NOTE]  
-> `prompt` is required unless `image_url` is provided
+# Запустите скрипт настройки
+chmod +x setup.sh
+./setup.sh
+```
 
-### Example Request
+### 2. Локальное тестирование
+
+```bash
+# Создайте .env файл с вашим HuggingFace токеном
+echo "HUGGINGFACE_ACCESS_TOKEN=your_token_here" > .env
+
+# Запустите через Docker Compose
+docker-compose up --build
+```
+
+### 3. Тестирование API
+
+```bash
+# Отправьте тестовый запрос
+curl -X POST http://localhost:8188/rp/v1/run \
+  -H "Content-Type: application/json" \
+  -d @test_input.json
+```
+
+## 🚀 Развертывание на RunPod Serverless
+
+### 1. Подготовка
+
+1. **Создайте аккаунт RunPod** и получите API ключи
+2. **Настройте HuggingFace токен** для доступа к моделям
+3. **Убедитесь в наличии GPU** с поддержкой CUDA
+
+### 2. Сборка и загрузка образа
+
+```bash
+# Соберите Docker образ
+docker build -t your-username/comfyui-qwen-image-edit:latest \
+  --build-arg HUGGINGFACE_ACCESS_TOKEN=your_token_here \
+  --build-arg MODEL_TYPE=qwen-image-edit \
+  .
+
+# Загрузите в RunPod Registry
+docker tag your-username/comfyui-qwen-image-edit:latest runpod/your-username/comfyui-qwen-image-edit:latest
+docker push runpod/your-username/comfyui-qwen-image-edit:latest
+```
+
+### 3. Создание Serverless Endpoint
+
+1. **Войдите в RunPod Console**
+2. **Перейдите в Serverless → Endpoints**
+3. **Создайте новый endpoint**:
+   - **Template**: Custom
+   - **Container Image**: `runpod/your-username/comfyui-qwen-image-edit:latest`
+   - **Container Disk**: 50 GB
+   - **Max Workers**: 1-5 (в зависимости от нагрузки)
+   - **Idle Timeout**: 30 секунд
+   - **Max Execution Time**: 300 секунд
+
+### 4. Настройка переменных окружения
+
+```bash
+HUGGINGFACE_ACCESS_TOKEN=your_token_here
+COMFY_LOG_LEVEL=INFO
+SERVE_API_LOCALLY=false
+REFRESH_WORKER=false
+WEBSOCKET_RECONNECT_ATTEMPTS=5
+WEBSOCKET_RECONNECT_DELAY_S=3
+WEBSOCKET_TRACE=false
+```
+
+## 📋 Использование API
+
+### Структура запроса
 
 ```json
 {
   "input": {
-    "prompt": "A majestic steampunk dragon soaring through a cloudy sky, intricate clockwork details, golden hour lighting, highly detailed",
-    "negative_prompt": "blurry, low quality, deformed, ugly, text, watermark, signature",
-    "height": 1024,
-    "width": 1024,
-    "num_inference_steps": 25,
-    "refiner_inference_steps": 50,
-    "guidance_scale": 7.5,
-    "strength": 0.3,
-    "high_noise_frac": 0.8,
-    "seed": 42,
-    "scheduler": "K_EULER",
-    "num_images": 1
+    "workflow": {
+      "1": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
+        }
+      },
+      "2": {
+        "class_type": "QwenImageEdit",
+        "inputs": {
+          "image": ["1", 0],
+          "prompt": "Make the sky more dramatic",
+          "negative_prompt": "blurry, low quality"
+        }
+      }
+    }
   }
 }
 ```
 
-which is producing an output like this:
+### Примеры использования
 
-```json
-{
-  "delayTime": 11449,
-  "executionTime": 6120,
-  "id": "447f10b8-c745-4c3b-8fad-b1d4ebb7a65b-e1",
-  "output": {
-    "image_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABAAAAAQACAIAAADwf7zU...",
-    "images": [
-      "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABAAAAAQACAIAAADwf7zU..."
-    ],
-    "seed": 42
-  },
-  "status": "COMPLETED",
-  "workerId": "462u6mrq9s28h6"
-}
+#### Редактирование изображения
+
+```bash
+curl -X POST https://api.runpod.ai/v2/your-endpoint-id/runsync \
+  -H "Authorization: Bearer YOUR_RUNPOD_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "input": {
+      "workflow": {
+        "1": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
+          }
+        },
+        "2": {
+          "class_type": "QwenImageEdit",
+          "inputs": {
+            "image": ["1", 0],
+            "prompt": "Add a beautiful sunset in the background",
+            "negative_prompt": "blurry, low quality, distorted"
+          }
+        }
+      }
+    }
+  }'
 ```
 
-and when you convert the base64-encoded image into an actual image, it looks like this:
+## 🔧 Настройка и конфигурация
 
-<img src="https://cpjrphpz3t5wbwfe.public.blob.vercel-storage.com/worker-sdxl_output_1-AedTpZlz1eIwIgAEShlod6syLo6Jq6.jpeg" alt="SDXL Generated Image: 'A majestic steampunk dragon soaring through a cloudy sky, intricate clockwork details, golden hour lighting, highly detailed'" width="512" height="512">
+### Переменные окружения
+
+| Переменная | Описание | По умолчанию |
+|------------|----------|--------------|
+| `HUGGINGFACE_ACCESS_TOKEN` | Токен для доступа к HuggingFace моделям | - |
+| `COMFY_LOG_LEVEL` | Уровень логирования ComfyUI | `INFO` |
+| `SERVE_API_LOCALLY` | Запуск локального API сервера | `false` |
+| `REFRESH_WORKER` | Обновление воркера при каждом запросе | `false` |
+| `WEBSOCKET_RECONNECT_ATTEMPTS` | Количество попыток переподключения WebSocket | `5` |
+| `WEBSOCKET_RECONNECT_DELAY_S` | Задержка между попытками переподключения | `3` |
+| `WEBSOCKET_TRACE` | Включение трассировки WebSocket | `false` |
+
+### Поддерживаемые модели
+
+- **Qwen2.5-VL-7B-Instruct**: Основная модель для редактирования изображений
+- **SDXL VAE**: Вариационный автокодировщик
+- **SDXL UNET**: Основная модель диффузии
+- **SDXL CLIP**: Модель для понимания текста
+- **LoRA модели**: Дополнительные адаптеры
+- **Upscale модели**: 4xLSDIR для улучшения качества
+
+## 🐛 Устранение неполадок
+
+### Частые проблемы
+
+1. **Ошибка загрузки модели**:
+   - Проверьте правильность HuggingFace токена
+   - Убедитесь в наличии интернет-соединения
+   - Проверьте доступность модели на HuggingFace
+
+2. **Таймаут выполнения**:
+   - Увеличьте `max_execution_time` в RunPod
+   - Проверьте размер входного изображения
+   - Убедитесь в достаточности GPU памяти
+
+3. **Ошибки WebSocket**:
+   - Проверьте настройки `WEBSOCKET_RECONNECT_ATTEMPTS`
+   - Убедитесь в стабильности сетевого соединения
+
+### Логи и отладка
+
+```bash
+# Просмотр логов ComfyUI
+docker logs -f comfyui-qwen-image-edit
+
+# Просмотр логов handler
+docker logs -f comfyui-qwen-image-edit 2>&1 | grep "handler"
+```
+
+## 📊 Мониторинг и производительность
+
+### Метрики RunPod
+
+- **Время выполнения**: Обычно 30-120 секунд
+- **Использование GPU**: 8-16 GB VRAM
+- **Время холодного старта**: 2-3 минуты
+- **Время теплого старта**: 10-30 секунд
+
+### Оптимизация
+
+1. **Используйте теплые воркеры** для критичных приложений
+2. **Настройте правильный idle timeout** для баланса стоимости и производительности
+3. **Мониторьте использование GPU** для выбора оптимального размера контейнера
+
+## 🤝 Вклад в проект
+
+1. Форкните репозиторий
+2. Создайте ветку для новой функции
+3. Внесите изменения
+4. Создайте Pull Request
+
+## 📄 Лицензия
+
+Этот проект использует лицензию MIT. См. файл [LICENSE](LICENSE) для подробностей.
+
+## 🙏 Благодарности
+
+- **ComfyUI** - за отличную платформу для генерации изображений
+- **Qwen Team** - за модель Qwen2.5-VL-7B-Instruct
+- **RunPod** - за serverless инфраструктуру
+- **ComfyUI Flux** - за архитектуру воркера
+
+## 📞 Поддержка
+
+Если у вас возникли вопросы или проблемы:
+
+1. Проверьте [DEPLOYMENT.md](DEPLOYMENT.md) для подробных инструкций
+2. Изучите [SUMMARY.md](SUMMARY.md) для понимания изменений
+3. Создайте Issue в репозитории
+4. Обратитесь к документации RunPod и ComfyUI
+
+---
+
+**Готово к развертыванию!** 🚀
+
+Следуйте инструкциям в [DEPLOYMENT.md](DEPLOYMENT.md) для развертывания на RunPod Serverless.
