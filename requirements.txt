@@ -1,31 +1,31 @@
 GitPython==3.1.32
 diffusers==0.33.1
-transformers==4.52.4
-accelerate==1.7.0
-safetensors==0.5.3
+transformers==4.30.2
+accelerate==0.21.0
+safetensors==0.4.2
 xformers # 0.0.30
 #torch==2.7.0
-numpy>=1.24.0
-scipy
-#triton
-huggingface-hub
+numpy==1.26.2
+scipy==1.14.0
+triton==3.0.0
+huggingface-hub==0.24.5
 hf_transfer
 hf_xet
-setuptools
-pytorch_lightning
-mediapipe==0.10.11
+setuptools==69.5.1
+pytorch_lightning==1.9.4
+mediapipe==0.10.15
 protobuf==3.20.0
-ultralytics==8.3.75
-rich==13.0.0
+ultralytics==8.4.0
+rich==14.2.0
 
 albumentations==1.4.3
 insightface==0.7.3
-onnx==1.17.0 # вернуть на 1.17.1
-opencv-python>=4.7.0.72
-onnxruntime
-Cython>=0.29.28
-cmake>=3.22.3
-numpy>=1.22.3
+onnx==1.16.1 # вернуть на 1.17.1
+opencv-python==4.10.0.84
+onnxruntime-gpu==1.17.1
+Cython==3.2.4
+cmake==3.22.1
+numpy==1.26.2
 
 gradio==3.41.2
 kornia==0.6.7
@@ -33,27 +33,23 @@ lark==1.1.2
 jsonmerge==1.8.0
 inflection==0.5.1
 
-blendmodes
-clean-fid
-diskcache
-einops
-facexlib
-fastapi>=0.90.1
+blendmodes==2022
+clean-fid==0.1.35
+diskcache==5.6.3
+einops==0.4.1
+facexlib==0.3.0
+fastapi==0.94.0
 gradio==3.41.2
-omegaconf
+omegaconf==2.2.3
 
-piexif
+piexif==1.1.3
 open-clip-torch==2.20.0
-psutil
-requests
-resize-right
+psutil==5.9.5
+requests==2.32.3
+resize-right==0.0.2
 
-scikit-image>=0.19
-tomesd
-torchdiffeq
-torchsde
+scikit-image==0.21.0
+tomesd==0.1.3
+torchdiffeq==0.2.3
+torchsde==0.2.6
 pillow-avif-plugin==1.4.3
-
-aiohttp
-multidict
-deprecate
