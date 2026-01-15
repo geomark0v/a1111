@@ -38,7 +38,7 @@ RUN uv venv --python 3.10 /.venv
 # install dependencies
 RUN uv pip install \
          torch==2.1.2+cu118 \
-         torchvision==0.16.2+cu118 \
+         torchvision==0.17.2 \
          torchaudio==2.1.2+cu118 \
          --index-url https://download.pytorch.org/whl/cu118
 
