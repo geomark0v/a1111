@@ -324,7 +324,7 @@ RUN if [ -f "models/ultralytics/bbox/hand_yolov8s.pt" ]; then echo "YOLO hand de
 RUN if [ -f "models/ultralytics/segm/person_yolov8m-seg.pt" ]; then echo "YOLO person segmentation model downloaded successfully"; else echo "YOLO person segmentation model download failed"; fi
 
 # Copy Eyes.pt file if it exists
-COPY Eyes.pt /Eyes.pt
+#COPY Eyes.pt /Eyes.pt
 
 # Stage 3: Final image
 FROM base AS final
@@ -359,4 +359,4 @@ COPY --from=downloader /comfyui/models/codeformer /comfyui/models/codeformer
 COPY --from=downloader /comfyui/models/adetailer /comfyui/models/adetailer
 
 # Copy Eyes.pt if it was downloaded
-COPY --from=downloader /Eyes.pt /Eyes.pt
+#COPY --from=downloader /Eyes.pt /Eyes.pt
