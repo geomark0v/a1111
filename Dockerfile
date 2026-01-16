@@ -113,7 +113,7 @@ ENV HF_DATASETS_CACHE=/comfyui/models/huggingface_cache
 RUN mkdir -p /workspace/comfyui/models/huggingface_cache
 
 # Add application code and scripts
-ADD src_worker/start.sh handler.py test_input.json download_models.py install_custom_nodes.py ./
+ADD src_worker/start.sh handler.py download_models.py install_custom_nodes.py ./
 RUN chmod +x /start.sh
 
 # Add script to install custom nodes
