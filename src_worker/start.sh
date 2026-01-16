@@ -11,6 +11,8 @@ python /download_models.py
 if [ "${JUPYTER_ENABLED:-false}" = "true" ]; then
     echo "JUPYTER_ENABLED=true → запускаем JupyterLab"
 
+    uv pip install --no-cache-dir jupyterlab jupyter ipykernel
+
     # Порт по умолчанию 8888, или берём из ENV (JUPYTER_PORT)
     PORT=${JUPYTER_PORT:-8888}
 
