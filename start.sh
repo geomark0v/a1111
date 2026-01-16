@@ -4,6 +4,9 @@
 TCMALLOC="$(ldconfig -p | grep -Po "libtcmalloc.so.\d" | head -n 1)"
 export LD_PRELOAD="${TCMALLOC}"
 
+# Запускаем скачивание всех моделей одним RUN
+python /download_models.py
+
 # Ensure ComfyUI-Manager runs in offline network mode inside the container
 comfy-manager-set-mode offline || echo "worker-qwen-image-edit - Could not set ComfyUI-Manager network_mode" >&2
 

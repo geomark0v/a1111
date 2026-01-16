@@ -150,7 +150,7 @@ RUN echo "Checking available ComfyUI nodes..."; \
     find /comfyui/custom_nodes -name "*reactor*" -type d || echo "No ReActor directories found";
 
 # Install Python runtime dependencies for the handler
-RUN uv pip install runpod requests websocket-client
+RUN /root/.local/bin/uv pip install runpod requests websocket-client
 
 # Install build tools for insightface compilation
 RUN apt-get update && apt-get install -y \
@@ -162,7 +162,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
     # Install ReActor dependencies and additional libraries
-RUN uv pip install insightface onnxruntime-gpu fal-client xxhash
+RUN /root/.local/bin/uv pip install insightface onnxruntime-gpu fal-client xxhash
 
     # Set environment variables to disable Hugging Face caching
 ENV HF_HOME=/comfyui/models/huggingface_cache
@@ -188,7 +188,7 @@ COPY scripts/comfy-manager-set-mode.sh /usr/local/bin/comfy-manager-set-mode
 RUN chmod +x /usr/local/bin/comfy-manager-set-mode
 
 # Set the default command to run when starting the container
-# CMD ["/start.sh"]
+CMD ["/start.sh"]
 
 # Stage 2: Download models
 FROM base AS downloader
@@ -206,8 +206,13 @@ RUN mkdir -p models/checkpoints models/vae models/unet models/clip models/loras 
 # Копируем скрипт
 COPY download_models.py /download_models.py
 
+# Создаём симлинк на volume для моделей (самое важное для RunPod)
+RUN mkdir -p /runpod-volume/models && \
+    ln -sfn /runpod-volume/models /comfyui/models && \
+    mkdir -p /root/.reactor/models
+
 # Устанавливаем зависимости
-RUN uv pip install --no-cache-dir huggingface_hub hf-transfer requests
+RUN /root/.local/bin/uv pip install --no-cache-dir huggingface_hub hf-transfer requests
 
 RUN if [ "$DOWNLOAD_MODELS" = "true" ]; then \
       # Запускаем скачивание всех моделей одним RUN

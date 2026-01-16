@@ -11,7 +11,7 @@ from pathlib import Path
 from huggingface_hub import hf_hub_download
 
 # Основная директория моделей
-MODELS_DIR = Path("/comfyui/models")
+MODELS_DIR = Path("/runpod-volume/models")
 MODELS_DIR.mkdir(parents=True, exist_ok=True)
 
 # Токен Hugging Face (если приватные репозитории)
