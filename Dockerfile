@@ -54,7 +54,7 @@ RUN wget -qO- https://astral.sh/uv/install.sh | sh \
 ENV PATH="/opt/venv/bin:${PATH}"
 
 # Install comfy-cli + dependencies needed by it to install ComfyUI
-RUN uv pip install comfy-cli pip setuptools wheel
+RUN pip install comfy-cli pip setuptools wheel
 
 # Install ComfyUI
 #RUN if [ -n "${CUDA_VERSION_FOR_COMFY}" ]; then \
@@ -66,11 +66,11 @@ RUN uv pip install comfy-cli pip setuptools wheel
 # Вместо этого — прямая установка (самый стабильный способ в 2026)
 RUN git clone https://github.com/Comfy-Org/ComfyUI /comfyui && \
     cd /comfyui && \
-    uv pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu121
+    pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu121
 
 # Upgrade PyTorch if needed (for newer CUDA versions)
 RUN if [ "$ENABLE_PYTORCH_UPGRADE" = "true" ]; then \
-      uv pip install --force-reinstall torch torchvision torchaudio --index-url ${PYTORCH_INDEX_URL}; \
+      pip install --force-reinstall torch torchvision torchaudio --index-url ${PYTORCH_INDEX_URL}; \
     fi
 
 # Change working directory to ComfyUI
@@ -150,7 +150,7 @@ RUN echo "Checking available ComfyUI nodes..."; \
     find /comfyui/custom_nodes -name "*reactor*" -type d || echo "No ReActor directories found";
 
 # Install Python runtime dependencies for the handler
-RUN /root/.local/bin/uv pip install runpod requests websocket-client
+RUN pip install runpod requests websocket-client
 
 # Install build tools for insightface compilation
 RUN apt-get update && apt-get install -y \
@@ -162,7 +162,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
     # Install ReActor dependencies and additional libraries
-RUN /root/.local/bin/uv pip install insightface onnxruntime-gpu fal-client xxhash
+RUN pip install insightface onnxruntime-gpu fal-client xxhash
 
     # Set environment variables to disable Hugging Face caching
 ENV HF_HOME=/comfyui/models/huggingface_cache
@@ -212,7 +212,7 @@ RUN mkdir -p /runpod-volume/models && \
     mkdir -p /root/.reactor/models
 
 # Устанавливаем зависимости
-RUN /root/.local/bin/uv pip install --no-cache-dir huggingface_hub hf-transfer requests
+RUN pip install --no-cache-dir huggingface_hub hf-transfer requests
 
 RUN if [ "$DOWNLOAD_MODELS" = "true" ]; then \
       # Запускаем скачивание всех моделей одним RUN
