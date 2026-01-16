@@ -59,6 +59,12 @@ RUN uv pip install comfy-cli pip setuptools wheel
 # Install Python runtime dependencies for the handler
 RUN uv pip install runpod requests websocket-client
 
+# Установка Jupyter (можно добавить в конец Dockerfile)
+RUN uv pip install --no-cache-dir jupyterlab jupyter ipykernel
+
+# Открываем порт (можно сделать динамическим)
+EXPOSE 8888
+
 # Install build tools for insightface compilation
 RUN apt-get update && apt-get install -y \
     build-essential \
