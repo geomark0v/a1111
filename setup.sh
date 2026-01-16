@@ -18,7 +18,7 @@ cat > scripts/comfy-node-install.sh << 'EOF'
 echo "Installing ComfyUI custom nodes..."
 
 # Install custom nodes for Qwen Image Edit
-cd /comfyui/custom_nodes
+cd /workspace/comfyui/custom_nodes
 
 # Install required custom nodes
 echo "Installing custom nodes for Qwen Image Edit..."

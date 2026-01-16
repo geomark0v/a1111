@@ -405,7 +405,7 @@
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | https://www.shutterstock.com:443 "GET /image-photo/beautiful-young-asian-woman-pointing-600nw-2341582245.jpg HTTP/1.1" 200 21603\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Starting new HTTPS connection (1): www.shutterstock.com:443\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | found 2 files\n
-2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | recursive file list on directory /comfyui/models/upscale_models\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | recursive file list on directory /workspace/comfyui/models/upscale_models\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | worker-qwen-image-edit - Status update: 1 items remaining in queue\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Using selector: EpollSelector\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | worker-qwen-image-edit - Status update: 1 items remaining in queue\n
@@ -413,15 +413,15 @@
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | worker-qwen-image-edit - Waiting for workflow execution (a114235f-c21f-4f06-9275-8e001aee168c)...\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | worker-qwen-image-edit - Queued workflow with ID: a114235f-c21f-4f06-9275-8e001aee168c\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | found 1 files\n
-2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | recursive file list on directory /comfyui/models/diffusion_models\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | recursive file list on directory /workspace/comfyui/models/diffusion_models\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | found 2 files\n
-2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | recursive file list on directory /comfyui/models/unet\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | recursive file list on directory /workspace/comfyui/models/unet\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | found 4 files\n
-2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | recursive file list on directory /comfyui/models/loras\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | recursive file list on directory /workspace/comfyui/models/loras\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | found 1 files\n
-2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | recursive file list on directory /comfyui/models/vae_approx\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | recursive file list on directory /workspace/comfyui/models/vae_approx\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | found 2 files\n
-2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | recursive file list on directory /comfyui/models/vae\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | recursive file list on directory /workspace/comfyui/models/vae\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | got prompt\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | worker-qwen-image-edit - Websocket connected\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | worker-qwen-image-edit - Connecting to websocket: ws://127.0.0.1:8188/ws?clientId=ae49991e-926d-4d40-87c4-a4b13bf0eb76\n
@@ -435,35 +435,35 @@
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | No target revision found.\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Will assume non-transactional DDL.\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Context impl SQLiteImpl.\n
-2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Database URL: sqlite:////comfyui/user/comfyui.db\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Database URL: sqlite:////workspace/comfyui/user/workspace/comfyui.db\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | \n
-2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    1.4 seconds: /comfyui/custom_nodes/ComfyUI-ReActor\n
-2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.5 seconds: /comfyui/custom_nodes/RES4LYF\n
-2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.5 seconds: /comfyui/custom_nodes/ComfyUI_Comfyroll_CustomNodes\n
-2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.3 seconds: /comfyui/custom_nodes/ComfyUI_LayerStyle\n
-2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.2 seconds: /comfyui/custom_nodes/ComfyUI-KJNodes\n
-2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.1 seconds: /comfyui/custom_nodes/rgthree-comfy\n
-2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.1 seconds: /comfyui/custom_nodes/ComfyUI-Manager\n
-2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.0 seconds: /comfyui/custom_nodes/ComfyUI-S3-R2-Tools\n
-2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.0 seconds: /comfyui/custom_nodes/ComfyUI_UltimateSDUpscale\n
-2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.0 seconds: /comfyui/custom_nodes/cg-image-picker\n
-2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.0 seconds: /comfyui/custom_nodes/ComfyUI_LoadImageFromHttpURL\n
-2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.0 seconds: /comfyui/custom_nodes/websocket_image_save.py\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    1.4 seconds: /workspace/comfyui/custom_nodes/ComfyUI-ReActor\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.5 seconds: /workspace/comfyui/custom_nodes/RES4LYF\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.5 seconds: /workspace/comfyui/custom_nodes/ComfyUI_Comfyroll_CustomNodes\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.3 seconds: /workspace/comfyui/custom_nodes/ComfyUI_LayerStyle\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.2 seconds: /workspace/comfyui/custom_nodes/ComfyUI-KJNodes\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.1 seconds: /workspace/comfyui/custom_nodes/rgthree-comfy\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.1 seconds: /workspace/comfyui/custom_nodes/ComfyUI-Manager\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.0 seconds: /workspace/comfyui/custom_nodes/ComfyUI-S3-R2-Tools\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.0 seconds: /workspace/comfyui/custom_nodes/ComfyUI_UltimateSDUpscale\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.0 seconds: /workspace/comfyui/custom_nodes/cg-image-picker\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.0 seconds: /workspace/comfyui/custom_nodes/ComfyUI_LoadImageFromHttpURL\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 |    0.0 seconds: /workspace/comfyui/custom_nodes/websocket_image_save.py\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Import times for custom nodes:\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | \n
-2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Trying to load custom node /comfyui/custom_nodes/cg-image-picker\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Trying to load custom node /workspace/comfyui/custom_nodes/cg-image-picker\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | (RES4LYF) Importing legacy samplers.\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | (RES4LYF) Importing beta samplers.\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | (RES4LYF) Init\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Loaded backend Agg version v2.2.\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Using pytorch attention\n
-2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Trying to load custom node /comfyui/custom_nodes/RES4LYF\n
-2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Trying to load custom node /comfyui/custom_nodes/ComfyUI_UltimateSDUpscale\n
-2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Trying to load custom node /comfyui/custom_nodes/ComfyUI_LoadImageFromHttpURL\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Trying to load custom node /workspace/comfyui/custom_nodes/RES4LYF\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Trying to load custom node /workspace/comfyui/custom_nodes/ComfyUI_UltimateSDUpscale\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Trying to load custom node /workspace/comfyui/custom_nodes/ComfyUI_LoadImageFromHttpURL\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | For detail refer to [4mhttps://github.com/chflame163/ComfyUI_LayerStyle/issues/5[0m[m\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | A few nodes cannot works properly, while most nodes are not affected. Please REINSTALL package 'opencv-contrib-python'.\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | # 😺dzNodes: LayerStyle -> [1;33mCannot import name 'guidedFilter' from 'cv2.ximgproc'\n
-2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Trying to load custom node /comfyui/custom_nodes/ComfyUI_LayerStyle\n
+2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | Trying to load custom node /workspace/comfyui/custom_nodes/ComfyUI_LayerStyle\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | ------------------------------------------\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | ** For help, please see the wiki at https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes/wiki\n
 2025-10-12  22:57:26.498 | info | zx1f41ul8llek8 | ** For changes, please see patch notes at https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes/blob/main/Patch_Notes.md\n
@@ -477,9 +477,9 @@
 2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | CONFIGDIR=/root/.config/matplotlib\n
 2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | matplotlib data path: /opt/venv/lib/python3.12/site-packages/matplotlib/mpl-data\n
 2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | found 1 files\n
-2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | recursive file list on directory /comfyui/models/controlnet\n
-2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | Trying to load custom node /comfyui/custom_nodes/ComfyUI_Comfyroll_CustomNodes\n
-2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | Trying to load custom node /comfyui/custom_nodes/ComfyUI-S3-R2-Tools\n
+2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | recursive file list on directory /workspace/comfyui/models/controlnet\n
+2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | Trying to load custom node /workspace/comfyui/custom_nodes/ComfyUI_Comfyroll_CustomNodes\n
+2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | Trying to load custom node /workspace/comfyui/custom_nodes/ComfyUI-S3-R2-Tools\n
 2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | Update Settings with 'yolo settings key=value', i.e. 'yolo settings runs_dir=path/to/dir'. For help see https://docs.ultralytics.com/quickstart/#ultralytics-settings.\n
 2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | View Ultralytics Settings with 'yolo settings' or at '/root/.config/Ultralytics/settings.json'\n
 2025-10-12  22:57:26.497 | info | zx1f41ul8llek8 | Creating new Ultralytics Settings v0.0.6 file ✅ \n

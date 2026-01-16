@@ -79,14 +79,14 @@ curl -X POST http://localhost:8188/rp/v1/run \
 
 ```bash
 # Соберите Docker образ
-docker build -t your-username/comfyui-qwen-image-edit:latest \
+docker build -t your-username/workspace/comfyui-qwen-image-edit:latest \
   --build-arg HUGGINGFACE_ACCESS_TOKEN=your_token_here \
   --build-arg MODEL_TYPE=qwen-image-edit \
   .
 
 # Загрузите в RunPod Registry
-docker tag your-username/comfyui-qwen-image-edit:latest runpod/your-username/comfyui-qwen-image-edit:latest
-docker push runpod/your-username/comfyui-qwen-image-edit:latest
+docker tag your-username/workspace/comfyui-qwen-image-edit:latest runpod/your-username/workspace/comfyui-qwen-image-edit:latest
+docker push runpod/your-username/workspace/comfyui-qwen-image-edit:latest
 ```
 
 ### 3. Создание Serverless Endpoint
@@ -95,7 +95,7 @@ docker push runpod/your-username/comfyui-qwen-image-edit:latest
 2. **Перейдите в Serverless → Endpoints**
 3. **Создайте новый endpoint**:
    - **Template**: Custom
-   - **Container Image**: `runpod/your-username/comfyui-qwen-image-edit:latest`
+   - **Container Image**: `runpod/your-username/workspace/comfyui-qwen-image-edit:latest`
    - **Container Disk**: 50 GB
    - **Max Workers**: 1-5 (в зависимости от нагрузки)
    - **Idle Timeout**: 30 секунд

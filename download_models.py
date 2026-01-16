@@ -1,7 +1,7 @@
 # download_models.py
 """
 Скрипт скачивает все модели в точном порядке из вашего оригинального списка
-Место сохранения: /comfyui/models/...
+Место сохранения: /workspace/comfyui/models/...
 """
 
 import os
@@ -11,7 +11,7 @@ from pathlib import Path
 from huggingface_hub import hf_hub_download
 
 # Основная директория моделей
-MODELS_DIR = Path("/workspace/models")
+MODELS_DIR = Path("/workspace/comfyui/models")
 MODELS_DIR.mkdir(parents=True, exist_ok=True)
 
 # Токен Hugging Face (если приватные репозитории)

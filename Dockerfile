@@ -1,5 +1,5 @@
 # Build argument for base image selection
-ARG BASE_IMAGE=nvidia/cuda:12.6.3-cudnn-runtime-ubuntu24.04
+ARG BASE_IMAGE=nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04
 
 # Stage 1: Base image with common dependencies
 FROM ${BASE_IMAGE} AS base
@@ -72,8 +72,8 @@ RUN apt-get update && apt-get install -y \
 RUN uv pip install insightface onnxruntime-gpu fal-client xxhash
 
 # Вместо этого — прямая установка (самый стабильный способ в 2026)
-RUN git clone https://github.com/Comfy-Org/ComfyUI /comfyui && \
-    cd /comfyui && \
+RUN git clone https://github.com/Comfy-Org/ComfyUI /workspace/comfyui && \
+    cd /workspace/comfyui && \
     uv pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu121
 
 # Upgrade PyTorch if needed (for newer CUDA versions)
@@ -82,7 +82,7 @@ RUN if [ "$ENABLE_PYTORCH_UPGRADE" = "true" ]; then \
     fi
 
 # Change working directory to ComfyUI
-WORKDIR /comfyui
+WORKDIR /workspace/comfyui
 
 # Support for the network volume
 ADD src_worker/extra_model_paths.yaml ./
@@ -95,17 +95,17 @@ RUN mkdir -p /root/.reactor/models
 
 # Check available ComfyUI nodes after ReActor installation
 RUN echo "Checking available ComfyUI nodes..."; \
-    python -c "import sys; sys.path.append('/comfyui'); from comfy import model_management; print('ComfyUI imported successfully')" 2>/dev/null || echo "ComfyUI import failed"; \
-    find /comfyui/custom_nodes -name "*.py" | grep -i reactor | head -5 || echo "No ReActor Python files found"; \
-    find /comfyui/custom_nodes -name "*reactor*" -type d || echo "No ReActor directories found";
+    python -c "import sys; sys.path.append('/workspace/comfyui'); from comfy import model_management; print('ComfyUI imported successfully')" 2>/dev/null || echo "ComfyUI import failed"; \
+    find /workspace/comfyui/custom_nodes -name "*.py" | grep -i reactor | head -5 || echo "No ReActor Python files found"; \
+    find /workspace/comfyui/custom_nodes -name "*reactor*" -type d || echo "No ReActor directories found";
 
     # Set environment variables to disable Hugging Face caching
-ENV HF_HOME=/comfyui/models/huggingface_cache
-ENV TRANSFORMERS_CACHE=/comfyui/models/huggingface_cache
-ENV HF_DATASETS_CACHE=/comfyui/models/huggingface_cache
+ENV HF_HOME=/workspace/comfyui/models/huggingface_cache
+ENV TRANSFORMERS_CACHE=/workspace/comfyui/models/huggingface_cache
+ENV HF_DATASETS_CACHE=/workspace/comfyui/models/huggingface_cache
 
     # Create Hugging Face cache directory
-RUN mkdir -p /comfyui/models/huggingface_cache
+RUN mkdir -p /workspace/comfyui/models/huggingface_cache
 
 # Add application code and scripts
 ADD src_worker/start.sh handler.py test_input.json download_models.py install_custom_nodes.py ./
@@ -133,17 +133,10 @@ ARG HUGGINGFACE_ACCESS_TOKEN
 ARG MODEL_TYPE=qwen-image-edit
 
 # Change working directory to ComfyUI
-WORKDIR /comfyui
+WORKDIR /workspace/comfyui
 
 # Create necessary directories upfront
 RUN mkdir -p models/checkpoints models/vae models/unet models/clip models/loras models/upscale_models models/insightface models/facerestore_models models/facedetection models/nsfw_detector models/controlnet models/clip_vision models/codeformer models/adetailer
-
-# Установка custom_nodes на volume + симлинки для моделей и custom_nodes
-RUN mkdir -p /runpod-volume/models && \
-    ln -sfn /runpod-volume/models /comfyui/models && \
-    mkdir -p /runpod-volume/custom_nodes && \
-    ln -sfn /runpod-volume/custom_nodes /comfyui/custom_nodes && \
-    mkdir -p /root/.reactor/models
 
 # Устанавливаем зависимости
 RUN uv pip install --no-cache-dir huggingface_hub hf-transfer requests

@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 # Путь к папке custom_nodes
-CUSTOM_NODES_DIR = Path("/comfyui/custom_nodes")
+CUSTOM_NODES_DIR = Path("/workspace/comfyui/custom_nodes")
 CUSTOM_NODES_DIR.mkdir(parents=True, exist_ok=True)
 
 # Список репозиториев (в том же порядке, что у тебя)
@@ -31,7 +31,7 @@ REPOS = [
     "https://github.com/chflame163/ComfyUI_LayerStyle.git",
     "https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git",
     # "https://github.com/Jonseed/ComfyUI-Detail-Daemon.git",
-    # "https://github.com/shadowcz007/comfyui-mixlab-nodes.git",
+    # "https://github.com/shadowcz007/workspace/comfyui-mixlab-nodes.git",
     # "https://github.com/chflame163/ComfyUI_LayerStyle_Advance.git",
     # "https://github.com/bash-j/mikey_nodes.git",
     # "https://github.com/chrisgoringe/cg-use-everywhere.git",

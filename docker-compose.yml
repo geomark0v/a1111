@@ -18,8 +18,8 @@ services:
       - WEBSOCKET_RECONNECT_DELAY_S=3
       - WEBSOCKET_TRACE=false
     volumes:
-      - ./workflows:/comfyui/workflows
-      - ./models:/comfyui/models
+      - ./workflows:/workspace/comfyui/workflows
+      - ./models:/workspace/comfyui/models
     deploy:
       resources:
         reservations:
