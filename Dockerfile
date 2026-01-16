@@ -87,64 +87,6 @@ WORKDIR /comfyui
 # Support for the network volume
 ADD src_worker/extra_model_paths.yaml ./
 
-# Install comprehensive set of custom nodes for ComfyUI
-RUN for repo in \
-    https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git \
-    https://github.com/kijai/ComfyUI-KJNodes.git \
-    https://github.com/rgthree/rgthree-comfy.git \
-    # https://github.com/JPS-GER/ComfyUI_JPS-Nodes.git \
-    https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git \
-    # https://github.com/Jordach/comfy-plasma.git \
-    https://github.com/ltdrdata/ComfyUI-Impact-Pack.git \
-    https://github.com/ClownsharkBatwing/RES4LYF.git \
-    # https://github.com/yolain/ComfyUI-Easy-Use.git \
-    # https://github.com/WASasquatch/was-node-suite-comfyui.git \
-    # https://github.com/theUpsider/ComfyUI-Logic.git \
-    https://github.com/cubiq/ComfyUI_essentials.git \
-    https://github.com/chrisgoringe/cg-image-picker.git \
-    https://github.com/chflame163/ComfyUI_LayerStyle.git \
-    https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git \
-    # https://github.com/Jonseed/ComfyUI-Detail-Daemon.git \
-    # https://github.com/shadowcz007/comfyui-mixlab-nodes.git \
-    # https://github.com/chflame163/ComfyUI_LayerStyle_Advance.git \
-    # https://github.com/bash-j/mikey_nodes.git \
-    # https://github.com/chrisgoringe/cg-use-everywhere.git \
-    # https://github.com/M1kep/CfyLiterals.gitom \
-    https://github.com/jerrywap/ComfyUI_LoadImageFromHttpURL.git \
-    https://github.com/Gourieff/ComfyUI-ReActor.git \
-    https://github.com/RikkOmsk/ComfyUI-S3-R2-Tools.git \
-    https://github.com/cubiq/ComfyUI_IPAdapter_plus.git \
-    https://github.com/ZHO-ZHO-ZHO/ComfyUI-InstantID.git; \
-    do \
-        cd /comfyui/custom_nodes; \
-        repo_dir=$(basename "$repo" .git); \
-        if [ "$repo" = "https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git" ]; then \
-            git clone --recursive "$repo"; \
-        else \
-            git clone "$repo"; \
-        fi; \
-        if [ -f "/comfyui/custom_nodes/$repo_dir/requirements.txt" ]; then \
-            pip install -r "/comfyui/custom_nodes/$repo_dir/requirements.txt"; \
-        fi; \
-        if [ -f "/comfyui/custom_nodes/$repo_dir/install.py" ]; then \
-            python "/comfyui/custom_nodes/$repo_dir/install.py"; \
-        fi; \
-        if [ "$repo_dir" = "ComfyUI-ReActor" ]; then \
-            echo "ReActor installed, checking for models..."; \
-            mkdir -p /root/.reactor/models; \
-            echo "Checking ReActor installation....."; \
-            ls -la /comfyui/custom_nodes/ComfyUI-ReActor/ || echo "ReActor directory not found"; \
-            find /comfyui/custom_nodes/ComfyUI-ReActor -name "*.py" | head -10 || echo "No Python files found in ReActor"; \
-            find /root -name ".reactor" -type d 2>/dev/null || echo "No .reactor directory found in /root"; \
-            find /comfyui -name "*reactor*" -type d 2>/dev/null || echo "No reactor directories found in /comfyui"; \
-            find /comfyui -name "*face*" -type d 2>/dev/null || echo "No face directories found in /comfyui"; \
-            ls -la /root/.reactor/ 2>/dev/null || echo "No files in /root/.reactor"; \
-            ls -la /root/.reactor/models/ 2>/dev/null || echo "No files in /root/.reactor/models"; \
-            echo "Checking if ReActor nodes are available..."; \
-            python -c "import sys; sys.path.append('/comfyui/custom_nodes/ComfyUI-ReActor'); import reactor; print('ReActor module imported successfully')" 2>/dev/null || echo "ReActor module import failed"; \
-        fi; \
-    done
-
 # Go back to the root
 WORKDIR /
 
@@ -166,7 +108,7 @@ ENV HF_DATASETS_CACHE=/comfyui/models/huggingface_cache
 RUN mkdir -p /comfyui/models/huggingface_cache
 
 # Add application code and scripts
-ADD src_worker/start.sh handler.py test_input.json download_models.py ./
+ADD src_worker/start.sh handler.py test_input.json download_models.py install_custom_nodes.py ./
 RUN chmod +x /start.sh
 
 # Add script to install custom nodes
