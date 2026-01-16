@@ -488,7 +488,7 @@ def handler(job):
     job_input = job["input"]
     job_id = job["id"]
 
-    if job_input.get("skip")
+    if job_input.get("skip"):
         return {"ok": "skip"}
 
     # Make sure that the input is valid
