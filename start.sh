@@ -8,28 +8,6 @@ python /install_custom_nodes.py
 # Запускаем скачивание всех моделей одним RUN
 python /download_models.py
 
-if [ "${JUPYTER_ENABLED:-false}" = "true" ]; then
-    echo "JUPYTER_ENABLED=true → запускаем JupyterLab"
-
-    # Порт по умолчанию 8888, или берём из ENV (JUPYTER_PORT)
-    PORT=${JUPYTER_PORT:-8888}
-
-    jupyter lab \
-        --ip=0.0.0.0 \
-        --port="$PORT" \
-        --no-browser \
-        --allow-root \
-        --NotebookApp.token='' \
-        --NotebookApp.password='' \
-        --NotebookApp.base_url=/ \
-        --NotebookApp.allow_origin='*' &
-
-    echo "JupyterLab запущен на порту $PORT"
-
-    # Даём Jupyter запуститься (чтобы порт открылся)
-    sleep 5
-fi
-
 # Ensure ComfyUI-Manager runs in offline network mode inside the container
 comfy-manager-set-mode offline || echo "worker-qwen-image-edit - Could not set ComfyUI-Manager network_mode" >&2
 

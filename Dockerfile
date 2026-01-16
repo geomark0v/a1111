@@ -26,6 +26,8 @@ ENV CMAKE_BUILD_PARALLEL_LEVEL=8
 
 ENV DOWNLOAD_MODELS=false
 
+ENV JUPYTER_ENABLED=false
+
 # Install Python, git and other necessary tools
 RUN apt-get update && apt-get install -y \
     python3.12 \
@@ -59,8 +61,9 @@ RUN uv pip install comfy-cli pip setuptools wheel
 # Install Python runtime dependencies for the handler
 RUN uv pip install runpod requests websocket-client
 
-# Установка Jupyter (можно добавить в конец Dockerfile)
-RUN uv pip install --no-cache-dir jupyterlab jupyter ipykernel
+RUN if [ "$JUPYTER_ENABLED" = "true" ]; then \
+      uv pip install --no-cache-dir jupyterlab jupyter ipykernel; \
+    fi
 
 # Открываем порт (можно сделать динамическим)
 EXPOSE 8888
@@ -76,6 +79,8 @@ RUN apt-get update && apt-get install -y \
 
     # Install ReActor dependencies and additional libraries
 RUN uv pip install insightface onnxruntime-gpu fal-client xxhash
+
+RUN mkdir -p /workspace/comfyui
 
 # Вместо этого — прямая установка (самый стабильный способ в 2026)
 RUN git clone https://github.com/Comfy-Org/ComfyUI /workspace/comfyui && \
