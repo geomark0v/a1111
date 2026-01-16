@@ -166,7 +166,7 @@ ENV HF_DATASETS_CACHE=/comfyui/models/huggingface_cache
 RUN mkdir -p /comfyui/models/huggingface_cache
 
 # Add application code and scripts
-ADD src_worker/start.sh handler.py test_input.json ./
+ADD src_worker/start.sh handler.py test_input.json download_models.py ./
 RUN chmod +x /start.sh
 
 # Add script to install custom nodes
@@ -195,9 +195,6 @@ WORKDIR /comfyui
 
 # Create necessary directories upfront
 RUN mkdir -p models/checkpoints models/vae models/unet models/clip models/loras models/upscale_models models/insightface models/facerestore_models models/facedetection models/nsfw_detector models/controlnet models/clip_vision models/codeformer models/adetailer
-
-# Копируем скрипт
-COPY download_models.py /download_models.py
 
 # Создаём симлинк на volume для моделей (самое важное для RunPod)
 RUN mkdir -p /runpod-volume/models && \
