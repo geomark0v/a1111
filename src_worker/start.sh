@@ -42,11 +42,6 @@ for sub in "${SUBDIRS[@]}"; do
         continue
     fi
 
-    # Если что-то не так (битый симлинк, директория вместо симлинка) — удаляем только сам симлинк/пустую папку
-    if [ -e "$target" ]; then
-        rm -f "$target"  # безопасно удаляем только сам симлинк
-    fi
-
     # Создаём свежий симлинк
     ln -sfn "/workspace/comfyui/models/$sub" "$target"
     echo "Симлинк создан/обновлён: $target → /workspace/comfyui/models/$sub"
