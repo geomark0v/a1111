@@ -1,6 +1,7 @@
 {
   "input": {
     "workflow": null,
+    "images": [],
     "skip": true
   }
 }
