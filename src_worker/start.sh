@@ -95,8 +95,5 @@ if [ "$SERVE_API_LOCALLY" == "true" ]; then
     echo "worker-comfyui: Starting RunPod Handler"
     python -u /handler.py --rp_serve_api --rp_api_host=0.0.0.0
 else
-    python -u /comfyui/main.py --listen 0.0.0.0 --port 8188 &
-
-    echo "worker-comfyui: Starting RunPod Handler"
-    python -u /handler.py
+    python -u /comfyui/main.py --listen 0.0.0.0 --port 8188
 fi
