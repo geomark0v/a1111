@@ -66,7 +66,7 @@ RUN if [ "$JUPYTER_ENABLED" = "true" ]; then \
     fi
 
 # Открываем порт (можно сделать динамическим)
-EXPOSE 8888
+EXPOSE 8188
 
 # Install build tools for insightface compilation
 RUN apt-get update && apt-get install -y \
