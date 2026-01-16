@@ -156,35 +156,3 @@ COPY Eyes.pt /Eyes.pt
 
 # Stage 3: Final image
 FROM base AS final
-
-# Copy models from stage 2 to the final image in separate layers
-# Part 1: UNET models (largest files)
-COPY --from=downloader /comfyui/models/unet /comfyui/models/unet
-
-# Part 2: CLIP models
-COPY --from=downloader /comfyui/models/clip /comfyui/models/clip
-
-# Part 3: VAE, LoRA, and upscale models
-COPY --from=downloader /comfyui/models/vae /comfyui/models/vae
-COPY --from=downloader /comfyui/models/loras /comfyui/models/loras
-COPY --from=downloader /comfyui/models/upscale_models /comfyui/models/upscale_models
-
-# Part 4: Checkpoints (if any)
-COPY --from=downloader /comfyui/models/checkpoints /comfyui/models/checkpoints
-
-# Part 5: ReActor models (from downloader stage where models are downloaded)
-COPY --from=downloader /comfyui/models/insightface /comfyui/models/insightface
-COPY --from=downloader /comfyui/models/facedetection /comfyui/models/facedetection
-COPY --from=downloader /comfyui/models/facerestore_models /comfyui/models/facerestore_models
-COPY --from=downloader /comfyui/models/nsfw_detector /comfyui/models/nsfw_detector
-COPY --from=downloader /comfyui/models/clip_vision /comfyui/models/clip_vision
-COPY --from=downloader /comfyui/models/ultralytics /comfyui/models/ultralytics
-COPY --from=downloader /comfyui/models/huggingface_cache /comfyui/models/huggingface_cache
-
-# Additional copies for new directories
-COPY --from=downloader /comfyui/models/controlnet /comfyui/models/controlnet
-COPY --from=downloader /comfyui/models/codeformer /comfyui/models/codeformer
-COPY --from=downloader /comfyui/models/adetailer /comfyui/models/adetailer
-
-# Copy Eyes.pt if it was downloaded
-COPY --from=downloader /Eyes.pt /Eyes.pt
