@@ -488,6 +488,9 @@ def handler(job):
     job_input = job["input"]
     job_id = job["id"]
 
+    if job_input.get("skip")
+        return {"ok": "skip"}
+
     # Make sure that the input is valid
     validated_data, error_message = validate_input(job_input)
     if error_message:
