@@ -4,6 +4,57 @@
 TCMALLOC="$(ldconfig -p | grep -Po "libtcmalloc.so.\d" | head -n 1)"
 export LD_PRELOAD="${TCMALLOC}"
 
+set -e
+
+echo "Инициализация симлинков на persistent volume..."
+
+# Создаём базовую папку на volume
+mkdir -p /runpod-volume/models
+
+# Список всех подпапок (точно как у тебя)
+SUBDIRS=(
+    "checkpoints"
+    "vae"
+    "unet"
+    "clip"
+    "loras"
+    "upscale_models"
+    "insightface"
+    "facerestore_models"
+    "facedetection"
+    "nsfw_detector"
+    "controlnet"
+    "clip_vision"
+    "codeformer"
+    "adetailer"
+)
+
+# Для каждой подпапки:
+for sub in "${SUBDIRS[@]}"; do
+    # Создаём на volume, если нет
+    mkdir -p "/workspace/comfyui/models/$sub"
+
+    # Удаляем старую (если сломана или не симлинк)
+    target="/comfyui/models/$sub"
+    if [ -e "$target" ]; then
+        if [ -L "$target" ]; then
+            rm -f "$target"
+        else
+            echo "Предупреждение: $target — не симлинк, удаляем..."
+            rm -rf "$target"
+        fi
+    fi
+
+    # Создаём свежий симлинк
+    ln -sfn "/workspace/comfyui/models/$sub" "$target"
+    echo "Симлинк создан: $target → /workspace/comfyui/models/$sub"
+done
+
+# Отдельная папка для ReActor (маленькая, можно оставить в /root)
+mkdir -p /root/.reactor/models
+
+echo "Все симлинки готовы!"
+
 python /install_custom_nodes.py
 # Запускаем скачивание всех моделей одним RUN
 python /download_models.py

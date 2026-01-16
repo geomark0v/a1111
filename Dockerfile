@@ -83,8 +83,8 @@ RUN uv pip install insightface onnxruntime-gpu fal-client xxhash
 RUN mkdir -p /workspace/comfyui
 
 # Вместо этого — прямая установка (самый стабильный способ в 2026)
-RUN git clone https://github.com/Comfy-Org/ComfyUI /workspace/comfyui && \
-    cd /workspace/comfyui && \
+RUN git clone https://github.com/Comfy-Org/ComfyUI /comfyui && \
+    cd /comfyui && \
     uv pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu121
 
 # Upgrade PyTorch if needed (for newer CUDA versions)
@@ -93,7 +93,7 @@ RUN if [ "$ENABLE_PYTORCH_UPGRADE" = "true" ]; then \
     fi
 
 # Change working directory to ComfyUI
-WORKDIR /workspace/comfyui
+WORKDIR /comfyui
 
 # Support for the network volume
 ADD src_worker/extra_model_paths.yaml ./
@@ -104,16 +104,10 @@ WORKDIR /
 # Ensure .reactor directory exists for ReActor models
 RUN mkdir -p /root/.reactor/models
 
-# Check available ComfyUI nodes after ReActor installation
-RUN echo "Checking available ComfyUI nodes..."; \
-    python -c "import sys; sys.path.append('/workspace/comfyui'); from comfy import model_management; print('ComfyUI imported successfully')" 2>/dev/null || echo "ComfyUI import failed"; \
-    find /workspace/comfyui/custom_nodes -name "*.py" | grep -i reactor | head -5 || echo "No ReActor Python files found"; \
-    find /workspace/comfyui/custom_nodes -name "*reactor*" -type d || echo "No ReActor directories found";
-
     # Set environment variables to disable Hugging Face caching
-ENV HF_HOME=/workspace/comfyui/models/huggingface_cache
-ENV TRANSFORMERS_CACHE=/workspace/comfyui/models/huggingface_cache
-ENV HF_DATASETS_CACHE=/workspace/comfyui/models/huggingface_cache
+ENV HF_HOME=/comfyui/models/huggingface_cache
+ENV TRANSFORMERS_CACHE=/comfyui/models/huggingface_cache
+ENV HF_DATASETS_CACHE=/comfyui/models/huggingface_cache
 
     # Create Hugging Face cache directory
 RUN mkdir -p /workspace/comfyui/models/huggingface_cache
@@ -144,7 +138,7 @@ ARG HUGGINGFACE_ACCESS_TOKEN
 ARG MODEL_TYPE=qwen-image-edit
 
 # Change working directory to ComfyUI
-WORKDIR /workspace/comfyui
+WORKDIR /comfyui
 
 # Create necessary directories upfront
 RUN mkdir -p models/checkpoints models/vae models/unet models/clip models/loras models/upscale_models models/insightface models/facerestore_models models/facedetection models/nsfw_detector models/controlnet models/clip_vision models/codeformer models/adetailer
