@@ -29,25 +29,27 @@ SUBDIRS=(
     "adetailer"
 )
 
-# Для каждой подпапки:
 for sub in "${SUBDIRS[@]}"; do
-    # Создаём на volume, если нет
+    # Создаём подпапку на volume, если её ещё нет
     mkdir -p "/workspace/comfyui/models/$sub"
 
-    # Удаляем старую (если сломана или не симлинк)
+    # Целевой путь симлинка
     target="/comfyui/models/$sub"
+
+    # Если симлинк уже существует и правильный — ничего не делаем
+    if [ -L "$target" ] && [ "$(readlink -f "$target")" = "/workspace/comfyui/models/$sub" ]; then
+        echo "Симлинк $target уже правильный — пропускаем"
+        continue
+    fi
+
+    # Если что-то не так (битый симлинк, директория вместо симлинка) — удаляем только сам симлинк/пустую папку
     if [ -e "$target" ]; then
-        if [ -L "$target" ]; then
-            rm -f "$target"
-        else
-            echo "Предупреждение: $target — не симлинк, удаляем..."
-            rm -rf "$target"
-        fi
+        rm -f "$target"  # безопасно удаляем только сам симлинк
     fi
 
     # Создаём свежий симлинк
     ln -sfn "/workspace/comfyui/models/$sub" "$target"
-    echo "Симлинк создан: $target → /workspace/comfyui/models/$sub"
+    echo "Симлинк создан/обновлён: $target → /workspace/comfyui/models/$sub"
 done
 
 # Отдельная папка для ReActor (маленькая, можно оставить в /root)
