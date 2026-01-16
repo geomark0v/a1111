@@ -4,6 +4,7 @@
 TCMALLOC="$(ldconfig -p | grep -Po "libtcmalloc.so.\d" | head -n 1)"
 export LD_PRELOAD="${TCMALLOC}"
 
+python /install_custom_nodes.py
 # Запускаем скачивание всех моделей одним RUN
 python /download_models.py
 

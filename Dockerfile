@@ -138,9 +138,11 @@ WORKDIR /comfyui
 # Create necessary directories upfront
 RUN mkdir -p models/checkpoints models/vae models/unet models/clip models/loras models/upscale_models models/insightface models/facerestore_models models/facedetection models/nsfw_detector models/controlnet models/clip_vision models/codeformer models/adetailer
 
-# Создаём симлинк на volume для моделей (самое важное для RunPod)
+# Установка custom_nodes на volume + симлинки для моделей и custom_nodes
 RUN mkdir -p /runpod-volume/models && \
     ln -sfn /runpod-volume/models /comfyui/models && \
+    mkdir -p /runpod-volume/custom_nodes && \
+    ln -sfn /runpod-volume/custom_nodes /comfyui/custom_nodes && \
     mkdir -p /root/.reactor/models
 
 # Устанавливаем зависимости
