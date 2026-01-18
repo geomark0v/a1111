@@ -75,9 +75,6 @@ def install_repo(repo_url):
         print(f"[INSTALL] requirements.txt для {repo_name}")
         run_command([sys.executable, "-m", "pip", "install", "-r", str(reqs_path)])
 
-    if repo_name == "ComfyUI-Impact-Pack":
-
-
     # Запуск install.py, если есть
     install_py = repo_path / "install.py"
     if install_py.exists():
