@@ -50,6 +50,8 @@ done
 # Отдельная папка для ReActor (маленькая, можно оставить в /root)
 mkdir -p /root/.reactor/models
 
+ln -s "/workspace/comfyui/custom_nodes" "/comfyui/custom_nodes"
+
 echo "Все симлинки готовы!"
 
 python /install_custom_nodes.py
