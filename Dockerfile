@@ -151,6 +151,9 @@ RUN if [ "$DOWNLOAD_MODELS" = "true" ]; then \
       python /download_models.py; \
     fi
 
+RUN mkdir -p /workspace/venv && \
+    uv venv /workspace/venv --python python3.12
+
 # Copy Eyes.pt file if it exists
 COPY Eyes.pt /Eyes.pt
 

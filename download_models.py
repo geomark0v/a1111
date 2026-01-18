@@ -174,6 +174,14 @@ if __name__ == "__main__":
     hf_download("IgorGent/pony", "glintr100.onnx", "insightface/models/antelopev2")
     hf_download("IgorGent/pony", "scrfd_10g_bnkps.onnx", "insightface/models/antelopev2")
 
+    # 11. insightface antelopev2
+    print("\nDownloading insightface antelopev2 models...")
+    hf_download("IgorGent/pony", "1k3d68.onnx", "insightface")
+    hf_download("IgorGent/pony", "2d106det.onnx", "insightface")
+    hf_download("IgorGent/pony", "genderage.onnx", "insightface")
+    hf_download("IgorGent/pony", "glintr100.onnx", "insightface")
+    hf_download("IgorGent/pony", "scrfd_10g_bnkps.onnx", "insightface")
+
     # 12. CodeFormer + parsing
     print("\nDownloading CodeFormer and GFPGAN models...")
     hf_download("IgorGent/pony", "codeformer-v0.1.0.pth", "codeformer")
@@ -189,6 +197,8 @@ if __name__ == "__main__":
     hf_download("IgorGent/pony", "A-Detailer/FacesV1 (2).pt", "adetailer")
     hf_download("IgorGent/pony", "A-Detailer/face_yolov8m (2).pt", "adetailer")
     hf_download("IgorGent/pony", "A-Detailer/penis (1) (2).pt", "adetailer")
+    hf_download("IgorGent/pony", "A-Detailer/penis (3).pt", "adetailer")
+
     hf_download("IgorGent/pony", "A-Detailer/penis (3).pt", "adetailer")
 
     print("\n=== Скачивание всех моделей завершено! ===")

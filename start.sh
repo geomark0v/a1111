@@ -4,6 +4,23 @@
 TCMALLOC="$(ldconfig -p | grep -Po "libtcmalloc.so.\d" | head -n 1)"
 export LD_PRELOAD="${TCMALLOC}"
 
+set -e
+# Активируем persistent venv (сохраняет все зависимости custom nodes)
+source /workspace/venv/bin/activate
+
+mkdir -p /workspace/comfyui/models/{checkpoints,vae,unet,clip,loras,upscale_models,insightface,facerestore_models,facedetection,nsfw_detector,controlnet,clip_vision,codeformer,adetailer,ipadapter}
+
+for dir in checkpoints vae unet clip loras upscale_models insightface facerestore_models facedetection nsfw_detector controlnet clip_vision codeformer adetailer ipadapter; do
+    target="/comfyui/models/$dir"
+    source="/workspace/comfyui/models/$dir"
+
+    # Удаляем только если битый симлинк
+    [ -L "$target" ] && rm -f "$target"
+
+    ln -sfn "$source" "$target"
+    echo "Симлинк: $target -> $source"
+done
+
 python /install_custom_nodes.py
 # Запускаем скачивание всех моделей одним RUN
 python /download_models.py
