@@ -37,7 +37,7 @@ REPOS = [
     # "https://github.com/chrisgoringe/cg-use-everywhere.git",
     # "https://github.com/M1kep/CfyLiterals.gitom",
     "https://github.com/jerrywap/ComfyUI_LoadImageFromHttpURL.git",
-    "https://github.com/Gourieff/ComfyUI-ReActor.git",
+    "https://codeberg.org/Gourieff/comfyui-reactor-node.git",
     "https://github.com/RikkOmsk/ComfyUI-S3-R2-Tools.git",
     "https://github.com/cubiq/ComfyUI_IPAdapter_plus.git",
     "https://github.com/ZHO-ZHO-ZHO/ComfyUI-InstantID.git",
