@@ -8,18 +8,69 @@ set -e
 # Активируем persistent venv (сохраняет все зависимости custom nodes)
 source /workspace/venv/bin/activate
 
-mkdir -p /workspace/comfyui/models/{checkpoints,vae,unet,clip,loras,upscale_models,insightface,facerestore_models,facedetection,nsfw_detector,controlnet,clip_vision,codeformer,adetailer,ipadapter}
+# Базовая папка на volume
+mkdir -p /workspace/comfyui/models
 
-for dir in checkpoints vae unet clip loras upscale_models insightface facerestore_models facedetection nsfw_detector controlnet clip_vision codeformer adetailer ipadapter; do
-    target="/comfyui/models/$dir"
-    source="/workspace/comfyui/models/$dir"
+# Полный список всех подпапок (твой список)
+SUBDIRS=(
+    "adetailer"
+    "clip"
+    "configs"
+    "diffusion_models"
+    "facerestore_models"
+    "hypernetworks"
+    "latent_upscale_models"
+    "nsfw_detector"
+    "sams"
+    "ultralytics"
+    "vae"
+    "audio_encoders"
+    "clip_vision"
+    "controlnet"
+    "embeddings"
+    "gligen"
+    "insightface"
+    "loras"
+    "photomaker"
+    "style_models"
+    "unet"
+    "vae_approx"
+    "checkpoints"
+    "codeformer"
+    "diffusers"
+    "facedetection"
+    "huggingface_cache"
+    "ipadapter"
+    "model_patches"
+    "reactor"
+    "text_encoders"
+    "upscale_models"
+)
+
+for sub in "${SUBDIRS[@]}"; do
+    # Создаём подпапку на volume (если нет)
+    mkdir -p "/workspace/comfyui/models/$sub"
+
+    # Целевой путь симлинка
+    target="/comfyui/models/$sub"
+
+    # Если уже правильный симлинк — пропускаем
+    if [ -L "$target" ] && [ "$(readlink -f "$target")" = "/workspace/comfyui/models/$sub" ]; then
+        echo "Симлинк $target уже правильный — пропускаем"
+        continue
+    fi
 
     # Удаляем только если битый симлинк
-    [ -L "$target" ] && rm -f "$target"
+    if [ -L "$target" ]; then
+        rm -f "$target"
+    fi
 
-    ln -sfn "$source" "$target"
-    echo "Симлинк: $target -> $source"
+    # Создаём свежий симлинк
+    ln -sfn "/workspace/comfyui/models/$sub" "$target"
+    echo "Симлинк создан: $target → /workspace/comfyui/models/$sub"
 done
+
+echo "Все симлинки для папок моделей готовы!"
 
 python /install_custom_nodes.py
 # Запускаем скачивание всех моделей одним RUN
