@@ -91,6 +91,9 @@ if __name__ == "__main__":
     hf_download("Comfy-Org/Qwen-Image_ComfyUI", "split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors", "clip")
     hf_download("Comfy-Org/z_image_turbo", "split_files/text_encoders/qwen_3_4b.safetensors", "clip")
 
+    hf_download("Kijai/CLIPVisionModelWithProjection_fp16", "CLIP-ViT-H-fp16.safetensors", "clip_vision")
+    hf_download("lllyasviel/misc", "clip_vision_vit_h.safetensors", "clip_vision")
+
     # 2. VAE
     hf_download("Comfy-Org/Qwen-Image_ComfyUI", "split_files/vae/qwen_image_vae.safetensors", "vae")
     hf_download("Comfy-Org/z_image_turbo", "split_files/vae/ae.safetensors", "vae")
