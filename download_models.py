@@ -153,14 +153,14 @@ if __name__ == "__main__":
 
     # 10. ControlNet and related
     print("\nDownloading ControlNet and related models...")
-    hf_download("IgorGent/pony", "ip-adapter-faceid-plusv2_sdxl.bin", "controlnet")
+    hf_download("IgorGent/pony", "ip-adapter-faceid-plusv2_sdxl.bin", "ipadapter")
     hf_download("IgorGent/pony", "ip-adapter-faceid-plusv2_sdxl_lora.safetensors", "loras")
-    hf_download("IgorGent/pony", "ip-adapter-plus-face_sdxl_vit-h.safetensors", "controlnet")
-    hf_download("IgorGent/pony", "ip-adapter-plus_sdxl_vit-h (1).safetensors", "controlnet")
-    hf_download("IgorGent/pony", "ip-adapter_sdxl_vit-h (1).safetensors", "controlnet")
+    hf_download("IgorGent/pony", "ip-adapter-plus-face_sdxl_vit-h.safetensors", "ipadapter")
+    hf_download("IgorGent/pony", "ip-adapter-plus_sdxl_vit-h (1).safetensors", "ipadapter")
+    hf_download("IgorGent/pony", "ip-adapter_sdxl_vit-h (1).safetensors", "ipadapter")
     hf_download("IgorGent/pony", "clip_h.pth", "clip_vision")
-    hf_download("IgorGent/pony", "ip_adapter_instant_id_sdxl.bin", "controlnet")
-    hf_download("IgorGent/pony", "control_instant_id_sdxl.safetensors", "controlnet")
+    hf_download("IgorGent/pony", "ip_adapter_instant_id_sdxl.bin", "ipadapter")
+    hf_download("IgorGent/pony", "control_instant_id_sdxl.safetensors", "ipadapter")
 
     # 11. insightface antelopev2
     print("\nDownloading insightface antelopev2 models...")

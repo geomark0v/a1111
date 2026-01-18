@@ -15,6 +15,7 @@ CUSTOM_NODES_DIR.mkdir(parents=True, exist_ok=True)
 
 # Список репозиториев (в том же порядке, что у тебя)
 REPOS = [
+    "https://github.com/ltdrdata/ComfyUI-Manager.git",
     "https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git",
     "https://github.com/kijai/ComfyUI-KJNodes.git",
     "https://github.com/rgthree/rgthree-comfy.git",
@@ -68,11 +69,27 @@ def install_repo(repo_url):
     else:
         run_command(["git", "clone", repo_url, str(repo_path)])
 
-    # Установка requirements.txt
-    reqs_path = repo_path / "requirements.txt"
-    if reqs_path.exists():
-        print(f"[INSTALL] requirements.txt для {repo_name}")
-        run_command([sys.executable, "-m", "pip", "install", "-r", str(reqs_path)])
+   # Специальная обработка для ComfyUI-Impact-Pack — устанавливаем только нужные пакеты
+       if repo_name == "ComfyUI-Impact-Pack":
+           print(f"[SPECIAL INSTALL] Установка зависимостей для {repo_name} вручную")
+           impact_deps = [
+               "segment-anything",
+               "scikit-image",
+               "piexif",
+               "transformers",
+               "opencv-python-headless",
+               "scipy",
+               "numpy",
+               "dill",
+               "matplotlib"
+           ]
+           run_command([sys.executable, "-m", "pip", "install"] + impact_deps)
+       else:
+           # Обычная установка requirements.txt для остальных
+           reqs_path = repo_path / "requirements.txt"
+           if reqs_path.exists():
+               print(f"[INSTALL] requirements.txt для {repo_name}")
+               run_command([sys.executable, "-m", "pip", "install", "-r", str(reqs_path)])
 
     # Запуск install.py, если есть
     install_py = repo_path / "install.py"
