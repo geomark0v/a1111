@@ -27,6 +27,7 @@ SUBDIRS=(
     "clip_vision"
     "codeformer"
     "adetailer"
+    "ipadapter"
 )
 
 for sub in "${SUBDIRS[@]}"; do
