@@ -54,7 +54,20 @@ echo "Все симлинки готовы!"
 
 python /install_custom_nodes.py
 
+# Удаляем старую папку/симлинк /comfyui/custom_nodes (если существует)
+if [ -e "/comfyui/custom_nodes" ]; then
+    if [ -L "/comfyui/custom_nodes" ]; then
+        rm -f "/comfyui/custom_nodes"  # удаляем старый симлинк
+    else
+        echo "Предупреждение: /comfyui/custom_nodes — обычная папка, удаляем..."
+        rm -rf "/comfyui/custom_nodes"  # удаляем только если это НЕ симлинк
+    fi
+fi
+
+# Создаём свежий симлинк
 ln -sfn "/workspace/comfyui/custom_nodes" "/comfyui/custom_nodes"
+
+echo "Симлинк создан: /comfyui/custom_nodes → /workspace/comfyui/custom_nodes"
 
 # Запускаем скачивание всех моделей одним RUN
 python /download_models.py
