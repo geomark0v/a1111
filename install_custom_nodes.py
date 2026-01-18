@@ -69,27 +69,14 @@ def install_repo(repo_url):
     else:
         run_command(["git", "clone", repo_url, str(repo_path)])
 
-    # Специальная обработка для ComfyUI-Impact-Pack — устанавливаем только нужные пакеты
+    # Установка requirements.txt
+    reqs_path = repo_path / "requirements.txt"
+    if reqs_path.exists():
+        print(f"[INSTALL] requirements.txt для {repo_name}")
+        run_command([sys.executable, "-m", "pip", "install", "-r", str(reqs_path)])
+
     if repo_name == "ComfyUI-Impact-Pack":
-        print(f"[SPECIAL INSTALL] Установка зависимостей для {repo_name} вручную")
-        impact_deps = [
-            "segment-anything",
-            "scikit-image",
-            "piexif",
-            "transformers",
-            "opencv-python-headless",
-            "scipy",
-            "numpy",
-            "dill",
-            "matplotlib"
-        ]
-        run_command([sys.executable, "-m", "pip", "install"] + impact_deps)
-    else:
-        # Обычная установка requirements.txt для остальных
-        reqs_path = repo_path / "requirements.txt"
-        if reqs_path.exists():
-            print(f"[INSTALL] requirements.txt для {repo_name}")
-            run_command([sys.executable, "-m", "pip", "install", "-r", str(reqs_path)])
+
 
     # Запуск install.py, если есть
     install_py = repo_path / "install.py"
@@ -98,7 +85,7 @@ def install_repo(repo_url):
         run_command([sys.executable, str(install_py)], cwd=repo_path)
 
     # Специальная проверка для ReActor
-    if repo_name == "ComfyUI-ReActor":
+    if repo_name == "comfyui-reactor-node":
         print("\n[ReActor] Проверка установки...")
         reactor_dir = Path("/root/.reactor")
         reactor_dir.mkdir(parents=True, exist_ok=True)

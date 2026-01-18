@@ -25,6 +25,13 @@ Pillow>=9.0.0
 opencv-python>=4.5.0
 
 # Utilities
+ultralytics
 tqdm
 psutil
 piexif
+blend_modes
+ultralytics
+diffusers
+dill
+segment_anything
+PyWavelets
