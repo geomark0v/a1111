@@ -12,7 +12,7 @@ from pathlib import Path
 from huggingface_hub import hf_hub_download, snapshot_download
 
 # Основная директория моделей в ComfyUI
-MODELS_DIR = Path("/comfyui/models")
+MODELS_DIR = Path("/workspace/comfyui/models")
 MODELS_DIR.mkdir(parents=True, exist_ok=True)
 
 # Токен Hugging Face (если приватные репозитории)
