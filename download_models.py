@@ -229,14 +229,4 @@ if __name__ == "__main__":
     hf_download("IgorGent/pony", "sam_vit_h_4b8939.pth", "sams")
     hf_download("IgorGent/pony", "sam_vit_l_0b3195.pth", "sams")
 
-    # 13. A-Detailer
-    print("\nDownloading A-Detailer models...")
-    hf_download("IgorGent/pony", "A-Detailer/Eyeful_v1 (3).pt", "adetailer")
-    hf_download("IgorGent/pony", "A-Detailer/Eyes (1) (2).pt", "adetailer")
-    hf_download("IgorGent/pony", "A-Detailer/Eyes (4).pt", "adetailer")
-    hf_download("IgorGent/pony", "A-Detailer/FacesV1 (2).pt", "adetailer")
-    hf_download("IgorGent/pony", "A-Detailer/face_yolov8m (2).pt", "adetailer")
-    hf_download("IgorGent/pony", "A-Detailer/penis (1) (2).pt", "adetailer")
-    hf_download("IgorGent/pony", "A-Detailer/penis (3).pt", "adetailer")
-
     print("\n=== Скачивание всех моделей завершено! ===")
