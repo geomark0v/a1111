@@ -225,7 +225,9 @@ if __name__ == "__main__":
     hf_download("IgorGent/pony", "parsing_parsenet.pth", "facedetection")
     hf_download("IgorGent/pony", "codeformer.pth", "codeformer")
 
-    hf_download("segments-arnaud/sam_vit_l", "sam_vit_l_0b3195.pth", "sams")
+    hf_download("IgorGent/pony", "sam_vit_b_01ec64.pth", "sams")
+    hf_download("IgorGent/pony", "sam_vit_h_4b8939.pth", "sams")
+    hf_download("IgorGent/pony", "sam_vit_l_0b3195.pth", "sams")
 
     # 13. A-Detailer
     print("\nDownloading A-Detailer models...")
