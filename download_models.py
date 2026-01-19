@@ -163,7 +163,9 @@ if __name__ == "__main__":
     print("\nDownloading ReActor models...")
     hf_download("ezioruan/inswapper_128.onnx", "inswapper_128.onnx" , "insightface")
     hf_download("salmonrk/facedetection", "detection_Resnet50_Final.pth" , "facedetection")
+    hf_download("IgorGent/pony", "codeformer-v0.1.0.pth" , "facedetection")
     hf_download("gmk123/GFPGAN", "GFPGANv1.4.pth" , "facerestore_models")
+    hf_download("martintomov/comfy", "GPEN-BFR-512.onnx" , "facerestore_models")
 
     # 6. NSFW detector
     print("\nDownloading NSFW detector models...")
