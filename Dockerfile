@@ -1,8 +1,8 @@
 # Build argument for base image selection
 ARG BASE_IMAGE=nvidia/cuda:12.6.3-cudnn-runtime-ubuntu24.04
 
-# Stage 1: Base image with common dependencies
-FROM ${BASE_IMAGE} AS base
+# Единственная стадия — всё в одном образе
+FROM ${BASE_IMAGE}
 
 ARG COMFYUI_VERSION=latest
 ARG CUDA_VERSION_FOR_COMFY
@@ -20,14 +20,14 @@ ENV DEBIAN_FRONTEND=noninteractive \
 ENV DOWNLOAD_MODELS=false
 ENV JUPYTER_ENABLED=false
 
-# Install system packages (including git and unzip for custom nodes)
+# Установка системных пакетов
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3.12 python3.12-venv git wget curl unzip \
     libgl1 libglib2.0-0 libsm6 libxext6 libxrender1 ffmpeg \
     build-essential g++ gcc python3-dev python3.12-dev \
     && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-# Install uv + create venv
+# Установка uv + venv
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh \
     && ln -sf /root/.local/bin/uv /usr/local/bin/uv \
     && ln -sf /root/.local/bin/uvx /usr/local/bin/uvx \
@@ -35,51 +35,45 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh \
 
 ENV PATH="/opt/venv/bin:${PATH}"
 
-# Install comfy-cli and basic tools
+# Установка comfy-cli и базовых зависимостей
 RUN uv pip install --no-cache-dir comfy-cli pip setuptools wheel
 
-# Install ComfyUI directly (stable method)
+# Установка ComfyUI
 RUN git clone https://github.com/Comfy-Org/ComfyUI /comfyui \
     && cd /comfyui \
     && uv pip install --no-cache-dir -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu121
 
-# Optional PyTorch upgrade
+# Опциональное обновление torch
 RUN if [ "$ENABLE_PYTORCH_UPGRADE" = "true" ]; then \
       uv pip install --no-cache-dir --force-reinstall torch torchvision torchaudio --index-url ${PYTORCH_INDEX_URL}; \
     fi
 
 WORKDIR /comfyui
 
-# Add extra model paths
+# Добавляем конфиг
 ADD src_worker/extra_model_paths.yaml ./
 
-# Install runtime dependencies
+# Установка runtime-зависимостей
 RUN uv pip install --no-cache-dir runpod requests websocket-client
 
-# Install Jupyter if enabled
+# Установка Jupyter (если включено)
 RUN if [ "$JUPYTER_ENABLED" = "true" ]; then \
       uv pip install --no-cache-dir jupyterlab jupyter ipykernel; \
     fi
 
-# Install build tools for insightface and other C++ extensions
+# Установка build-tools для insightface и других расширений
 RUN apt-get update && apt-get install -y \
     build-essential g++ gcc python3-dev python3.12-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Install ReActor/Insightface dependencies
+# Установка insightface и связанных
 RUN uv pip install --no-cache-dir insightface onnxruntime-gpu fal-client xxhash
 
-# Create persistent directories
-RUN mkdir -p /workspace/comfyui/custom_nodes \
-    /workspace/comfyui/models/{checkpoints,vae,unet,clip,loras,upscale_models,insightface,facerestore_models,facedetection,nsfw_detector,controlnet,clip_vision,codeformer,adetailer,ipadapter} \
-    /root/.reactor/models \
-    /workspace/venv
+# Создаём папки для моделей (плейсхолдеры)
+RUN mkdir -p /comfyui/models/{checkpoints,vae,unet,clip,loras,upscale_models,insightface,facerestore_models,facedetection,nsfw_detector,controlnet,clip_vision,codeformer,adetailer,ipadapter}
 
-# Create persistent venv for custom nodes dependencies
-RUN uv venv /workspace/venv --python python3.12
-
-# Install all custom nodes directly in Dockerfile (on persistent volume)
-RUN cd /workspace/comfyui/custom_nodes && \
+# Установка всех custom nodes прямо в Dockerfile
+RUN cd /comfyui/custom_nodes && \
     for repo in \
         https://github.com/ltdrdata/ComfyUI-Manager.git \
         https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git \
@@ -99,40 +93,32 @@ RUN cd /workspace/comfyui/custom_nodes && \
         https://github.com/ZHO-ZHO-ZHO/ComfyUI-InstantID.git; \
     do \
         repo_dir=$(basename "$repo" .git); \
-        target_dir="/workspace/comfyui/custom_nodes/$repo_dir"; \
-        if [ ! -d "$target_dir" ]; then \
+        if [ ! -d "$repo_dir" ]; then \
             if [ "$repo" = "https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git" ]; then \
-                git clone --recursive "$repo" "$target_dir"; \
+                git clone --recursive "$repo" "$repo_dir"; \
             else \
-                git clone "$repo" "$target_dir"; \
+                git clone "$repo" "$repo_dir"; \
             fi; \
         fi; \
-        if [ -f "$target_dir/requirements.txt" ]; then \
-            /workspace/venv/bin/pip install --no-cache-dir -r "$target_dir/requirements.txt" || echo "Failed to install requirements for $repo_dir"; \
+        if [ -f "$repo_dir/requirements.txt" ]; then \
+            uv pip install --no-cache-dir -r "$repo_dir/requirements.txt" || echo "Failed to install requirements for $repo_dir"; \
         fi; \
-        if [ -f "$target_dir/install.py" ]; then \
-            /workspace/venv/bin/python "$target_dir/install.py" || echo "Failed to run install.py for $repo_dir"; \
+        if [ -f "$repo_dir/install.py" ]; then \
+            /opt/venv/bin/python "$repo_dir/install.py" || echo "Failed to run install.py for $repo_dir"; \
         fi; \
         if [ "$repo_dir" = "comfyui-reactor-node" ]; then \
-            echo "ReActor installed on volume"; \
-            /workspace/venv/bin/python -c "import sys; sys.path.append('$target_dir'); import reactor; print('ReActor OK')" 2>/dev/null || echo "ReActor import failed"; \
+            echo "ReActor установлен"; \
+            /opt/venv/bin/python -c "import sys; sys.path.append('/comfyui/custom_nodes/$repo_dir'); import reactor; print('ReActor OK')" 2>/dev/null || echo "ReActor import failed"; \
         fi; \
-    done && \
-    # Create symlink to custom_nodes
-    [ -L "/comfyui/custom_nodes" ] && rm -f "/comfyui/custom_nodes" || true && \
-    [ -d "/comfyui/custom_nodes" ] && rm -rf "/comfyui/custom_nodes" || true && \
-    ln -sfn /workspace/comfyui/custom_nodes /comfyui/custom_nodes
+    done
 
-# Create symlink for models
-RUN [ -L "/comfyui/models" ] && rm -f "/comfyui/models" || true && \
-    [ -d "/comfyui/models" ] && rm -rf "/comfyui/models" || true && \
-    ln -sfn /workspace/comfyui/models /comfyui/models
+# Создаём симлинк для моделей (на случай, если volume монтируется в /workspace)
+RUN ln -sfn /comfyui/models /workspace/comfyui/models || true
 
-# Add application code and scripts
+# Добавляем код и скрипты
 ADD src_worker/start.sh handler.py test_input.json download_models.py ./
 RUN chmod +x /start.sh
 
-# Add scripts
 COPY scripts/comfy-node-install.sh /usr/local/bin/comfy-node-install
 RUN chmod +x /usr/local/bin/comfy-node-install
 
@@ -141,5 +127,4 @@ RUN chmod +x /usr/local/bin/comfy-manager-set-mode
 
 ENV PIP_NO_INPUT=1
 
-# Default command
 CMD ["/start.sh"]
