@@ -53,6 +53,55 @@ def hf_download(repo_id, filename, subdir=""):
                 break
     print(f"[ERROR] Не удалось скачать {filename} после {max_retries} попыток")
 
+def download_hf_folder(repo_id, subdir="", allow_patterns=None, ignore_patterns=None, repo_type="model"):
+    """
+    Скачивает всю папку или файлы по маске из репозитория Hugging Face.
+
+    Параметры:
+    - repo_id: str — идентификатор репозитория (например "immich-app/buffalo_l")
+    - subdir: str — подпапка в /comfyui/models/... куда сохранить
+    - allow_patterns: list[str] — список масок для файлов (например ["*.onnx"])
+    - ignore_patterns: list[str] — список масок для игнора (опционально)
+    - repo_type: str — "model" (по умолчанию), "dataset" или "space"
+
+    Пример использования:
+    download_hf_folder(
+        "immich-app/buffalo_l",
+        subdir="insightface/models/buffalo_l",
+        allow_patterns=["*.onnx"]
+    )
+    """
+    target_dir = MODELS_DIR / subdir
+    target_dir.mkdir(parents=True, exist_ok=True)
+
+    print(f"[DOWNLOAD FOLDER] из {repo_id} → {target_dir}")
+    print(f"  - allow_patterns: {allow_patterns}")
+    print(f"  - ignore_patterns: {ignore_patterns}")
+
+    max_retries = 5
+    for attempt in range(1, max_retries + 1):
+        try:
+            snapshot_download(
+                repo_id=repo_id,
+                local_dir=target_dir,
+                local_dir_use_symlinks=False,
+                token=HF_TOKEN if HF_TOKEN else None,
+                allow_patterns=allow_patterns,
+                ignore_patterns=ignore_patterns,
+                repo_type=repo_type,
+                resume_download=True,
+                force_download=False
+            )
+            print(f"[OK] Папка успешно скачана в {target_dir}")
+            return
+        except Exception as e:
+            print(f"[Попытка {attempt}/{max_retries}] Ошибка: {str(e)}")
+            if "name resolution" in str(e) or "Max retries" in str(e):
+                time.sleep(10)  # пауза при DNS/сетевых проблемах
+            else:
+                time.sleep(5)
+    print(f"[ERROR] Не удалось скачать папку после {max_retries} попыток")
+
 def wget_download(url, target_path):
     """Прямое скачивание по URL (для swapify, github и т.п.)"""
     target_path = Path(target_path)
@@ -101,12 +150,8 @@ if __name__ == "__main__":
     # 3. LoRA модели
     hf_download("lightx2v/Qwen-Image-Lightning", "Qwen-Image-Edit-2509/Qwen-Image-Edit-2509-Lightning-8steps-V1.0-bf16.safetensors", "loras")
     hf_download("lightx2v/Qwen-Image-Lightning", "Qwen-Image-Edit-2509/Qwen-Image-Edit-2509-Lightning-4steps-V1.0-bf16.safetensors", "loras")
-
-    wget_download("https://studio.swapify.link/assets/Qwen-Image-Analog-v1.1.safetensors",
-                  "models/loras/Qwen-Image-Analog-v1.1.safetensors")
-
-    wget_download("https://studio.swapify.link/assets/lenovo.safetensors",
-                  "models/loras/lenovo.safetensors")
+    hf_download("PJMixers-Images/Qwen-Image-Analog-v1.1", "Qwen-Image-Analog-v1.1.safetensors", "loras")
+    hf_download("Danrisi/Lenovo_Qwen", "lenovo.safetensors", "loras")
 
     hf_download("valiantcat/Qwen-Image-Edit-2509-photous", "QwenEdit2509_photous_000010000.safetensors", "loras")
     hf_download("tlennon-ie/qwen-edit-skin", "qwen-edit-skin_1.1_000002750.safetensors", "loras")
@@ -116,9 +161,9 @@ if __name__ == "__main__":
 
     # 5. ReActor models
     print("\nDownloading ReActor models...")
-    wget_download("https://app.swapify.link/assets/inswapper_128.onnx", "models/insightface/inswapper_128.onnx")
-    wget_download("https://app.swapify.link/assets/detection_Resnet50_Final.pth", "models/facedetection/detection_Resnet50_Final.pth")
-    wget_download("https://app.swapify.link/assets/GFPGANv1.4.pth", "models/facerestore_models/GFPGANv1.4.pth")
+    hf_download("ezioruan/inswapper_128.onnx", "inswapper_128.onnx" , "insightface")
+    hf_download("salmonrk/facedetection", "detection_Resnet50_Final.pth" , "facedetection")
+    hf_download("gmk123/GFPGAN", "GFPGANv1.4.pth" , "facerestore_models")
 
     # 6. NSFW detector
     print("\nDownloading NSFW detector models...")
@@ -130,22 +175,21 @@ if __name__ == "__main__":
     # 7. Additional ReActor models (buffalo_l + parsing)
     print("\nDownloading additional ReActor models...")
     Path("models/insightface/models/buffalo_l").mkdir(parents=True, exist_ok=True)
-    wget_download("https://app.swapify.link/assets/buffalo_l/1k3d68.onnx", "models/insightface/models/buffalo_l/1k3d68.onnx")
-    wget_download("https://app.swapify.link/assets/buffalo_l/2d106det.onnx", "models/insightface/models/buffalo_l/2d106det.onnx")
-    wget_download("https://app.swapify.link/assets/buffalo_l/det_10g.onnx", "models/insightface/models/buffalo_l/det_10g.onnx")
-    wget_download("https://app.swapify.link/assets/buffalo_l/genderage.onnx", "models/insightface/models/buffalo_l/genderage.onnx")
-    wget_download("https://app.swapify.link/assets/buffalo_l/w600k_r50.onnx", "models/insightface/models/buffalo_l/w600k_r50.onnx")
 
-    wget_download("https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/parsing_parsenet.pth",
-                  "models/facedetection/parsing_parsenet.pth")
+    #wget_download("https://app.swapify.link/assets/buffalo_l/1k3d68.onnx", "models/insightface/models/buffalo_l/1k3d68.onnx")
+    #wget_download("https://app.swapify.link/assets/buffalo_l/2d106det.onnx", "models/insightface/models/buffalo_l/2d106det.onnx")
+    #wget_download("https://app.swapify.link/assets/buffalo_l/det_10g.onnx", "models/insightface/models/buffalo_l/det_10g.onnx")
+    #wget_download("https://app.swapify.link/assets/buffalo_l/genderage.onnx", "models/insightface/models/buffalo_l/genderage.onnx")
+    #wget_download("https://app.swapify.link/assets/buffalo_l/w600k_r50.onnx", "models/insightface/models/buffalo_l/w600k_r50.onnx")
+
+    hf_download("gmk123/GFPGAN", "parsing_parsenet.pth", "facedetection")
 
     # 8. YOLO models
     print("\nDownloading YOLO models for detection and segmentation...")
     Path("models/ultralytics/bbox").mkdir(parents=True, exist_ok=True)
     Path("models/ultralytics/segm").mkdir(parents=True, exist_ok=True)
-    wget_download("https://app.swapify.link/assets/face_yolov8m.pt", "models/ultralytics/bbox/face_yolov8m.pt")
-    wget_download("https://app.swapify.link/assets/hand_yolov8s.pt", "models/ultralytics/bbox/hand_yolov8s.pt")
-    wget_download("https://app.swapify.link/assets/person_yolov8m-seg.pt", "models/ultralytics/segm/person_yolov8m-seg.pt")
+
+    download_hf_folder("IgorGent/pony", "ultralytics/bbox", ["A-Detailer/*.pt"])
 
     # 9. Pony checkpoints (A1111 adapted → ComfyUI checkpoints)
     print("\nDownloading main generation models...")
