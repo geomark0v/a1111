@@ -45,26 +45,36 @@ SUBDIRS=(
 )
 
 for sub in "${SUBDIRS[@]}"; do
-    # Создаём подпапку на volume (если нет)
-    mkdir -p "/workspace/comfyui/models/$sub"
-
-    # Целевой путь симлинка
+    source_dir="/workspace/comfyui/models/$sub"
     target="/comfyui/models/$sub"
 
-    # Если уже правильный симлинк — пропускаем
-    if [ -L "$target" ] && [ "$(readlink -f "$target")" = "/workspace/comfyui/models/$sub" ]; then
-        echo "Симлинк $target уже правильный — пропускаем"
-        continue
-    fi
+    # Создаём подпапку на volume (если нет)
+    mkdir -p "$source_dir"
 
-    # Удаляем только если битый симлинк
+    # Проверяем, что сейчас по пути target
     if [ -L "$target" ]; then
+        # Это симлинк — проверяем, правильный ли
+        current_target=$(readlink -f "$target")
+        if [ "$current_target" = "$source_dir" ]; then
+            echo "Симлинк $target уже правильный — пропускаем"
+            continue
+        else
+            echo "Симлинк $target битый (указывает на $current_target) — удаляем"
+            rm -f "$target"
+        fi
+    elif [ -d "$target" ]; then
+        # Это обычная директория — удаляем её
+        echo "Предупреждение: $target — обычная директория, удаляем..."
+        rm -rf "$target"
+    elif [ -e "$target" ]; then
+        # Это файл или что-то другое — удаляем
+        echo "Предупреждение: $target — не директория и не симлинк, удаляем..."
         rm -f "$target"
     fi
 
     # Создаём свежий симлинк
-    ln -sfn "/workspace/comfyui/models/$sub" "$target"
-    echo "Симлинк создан: $target → /workspace/comfyui/models/$sub"
+    ln -sfn "$source_dir" "$target"
+    echo "Симлинк создан: $target → $source_dir"
 done
 
 echo "Все симлинки для папок моделей готовы!"
