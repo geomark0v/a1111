@@ -5,10 +5,6 @@ TCMALLOC="$(ldconfig -p | grep -Po "libtcmalloc.so.\d" | head -n 1)"
 export LD_PRELOAD="${TCMALLOC}"
 
 
-set -e
-# Активируем persistent venv (сохраняет все зависимости custom nodes)
-source /workspace/venv/bin/activate
-
 # Базовая папка на volume
 mkdir -p /workspace/comfyui/models
 
@@ -73,8 +69,6 @@ done
 
 echo "Все симлинки для папок моделей готовы!"
 
-python /install_custom_nodes.py
-# Запускаем скачивание всех моделей одним RUN
 python /download_models.py
 
 if [ "${JUPYTER_ENABLED:-false}" = "true" ]; then

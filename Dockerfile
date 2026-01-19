@@ -92,6 +92,45 @@ RUN if [ "$ENABLE_PYTORCH_UPGRADE" = "true" ]; then \
       uv pip install --force-reinstall torch torchvision torchaudio --index-url ${PYTORCH_INDEX_URL}; \
     fi
 
+RUN cd /comfyui/custom_nodes && \
+    for repo in \
+        https://github.com/ltdrdata/ComfyUI-Manager.git \
+        https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git \
+        https://github.com/kijai/ComfyUI-KJNodes.git \
+        https://github.com/rgthree/rgthree-comfy.git \
+        https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git \
+        https://github.com/ltdrdata/ComfyUI-Impact-Pack.git \
+        https://github.com/ClownsharkBatwing/RES4LYF.git \
+        https://github.com/cubiq/ComfyUI_essentials.git \
+        https://github.com/chrisgoringe/cg-image-picker.git \
+        https://github.com/chflame163/ComfyUI_LayerStyle.git \
+        https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git \
+        https://github.com/jerrywap/ComfyUI_LoadImageFromHttpURL.git \
+        https://codeberg.org/Gourieff/comfyui-reactor-node.git \
+        https://github.com/RikkOmsk/ComfyUI-S3-R2-Tools.git \
+        https://github.com/cubiq/ComfyUI_IPAdapter_plus.git \
+        https://github.com/ZHO-ZHO-ZHO/ComfyUI-InstantID.git; \
+    do \
+        repo_dir=$(basename "$repo" .git); \
+        if [ ! -d "$repo_dir" ]; then \
+            if [ "$repo" = "https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git" ]; then \
+                git clone --recursive "$repo" "$repo_dir"; \
+            else \
+                git clone "$repo" "$repo_dir"; \
+            fi; \
+        fi; \
+        if [ -f "$repo_dir/requirements.txt" ]; then \
+            uv pip install --no-cache-dir -r "$repo_dir/requirements.txt" || echo "Failed to install requirements for $repo_dir"; \
+        fi; \
+        if [ -f "$repo_dir/install.py" ]; then \
+            /opt/venv/bin/python "$repo_dir/install.py" || echo "Failed to run install.py for $repo_dir"; \
+        fi; \
+        if [ "$repo_dir" = "comfyui-reactor-node" ]; then \
+            echo "ReActor установлен"; \
+            /opt/venv/bin/python -c "import sys; sys.path.append('/comfyui/custom_nodes/$repo_dir'); import reactor; print('ReActor OK')" 2>/dev/null || echo "ReActor import failed"; \
+        fi; \
+    done
+
 # Change working directory to ComfyUI
 WORKDIR /comfyui
 
