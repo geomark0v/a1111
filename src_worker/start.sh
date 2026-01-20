@@ -42,6 +42,7 @@ SUBDIRS=(
     "reactor"
     "text_encoders"
     "upscale_models"
+    "reswapper"
 )
 
 for sub in "${SUBDIRS[@]}"; do

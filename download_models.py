@@ -199,6 +199,7 @@ if __name__ == "__main__":
     hf_download("IgorGent/pony", "cyberrealisticPony_v141 (1).safetensors", "checkpoints")
     hf_download("IgorGent/pony", "cyberrealisticPony_v150bf16.safetensors", "checkpoints")
     hf_download("IgorGent/pony", "cyberrealisticPony_v150.safetensors", "checkpoints")
+    hf_download("IgorGent/pony", "reswapper_256.onnx", "reswapper")
 
     # 10. ControlNet and related
     print("\nDownloading ControlNet and related models...")
