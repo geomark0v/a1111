@@ -78,16 +78,12 @@ export CUDA_MODULE_LOADING=LAZY
 export TRANSFORMERS_OFFLINE=1
 export HF_HUB_OFFLINE=1
 
-# Serve the API and don't shutdown the container
-if [ "$SERVE_API_LOCALLY" == "true" ]; then
-    python -u /comfyui/main.py --listen 0.0.0.0 --port 8188
-else
-    # Запускаем ComfyUI с оптимизациями:
-    # --quick-test-for-ci: пропускает некоторые проверки
-    # --disable-auto-launch: не открывать браузер
-    # --disable-metadata: не сохранять метаданные в изображения
-    # --fast: включает быстрый режим (torch.compile и др.)
-    python -u /comfyui/main.py \
+# Запускаем ComfyUI с оптимизациями:
+# --quick-test-for-ci: пропускает некоторые проверки
+# --disable-auto-launch: не открывать браузер
+# --disable-metadata: не сохранять метаданные в изображения
+# --fast: включает быстрый режим (torch.compile и др.)
+python -u /comfyui/main.py \
         --listen 0.0.0.0 \
         --port 8188 \
         --disable-auto-launch \
@@ -95,11 +91,11 @@ else
         --dont-print-server \
         --preview-method none \
         --log-stdout &
-    
-    COMFY_PID=$!
-    
-    # Ждём готовности ComfyUI (макс 30 сек)
-    echo "worker-comfyui: Ожидание запуска ComfyUI..."
+
+COMFY_PID=$!
+
+# Ждём готовности ComfyUI (макс 30 сек)
+echo "worker-comfyui: Ожидание запуска ComfyUI..."
     for i in {1..30}; do
         if curl -s http://127.0.0.1:8188/system_stats > /dev/null 2>&1; then
             echo "worker-comfyui: ComfyUI готов за ${i} сек"
@@ -108,6 +104,5 @@ else
         sleep 1
     done
 
-    echo "worker-comfyui: Starting RunPod Handler"
-    python -u /handler.py --rp_serve_api --rp_api_host=0.0.0.0
-fi
+echo "worker-comfyui: Starting RunPod Handler"
+python -u /handler.py --rp_serve_api --rp_api_host=0.0.0.0
