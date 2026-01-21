@@ -120,4 +120,4 @@ echo "worker-comfyui: Ожидание запуска ComfyUI..."
 
 echo "worker-comfyui: Starting RunPod Handler"
 
-python -u /handler.py --rp_serve_api --rp_api_host=0.0.0.0
+python -u /handler.py
