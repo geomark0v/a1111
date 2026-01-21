@@ -80,6 +80,8 @@ export HF_HUB_OFFLINE=1
 
 # Serve the API and don't shutdown the container
 if [ "$SERVE_API_LOCALLY" == "true" ]; then
+    python -u /comfyui/main.py --listen 0.0.0.0 --port 8188
+else
     # Запускаем ComfyUI с оптимизациями:
     # --quick-test-for-ci: пропускает некоторые проверки
     # --disable-auto-launch: не открывать браузер
@@ -108,6 +110,4 @@ if [ "$SERVE_API_LOCALLY" == "true" ]; then
 
     echo "worker-comfyui: Starting RunPod Handler"
     python -u /handler.py --rp_serve_api --rp_api_host=0.0.0.0
-else
-    python -u /comfyui/main.py --listen 0.0.0.0 --port 8188
 fi

@@ -1,5 +1,7 @@
+# Пути к моделям на Network Volume (RunPod)
+# start.sh создаёт симлинки /comfyui/models/* -> /workspace/comfyui/models/*
 runpod_worker_comfy:
-  base_path: /runpod-volume
+  base_path: /workspace/comfyui
   checkpoints: models/checkpoints/
   clip: models/clip/
   clip_vision: models/clip_vision/
