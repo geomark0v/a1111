@@ -113,7 +113,8 @@ RUN cd /comfyui/custom_nodes && \
     do \
         repo_dir=$(basename "$repo" .git); \
         if [ ! -d "$repo_dir" ]; then \
-            if [ "$repo" = "https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git" ]; then \
+            if [ "$repo" = "https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git" ] || \
+               [ "$repo" = "https://github.com/ltdrdata/ComfyUI-Impact-Pack.git" ]; then \
                 git clone --recursive "$repo" "$repo_dir"; \
             else \
                 git clone "$repo" "$repo_dir"; \
@@ -129,7 +130,21 @@ RUN cd /comfyui/custom_nodes && \
             echo "ReActor установлен"; \
             /opt/venv/bin/python -c "import sys; sys.path.append('/comfyui/custom_nodes/$repo_dir'); import reactor; print('ReActor OK')" 2>/dev/null || echo "ReActor import failed"; \
         fi; \
+        if [ "$repo_dir" = "ComfyUI-Impact-Pack" ]; then \
+            echo "Installing Impact-Pack submodules..."; \
+            cd "$repo_dir" && git submodule update --init --recursive && cd ..; \
+            if [ -f "$repo_dir/impact_subpack/requirements.txt" ]; then \
+                uv pip install --no-cache-dir -r "$repo_dir/impact_subpack/requirements.txt" || true; \
+            fi; \
+        fi; \
     done
+
+# Дополнительные зависимости для Impact-Pack (FaceDetailer, SAM и др.)
+RUN uv pip install --no-cache-dir \
+    segment-anything \
+    ultralytics \
+    scikit-image \
+    piexif
 
 # Change working directory to ComfyUI
 WORKDIR /comfyui
