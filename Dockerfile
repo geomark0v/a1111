@@ -182,7 +182,10 @@ WORKDIR /comfyui
 RUN uv pip install --no-cache-dir huggingface_hub hf-transfer requests
 
 # Скачиваем все модели при сборке образа в /comfyui/models
-RUN python /download_models.py
+# Очищаем кэш после скачивания для экономии места
+RUN python /download_models.py && \
+    rm -rf /tmp/hf_cache && \
+    find /comfyui/models -type d -name ".cache" -exec rm -rf {} + 2>/dev/null || true
 
 # Copy Eyes.pt file if it exists
 COPY Eyes.pt /comfyui/models/Eyes.pt

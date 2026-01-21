@@ -8,7 +8,14 @@ import os
 import sys
 import requests
 import time
+import shutil
 from pathlib import Path
+
+# Перенаправляем HF cache в /tmp чтобы не занимать место в образе
+os.environ["HF_HOME"] = "/tmp/hf_cache"
+os.environ["HF_HUB_CACHE"] = "/tmp/hf_cache"
+os.environ["HUGGINGFACE_HUB_CACHE"] = "/tmp/hf_cache"
+
 from huggingface_hub import hf_hub_download, snapshot_download
 
 # Основная директория моделей в ComfyUI
@@ -233,5 +240,12 @@ if __name__ == "__main__":
     hf_download("IgorGent/pony", "sam_vit_b_01ec64.pth", "sams")
     hf_download("IgorGent/pony", "sam_vit_h_4b8939.pth", "sams")
     hf_download("IgorGent/pony", "sam_vit_l_0b3195.pth", "sams")
+
+    # Очищаем HF cache и .cache папки для экономии места в образе
+    print("\n=== Очистка кэша ===")
+    shutil.rmtree("/tmp/hf_cache", ignore_errors=True)
+    for cache_dir in MODELS_DIR.rglob(".cache"):
+        shutil.rmtree(cache_dir, ignore_errors=True)
+        print(f"[CLEANUP] Удалён {cache_dir}")
 
     print("\n=== Скачивание всех моделей завершено! ===")
