@@ -12,7 +12,26 @@ export LD_PRELOAD="${TCMALLOC}"
 export HF_HUB_ENABLE_HF_TRANSFER=1
 export HF_HOME=/tmp/hf_cache
 
-# Базовая папка на Network Volume
+# =============================================================================
+# Универсальная настройка для Serverless и обычных подов
+# Serverless: данные в /runpod-volume
+# Обычный под: данные в /workspace
+# Создаём симлинк /workspace -> /runpod-volume если нужно
+# =============================================================================
+
+# Если /runpod-volume существует (Serverless), но /workspace нет - создаём симлинк
+if [ -d "/runpod-volume" ] && [ ! -d "/workspace" ]; then
+    echo "worker-comfyui: Serverless режим - создаём симлинк /workspace -> /runpod-volume"
+    ln -sfn /runpod-volume /workspace
+fi
+
+# Если ни /runpod-volume ни /workspace не существуют - создаём /workspace
+if [ ! -d "/workspace" ]; then
+    echo "worker-comfyui: Создаём локальную папку /workspace"
+    mkdir -p /workspace
+fi
+
+# Базовая папка на Network Volume (теперь всегда /workspace)
 VOLUME_MODELS_DIR="/workspace/comfyui/models"
 COMFY_MODELS_DIR="/comfyui/models"
 
@@ -24,38 +43,34 @@ SUBDIRS=(
     "ultralytics" "nsfw_detector" "reswapper" "huggingface_cache"
 )
 
-# Создаём симлинки на Network Volume (если volume примонтирован)
-if [ -d "/workspace" ]; then
-    echo "worker-comfyui: Network Volume обнаружен, настраиваем симлинки..."
-    mkdir -p "$VOLUME_MODELS_DIR"
+# Создаём симлинки на Network Volume
+echo "worker-comfyui: Настраиваем симлинки моделей..."
+mkdir -p "$VOLUME_MODELS_DIR"
+
+for sub in "${SUBDIRS[@]}"; do
+    source_dir="$VOLUME_MODELS_DIR/$sub"
+    target="$COMFY_MODELS_DIR/$sub"
     
-    for sub in "${SUBDIRS[@]}"; do
-        source_dir="$VOLUME_MODELS_DIR/$sub"
-        target="$COMFY_MODELS_DIR/$sub"
-        
-        mkdir -p "$source_dir"
-        
-        # Удаляем существующую папку/симлинк и создаём новый
-        rm -rf "$target" 2>/dev/null
-        ln -sfn "$source_dir" "$target"
-    done
-    echo "worker-comfyui: Симлинки готовы"
+    mkdir -p "$source_dir"
     
-    # Проверяем, есть ли модели на volume (проверяем один ключевой файл)
-    if [ ! -f "$VOLUME_MODELS_DIR/checkpoints/cyberrealisticPony_v141.safetensors" ]; then
-        echo "worker-comfyui: Модели не найдены, запускаем скачивание..."
-        python /download_models.py
-        echo "worker-comfyui: Скачивание завершено"
-    else
-        echo "worker-comfyui: Модели уже на Network Volume, пропускаем скачивание"
-    fi
-    
-    # Копируем Eyes.pt если есть
-    if [ -f "/Eyes.pt" ] && [ ! -f "$VOLUME_MODELS_DIR/Eyes.pt" ]; then
-        cp /Eyes.pt "$VOLUME_MODELS_DIR/Eyes.pt"
-    fi
+    # Удаляем существующую папку/симлинк и создаём новый
+    rm -rf "$target" 2>/dev/null
+    ln -sfn "$source_dir" "$target"
+done
+echo "worker-comfyui: Симлинки готовы"
+
+# Проверяем, есть ли модели на volume (проверяем один ключевой файл)
+if [ ! -f "$VOLUME_MODELS_DIR/checkpoints/cyberrealisticPony_v141.safetensors" ]; then
+    echo "worker-comfyui: Модели не найдены, запускаем скачивание..."
+    python /download_models.py
+    echo "worker-comfyui: Скачивание завершено"
 else
-    echo "worker-comfyui: Network Volume не примонтирован, используем локальные модели"
+    echo "worker-comfyui: Модели уже на Network Volume, пропускаем скачивание"
+fi
+
+# Копируем Eyes.pt если есть
+if [ -f "/Eyes.pt" ] && [ ! -f "$VOLUME_MODELS_DIR/Eyes.pt" ]; then
+    cp /Eyes.pt "$VOLUME_MODELS_DIR/Eyes.pt"
 fi
 
 # =============================================================================
@@ -105,4 +120,4 @@ echo "worker-comfyui: Ожидание запуска ComfyUI..."
 
 echo "worker-comfyui: Starting RunPod Handler"
 
-python -u /handler.py
+python -u /handler.py --rp_serve_api --rp_api_host=0.0.0.0

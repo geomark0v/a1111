@@ -165,8 +165,15 @@ COPY scripts/comfy-manager-set-mode.sh /usr/local/bin/comfy-manager-set-mode
 RUN chmod +x /usr/local/bin/comfy-manager-set-mode
 
 # Устанавливаем ComfyUI-Manager в offline режим при сборке (экономит ~2 мин на cold start)
-RUN mkdir -p /comfyui/user/__manager && \
-    echo -e "[default]\nnetwork_mode = offline\nupdate_check = false" > /comfyui/user/__manager/config.ini
+ENV CM_NETWORK_MODE=offline
+ENV COMFYUI_MANAGER_NETWORK_MODE=offline
+
+# Создаём конфиг в правильном пути для ComfyUI-Manager V3
+RUN mkdir -p /comfyui/user/default/ComfyUI-Manager && \
+    echo '[default]' > /comfyui/user/default/ComfyUI-Manager/config.ini && \
+    echo 'network_mode = offline' >> /comfyui/user/default/ComfyUI-Manager/config.ini && \
+    echo 'update_check = false' >> /comfyui/user/default/ComfyUI-Manager/config.ini && \
+    echo 'skip_update = true' >> /comfyui/user/default/ComfyUI-Manager/config.ini
 
 # Set the default command to run when starting the container
 CMD ["/start.sh"]
