@@ -24,8 +24,7 @@ ENV NUMBA_OPT=0
 # Speed up some cmake builds
 ENV CMAKE_BUILD_PARALLEL_LEVEL=8
 
-# Модели скачиваются при сборке образа в /comfyui/models
-# ENV DOWNLOAD_MODELS=false (больше не используется)
+# Модели скачиваются при первом запуске на Network Volume (/workspace)
 
 ENV JUPYTER_ENABLED=false
 
@@ -168,30 +167,8 @@ RUN chmod +x /usr/local/bin/comfy-manager-set-mode
 # Set the default command to run when starting the container
 CMD ["/start.sh"]
 
-# Stage 2: Download models (выполняется при сборке образа)
-FROM base AS downloader
-
-ARG HUGGINGFACE_ACCESS_TOKEN
-# Set default model type for Qwen Image Edit
-ARG MODEL_TYPE=qwen-image-edit
-
-# Change working directory to ComfyUI
-WORKDIR /comfyui
-
-# Устанавливаем зависимости для скачивания
+# Устанавливаем зависимости для скачивания моделей (hf-transfer ускоряет в 5-10 раз)
 RUN uv pip install --no-cache-dir huggingface_hub hf-transfer requests
 
-# Скачиваем все модели при сборке образа в /comfyui/models
-# Очищаем кэш после скачивания для экономии места
-RUN python /download_models.py && \
-    rm -rf /tmp/hf_cache && \
-    find /comfyui/models -type d -name ".cache" -exec rm -rf {} + 2>/dev/null || true
-
 # Copy Eyes.pt file if it exists
-COPY Eyes.pt /comfyui/models/Eyes.pt
-
-# Stage 3: Final image (копируем модели из downloader)
-FROM base AS final
-
-# Копируем скачанные модели из stage downloader в финальный образ
-COPY --from=downloader /comfyui/models /comfyui/models
+COPY Eyes.pt /Eyes.pt

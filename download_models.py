@@ -18,10 +18,9 @@ os.environ["HUGGINGFACE_HUB_CACHE"] = "/tmp/hf_cache"
 
 from huggingface_hub import hf_hub_download, snapshot_download
 
-# Основная директория моделей в ComfyUI
-# При сборке образа модели сохраняются в /comfyui/models (встроены в образ)
-# Вместо /workspace/comfyui/models (Network Volume)
-MODELS_DIR = Path("/comfyui/models")
+# Основная директория моделей на Network Volume (RunPod)
+# Модели скачиваются при первом запуске и сохраняются на volume
+MODELS_DIR = Path("/workspace/comfyui/models")
 MODELS_DIR.mkdir(parents=True, exist_ok=True)
 
 # Токен Hugging Face (если приватные репозитории)
