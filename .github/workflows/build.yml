@@ -18,13 +18,14 @@ jobs:
           password: ${{ secrets.DOCKER_PAT }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-        with:
-          driver: cloud
-          endpoint: "georgemark0v/gentlyx"
+        # Локальный билд на self-hosted runner (300 ГБ)
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          tags: "${{ vars.DOCKER_USER }}/docker-build-cloud-demo:latest"
-          # For pull requests, export results to the build cache.
-          # Otherwise, push to a registry.
-          outputs: ${{ github.event_name == 'pull_request' && 'type=cacheonly' || 'type=registry' }}
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: "${{ vars.DOCKER_USER }}/worker-sdxl:latest"
+          target: final
+          # Кэширование слоёв в Docker Hub Registry
+          cache-from: type=registry,ref=${{ vars.DOCKER_USER }}/worker-sdxl:buildcache
+          cache-to: type=registry,ref=${{ vars.DOCKER_USER }}/worker-sdxl:buildcache,mode=max
