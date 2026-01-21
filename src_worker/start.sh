@@ -120,4 +120,5 @@ echo "worker-comfyui: Ожидание запуска ComfyUI..."
 
 echo "worker-comfyui: Starting RunPod Handler"
 
-python -u /handler.py
+# Запускаем handler и держим контейнер живым
+exec python -u /handler.py
