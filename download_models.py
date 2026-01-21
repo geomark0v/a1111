@@ -1,7 +1,7 @@
 # download_models.py
 """
 Скрипт скачивает все модели в правильные пути для ComfyUI
-Место сохранения: /workspace/comfyui/models/...
+Место сохранения: /comfyui/models/... (встроено в Docker образ)
 """
 
 import os
@@ -12,7 +12,9 @@ from pathlib import Path
 from huggingface_hub import hf_hub_download, snapshot_download
 
 # Основная директория моделей в ComfyUI
-MODELS_DIR = Path("/workspace/comfyui/models")
+# При сборке образа модели сохраняются в /comfyui/models (встроены в образ)
+# Вместо /workspace/comfyui/models (Network Volume)
+MODELS_DIR = Path("/comfyui/models")
 MODELS_DIR.mkdir(parents=True, exist_ok=True)
 
 # Токен Hugging Face (если приватные репозитории)

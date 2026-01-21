@@ -24,7 +24,8 @@ ENV NUMBA_OPT=0
 # Speed up some cmake builds
 ENV CMAKE_BUILD_PARALLEL_LEVEL=8
 
-ENV DOWNLOAD_MODELS=false
+# Модели скачиваются при сборке образа в /comfyui/models
+# ENV DOWNLOAD_MODELS=false (больше не используется)
 
 ENV JUPYTER_ENABLED=false
 
@@ -80,9 +81,7 @@ RUN apt-get update && apt-get install -y \
     # Install ReActor dependencies and additional libraries
 RUN uv pip install insightface onnxruntime-gpu fal-client xxhash
 
-RUN mkdir -p /workspace/comfyui
-
-# Вместо этого — прямая установка (самый стабильный способ в 2026)
+# Прямая установка ComfyUI (самый стабильный способ в 2026)
 RUN git clone https://github.com/Comfy-Org/ComfyUI /comfyui && \
     cd /comfyui && \
     uv pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu121
@@ -149,7 +148,7 @@ ENV TRANSFORMERS_CACHE=/comfyui/models/huggingface_cache
 ENV HF_DATASETS_CACHE=/comfyui/models/huggingface_cache
 
     # Create Hugging Face cache directory
-RUN mkdir -p /workspace/comfyui/models/huggingface_cache
+RUN mkdir -p /comfyui/models/huggingface_cache
 
 # Add application code and scripts
 ADD src_worker/start.sh handler.py test_input.json download_models.py install_custom_nodes.py ./
@@ -169,7 +168,7 @@ RUN chmod +x /usr/local/bin/comfy-manager-set-mode
 # Set the default command to run when starting the container
 CMD ["/start.sh"]
 
-# Stage 2: Download models
+# Stage 2: Download models (выполняется при сборке образа)
 FROM base AS downloader
 
 ARG HUGGINGFACE_ACCESS_TOKEN
@@ -179,19 +178,17 @@ ARG MODEL_TYPE=qwen-image-edit
 # Change working directory to ComfyUI
 WORKDIR /comfyui
 
-# Устанавливаем зависимости
+# Устанавливаем зависимости для скачивания
 RUN uv pip install --no-cache-dir huggingface_hub hf-transfer requests
 
-RUN if [ "$DOWNLOAD_MODELS" = "true" ]; then \
-      # Запускаем скачивание всех моделей одним RUN
-      python /download_models.py; \
-    fi
-
-RUN mkdir -p /workspace/venv && \
-    uv venv /workspace/venv --python python3.12
+# Скачиваем все модели при сборке образа в /comfyui/models
+RUN python /download_models.py
 
 # Copy Eyes.pt file if it exists
-COPY Eyes.pt /Eyes.pt
+COPY Eyes.pt /comfyui/models/Eyes.pt
 
-# Stage 3: Final image
+# Stage 3: Final image (копируем модели из downloader)
 FROM base AS final
+
+# Копируем скачанные модели из stage downloader в финальный образ
+COPY --from=downloader /comfyui/models /comfyui/models
