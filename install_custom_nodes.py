@@ -42,6 +42,7 @@ REPOS = [
     "https://github.com/RikkOmsk/ComfyUI-S3-R2-Tools.git",
     "https://github.com/cubiq/ComfyUI_IPAdapter_plus.git",
     "https://github.com/ZHO-ZHO-ZHO/ComfyUI-InstantID.git",
+    "https://github.com/jerrywap/ComfyUI_UploadToWebhookHTTP"
 ]
 
 def run_command(cmd, cwd=None, check=True):
