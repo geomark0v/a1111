@@ -84,8 +84,7 @@ export HF_HUB_OFFLINE=1
 # --disable-metadata: не сохранять метаданные в изображения
 # --fast: включает быстрый режим (torch.compile и др.)
 python -u /comfyui/main.py \
-        --listen 0.0.0.0 \
-        --port 8188 \
+        --listen \
         --disable-auto-launch \
         --disable-metadata \
         --dont-print-server \
@@ -105,4 +104,5 @@ echo "worker-comfyui: Ожидание запуска ComfyUI..."
     done
 
 echo "worker-comfyui: Starting RunPod Handler"
-python -u /handler.py --rp_serve_api --rp_api_host=0.0.0.0
+
+python -u /handler.py
