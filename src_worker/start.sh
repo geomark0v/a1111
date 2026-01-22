@@ -93,12 +93,23 @@ export CUDA_MODULE_LOADING=LAZY
 export TRANSFORMERS_OFFLINE=1
 export HF_HUB_OFFLINE=1
 
+# =============================================================================
+# Режим запуска: SERVE_API_LOCALLY=true для обычного пода, иначе serverless
+# =============================================================================
+
 # Запускаем ComfyUI с оптимизациями:
-# --quick-test-for-ci: пропускает некоторые проверки
 # --disable-auto-launch: не открывать браузер
 # --disable-metadata: не сохранять метаданные в изображения
-# --fast: включает быстрый режим (torch.compile и др.)
-python -u /comfyui/main.py \
+if [ "$SERVE_API_LOCALLY" == "true" ]; then
+    # Режим обычного пода - ComfyUI как основной процесс (foreground)
+    echo "worker-comfyui: Запуск в режиме обычного пода (ComfyUI UI доступен на :8188)"
+    exec python -u /comfyui/main.py \
+        --listen 0.0.0.0 \
+        --port 8188
+else
+    # Режим serverless - ComfyUI в фоне, handler как основной процесс
+    echo "worker-comfyui: Запуск в режиме serverless"
+    python -u /comfyui/main.py \
         --listen \
         --disable-auto-launch \
         --disable-metadata \
@@ -106,19 +117,32 @@ python -u /comfyui/main.py \
         --preview-method none \
         --log-stdout &
 
-COMFY_PID=$!
+    COMFY_PID=$!
 
-# Ждём готовности ComfyUI (макс 30 сек)
-echo "worker-comfyui: Ожидание запуска ComfyUI..."
-    for i in {1..30}; do
+    # Ждём готовности ComfyUI (макс 120 сек для cold start)
+    echo "worker-comfyui: Ожидание запуска ComfyUI..."
+    COMFY_READY=false
+    for i in {1..120}; do
         if curl -s http://127.0.0.1:8188/system_stats > /dev/null 2>&1; then
             echo "worker-comfyui: ComfyUI готов за ${i} сек"
+            COMFY_READY=true
             break
+        fi
+        # Проверяем что процесс ComfyUI ещё жив
+        if ! kill -0 $COMFY_PID 2>/dev/null; then
+            echo "worker-comfyui: ОШИБКА - ComfyUI процесс завершился!"
+            exit 1
         fi
         sleep 1
     done
 
-echo "worker-comfyui: Starting RunPod Handler"
+    if [ "$COMFY_READY" = false ]; then
+        echo "worker-comfyui: ОШИБКА - ComfyUI не запустился за 120 сек"
+        exit 1
+    fi
 
-# Запускаем handler и держим контейнер живым
-exec python -u /handler.py
+    echo "worker-comfyui: Starting RunPod Handler"
+
+    # Запускаем handler и держим контейнер живым
+    exec python -u /handler.py
+fi
