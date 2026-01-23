@@ -119,30 +119,6 @@ else
 
     COMFY_PID=$!
 
-    # Ждём готовности ComfyUI (макс 120 сек для cold start)
-    echo "worker-comfyui: Ожидание запуска ComfyUI..."
-    COMFY_READY=false
-    for i in {1..120}; do
-        if curl -s http://127.0.0.1:8188/system_stats > /dev/null 2>&1; then
-            echo "worker-comfyui: ComfyUI готов за ${i} сек"
-            COMFY_READY=true
-            break
-        fi
-        # Проверяем что процесс ComfyUI ещё жив
-        if ! kill -0 $COMFY_PID 2>/dev/null; then
-            echo "worker-comfyui: ОШИБКА - ComfyUI процесс завершился!"
-            exit 1
-        fi
-        sleep 1
-    done
-
-    if [ "$COMFY_READY" = false ]; then
-        echo "worker-comfyui: ОШИБКА - ComfyUI не запустился за 120 сек"
-        exit 1
-    fi
-
-    echo "worker-comfyui: Starting RunPod Handler"
-
     # Запускаем handler и держим контейнер живым
     exec python -u /handler.py
 fi
