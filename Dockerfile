@@ -109,9 +109,9 @@ RUN cd /comfyui/custom_nodes && \
         https://github.com/cubiq/ComfyUI_IPAdapter_plus.git \
         https://github.com/ZHO-ZHO-ZHO/ComfyUI-InstantID.git \
         https://github.com/jerrywap/ComfyUI_UploadToWebhookHTTP.git \
-        https://github.com/tsogzark/ComfyUI-load-image-from-url.git \
+        https://github.com/tsogzark/ComfyUI-load-image-from-url.git; \
         https://github.com/asagi4/comfyui-prompt-control \
-        https://github.com/badjeff/comfyui_lora_tag_loader \
+        https://github.com/badjeff/comfyui_lora_tag_loader
     do \
         repo_dir=$(basename "$repo" .git); \
         if [ ! -d "$repo_dir" ]; then \
