@@ -105,7 +105,10 @@ if [ "$SERVE_API_LOCALLY" == "true" ]; then
     echo "worker-comfyui: Запуск в режиме обычного пода (ComfyUI UI доступен на :8188)"
     exec python -u /comfyui/main.py \
         --listen 0.0.0.0 \
-        --port 8188
+        --port 8188 \
+        --disable-auto-launch \
+        --disable-metadata \
+        --log-stdout
 else
     # Режим serverless - ComfyUI в фоне, handler как основной процесс
     echo "worker-comfyui: Запуск в режиме serverless"
@@ -118,6 +121,54 @@ else
         --log-stdout &
 
     COMFY_PID=$!
+
+    # Ждём готовности ComfyUI (макс 120 сек для cold start)
+    echo "worker-comfyui: Ожидание запуска ComfyUI..."
+    COMFY_READY=false
+    for i in {1..120}; do
+        if curl -s http://127.0.0.1:8188/system_stats > /dev/null 2>&1; then
+            echo "worker-comfyui: ComfyUI готов за ${i} сек"
+            COMFY_READY=true
+            break
+        fi
+        # Проверяем что процесс ComfyUI ещё жив
+        if ! kill -0 $COMFY_PID 2>/dev/null; then
+            echo "worker-comfyui: ОШИБКА - ComfyUI процесс завершился!"
+            exit 1
+        fi
+        sleep 1
+    done
+
+    if [ "$COMFY_READY" = false ]; then
+        echo "worker-comfyui: ОШИБКА - ComfyUI не запустился за 120 сек"
+        exit 1
+    fi
+
+    echo "worker-comfyui: Starting RunPod Handler"
+
+    # Запускаем health check для ComfyUI в фоне (пинг каждые 30 сек)
+    (
+        while true; do
+            sleep 30
+            if ! curl -s http://127.0.0.1:8188/system_stats > /dev/null 2>&1; then
+                echo "worker-comfyui: WARNING - ComfyUI не отвечает на health check!"
+                # Перезапускаем ComfyUI если он умер
+                if ! kill -0 $COMFY_PID 2>/dev/null; then
+                    echo "worker-comfyui: Перезапуск ComfyUI..."
+                    python -u /comfyui/main.py \
+                        --listen \
+                        --disable-auto-launch \
+                        --disable-metadata \
+                        --dont-print-server \
+                        --preview-method none \
+                        --log-stdout &
+                    COMFY_PID=$!
+                    sleep 10
+                fi
+            fi
+        done
+    ) &
+    HEALTH_PID=$!
 
     # Запускаем handler и держим контейнер живым
     exec python -u /handler.py
