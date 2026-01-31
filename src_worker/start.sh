@@ -119,8 +119,7 @@ else
         --port 8188 \
         --disable-auto-launch \
         --disable-metadata \
-        --preview-method none \
-        --quick-test-for-ci &
+        --preview-method none &
 
     COMFY_PID=$!
 
