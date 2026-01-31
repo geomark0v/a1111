@@ -105,20 +105,22 @@ if [ "$SERVE_API_LOCALLY" == "true" ]; then
     echo "worker-comfyui: Запуск в режиме обычного пода (ComfyUI UI доступен на :8188)"
     exec python -u /comfyui/main.py \
         --listen 0.0.0.0 \
-        --port 8188 \
-        --disable-auto-launch \
-        --disable-metadata \
-        --log-stdout
+        --port 8188
 else
     # Режим serverless - ComfyUI в фоне, handler как основной процесс
     echo "worker-comfyui: Запуск в режиме serverless"
+    
+    # Отключаем сетевые запросы ComfyUI-Manager
+    export COMFY_MANAGER_SKIP_UPDATE=true
+    export CM_NETWORK_MODE=offline
+    
     python -u /comfyui/main.py \
-        --listen \
+        --listen 0.0.0.0 \
+        --port 8188 \
         --disable-auto-launch \
         --disable-metadata \
-        --dont-print-server \
         --preview-method none \
-        --log-stdout &
+        --quick-test-for-ci &
 
     COMFY_PID=$!
 

@@ -3,27 +3,26 @@
 echo "Setting ComfyUI Manager network mode to $1..."
 
 MODE="${1:-offline}"
-CONFIG_DIR="/comfyui/user/__manager"
-CONFIG_FILE="$CONFIG_DIR/config.ini"
 
-# Создаём директорию если не существует
-mkdir -p "$CONFIG_DIR"
+# ComfyUI-Manager V3 использует разные пути для конфига
+# Создаём конфиг во всех возможных местах
+CONFIG_DIRS=(
+    "/comfyui/user/default/ComfyUI-Manager"
+    "/comfyui/user/__manager"
+    "/comfyui/custom_nodes/ComfyUI-Manager"
+)
 
-# Создаём или обновляем конфиг
-if [ -f "$CONFIG_FILE" ]; then
-    # Обновляем существующий конфиг
-    if grep -q "network_mode" "$CONFIG_FILE"; then
-        sed -i "s/network_mode.*/network_mode = $MODE/" "$CONFIG_FILE"
-    else
-        echo "network_mode = $MODE" >> "$CONFIG_FILE"
-    fi
-else
-    # Создаём новый конфиг
+for CONFIG_DIR in "${CONFIG_DIRS[@]}"; do
+    CONFIG_FILE="$CONFIG_DIR/config.ini"
+    mkdir -p "$CONFIG_DIR"
+    
     cat > "$CONFIG_FILE" << EOF
 [default]
 network_mode = $MODE
 update_check = false
+skip_update = true
 EOF
-fi
+    echo "Created config at $CONFIG_FILE"
+done
 
 echo "ComfyUI Manager network mode set to $MODE."
