@@ -127,10 +127,9 @@ else
     echo "worker-comfyui: Ожидание запуска ComfyUI (макс 180 сек)..."
     COMFY_READY=false
     for i in {1..180}; do
-        # Пробуем разные варианты подключения
-        HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 2 http://127.0.0.1:8188/ 2>/dev/null || echo "000")
-        if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "301" ] || [ "$HTTP_CODE" = "302" ]; then
-            echo "worker-comfyui: ComfyUI готов за ${i} сек (HTTP $HTTP_CODE)"
+        # Используем wget вместо curl (wget уже установлен в образе)
+        if wget -q --spider --timeout=2 http://127.0.0.1:8188/ 2>/dev/null; then
+            echo "worker-comfyui: ComfyUI готов за ${i} сек"
             COMFY_READY=true
             break
         fi
@@ -139,9 +138,9 @@ else
             echo "worker-comfyui: ОШИБКА - ComfyUI процесс завершился!"
             exit 1
         fi
-        # Логируем каждые 10 секунд с диагностикой
+        # Логируем каждые 10 секунд
         if [ $((i % 10)) -eq 0 ]; then
-            echo "worker-comfyui: Проверка ${i}/180 - HTTP код: $HTTP_CODE"
+            echo "worker-comfyui: Проверка ${i}/180 - ожидание ComfyUI..."
         fi
         sleep 1
     done
@@ -157,7 +156,7 @@ else
     (
         while true; do
             sleep 30
-            if ! curl -s http://127.0.0.1:8188/ > /dev/null 2>&1; then
+            if ! wget -q --spider --timeout=2 http://127.0.0.1:8188/ 2>/dev/null; then
                 echo "worker-comfyui: WARNING - ComfyUI не отвечает на health check!"
                 # Перезапускаем ComfyUI если он умер
                 if ! kill -0 $COMFY_PID 2>/dev/null; then

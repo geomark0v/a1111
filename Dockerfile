@@ -85,8 +85,6 @@ RUN git clone https://github.com/Comfy-Org/ComfyUI /comfyui && \
     cd /comfyui && \
     uv pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu121
 
-RUN apt-get install curl
-
 # Upgrade PyTorch if needed (for newer CUDA versions)
 RUN if [ "$ENABLE_PYTORCH_UPGRADE" = "true" ]; then \
       uv pip install --force-reinstall torch torchvision torchaudio --index-url ${PYTORCH_INDEX_URL}; \
