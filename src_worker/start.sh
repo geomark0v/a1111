@@ -123,11 +123,11 @@ else
 
     COMFY_PID=$!
 
-    # Ждём готовности ComfyUI (макс 120 сек для cold start)
-    echo "worker-comfyui: Ожидание запуска ComfyUI..."
+    # Ждём готовности ComfyUI (макс 180 сек / 3 минуты для cold start)
+    echo "worker-comfyui: Ожидание запуска ComfyUI (макс 180 сек)..."
     COMFY_READY=false
-    for i in {1..120}; do
-        if curl -s http://127.0.0.1:8188/system_stats > /dev/null 2>&1; then
+    for i in {1..180}; do
+        if curl -s http://127.0.0.1:8188/ > /dev/null 2>&1; then
             echo "worker-comfyui: ComfyUI готов за ${i} сек"
             COMFY_READY=true
             break
@@ -137,11 +137,15 @@ else
             echo "worker-comfyui: ОШИБКА - ComfyUI процесс завершился!"
             exit 1
         fi
+        # Логируем каждые 10 секунд
+        if [ $((i % 10)) -eq 0 ]; then
+            echo "worker-comfyui: Проверка ${i}/180 - ожидание ComfyUI..."
+        fi
         sleep 1
     done
 
     if [ "$COMFY_READY" = false ]; then
-        echo "worker-comfyui: ОШИБКА - ComfyUI не запустился за 120 сек"
+        echo "worker-comfyui: ОШИБКА - ComfyUI не запустился за 180 сек"
         exit 1
     fi
 
@@ -151,7 +155,7 @@ else
     (
         while true; do
             sleep 30
-            if ! curl -s http://127.0.0.1:8188/system_stats > /dev/null 2>&1; then
+            if ! curl -s http://127.0.0.1:8188/ > /dev/null 2>&1; then
                 echo "worker-comfyui: WARNING - ComfyUI не отвечает на health check!"
                 # Перезапускаем ComfyUI если он умер
                 if ! kill -0 $COMFY_PID 2>/dev/null; then
