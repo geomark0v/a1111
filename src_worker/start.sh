@@ -127,8 +127,10 @@ else
     echo "worker-comfyui: Ожидание запуска ComfyUI (макс 180 сек)..."
     COMFY_READY=false
     for i in {1..180}; do
-        if curl -s http://127.0.0.1:8188/ > /dev/null 2>&1; then
-            echo "worker-comfyui: ComfyUI готов за ${i} сек"
+        # Пробуем разные варианты подключения
+        HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 2 http://127.0.0.1:8188/ 2>/dev/null || echo "000")
+        if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "301" ] || [ "$HTTP_CODE" = "302" ]; then
+            echo "worker-comfyui: ComfyUI готов за ${i} сек (HTTP $HTTP_CODE)"
             COMFY_READY=true
             break
         fi
@@ -137,9 +139,9 @@ else
             echo "worker-comfyui: ОШИБКА - ComfyUI процесс завершился!"
             exit 1
         fi
-        # Логируем каждые 10 секунд
+        # Логируем каждые 10 секунд с диагностикой
         if [ $((i % 10)) -eq 0 ]; then
-            echo "worker-comfyui: Проверка ${i}/180 - ожидание ComfyUI..."
+            echo "worker-comfyui: Проверка ${i}/180 - HTTP код: $HTTP_CODE"
         fi
         sleep 1
     done
