@@ -83,15 +83,6 @@ echo "worker-comfyui: Starting ComfyUI"
 # Allow operators to tweak verbosity; default is DEBUG.
 : "${COMFY_LOG_LEVEL:=DEBUG}"
 
-# =============================================================================
-# Оптимизация запуска ComfyUI для быстрого cold start
-# =============================================================================
-
-# Отключаем лишние проверки и импорты для ускорения
-export PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True"
-export CUDA_MODULE_LOADING=LAZY
-export TRANSFORMERS_OFFLINE=1
-export HF_HUB_OFFLINE=1
 
 # =============================================================================
 # Режим запуска: SERVE_API_LOCALLY=true для обычного пода, иначе serverless
@@ -107,6 +98,16 @@ if [ "$SERVE_API_LOCALLY" == "true" ]; then
         --listen 0.0.0.0 \
         --port 8188
 else
+    # =============================================================================
+    # Оптимизация запуска ComfyUI для быстрого cold start
+    # =============================================================================
+
+    # Отключаем лишние проверки и импорты для ускорения
+    export PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True"
+    export CUDA_MODULE_LOADING=LAZY
+    export TRANSFORMERS_OFFLINE=1
+    export HF_HUB_OFFLINE=1
+
     # Режим serverless - ComfyUI в фоне, handler как основной процесс
     echo "worker-comfyui: Запуск в режиме serverless"
     
